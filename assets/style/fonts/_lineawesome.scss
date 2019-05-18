@@ -14,7 +14,7 @@
  *    GitHub [ https://github.com/icons8 ]
  */
 
-$line-awesome-font-path: '~@vrwebdesign/nuxt/assets/fonts/Lineawesome';
+$line-awesome-font-path: 'vrwebdesign-nuxt/assets/fonts/Lineawesome';
 @font-face {
   font-family: 'LineAwesome';
   src: url('#{$line-awesome-font-path}/line-awesome.eot?v=1.1.');

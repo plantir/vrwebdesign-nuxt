@@ -1,5 +1,5 @@
-import NuxtConfiguration from '@nuxt/config'
-import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
+import NuxtConfiguration from '@nuxt/config';
+import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin';
 const config: NuxtConfiguration = {
   mode: 'spa',
   server: {
@@ -47,7 +47,7 @@ const config: NuxtConfiguration = {
   css: [
     '~/assets/style/app.styl',
     '~/assets/style/main.scss',
-    '~@vrwebdesign/nuxt/assets/style/main.scss'
+    'vrwebdesign-nuxt/assets/style/main.scss'
   ],
   plugins: ['@/plugins/vuetify.js'],
   modules: ['@nuxtjs/style-resources', '@nuxtjs/axios'],
@@ -64,5 +64,5 @@ const config: NuxtConfiguration = {
      */
     extend(config, ctx) {}
   }
-}
-export default config
+};
+export default config;
