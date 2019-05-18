@@ -3,7 +3,7 @@ Flaticon icon font: Flaticon
 Creation date: 20/03/2017 20:02
 */
 
-$flaticon-font-path: 'vrwebdesign-nuxt/assets/fonts/Flaticon';
+$flaticon-font-path: '~vrwebdesign-nuxt/assets/fonts/Flaticon';
 @font-face {
   font-family: 'Flaticon';
   src: url('#{$flaticon-font-path}/Flaticon.eot');
