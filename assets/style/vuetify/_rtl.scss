@@ -1,0 +1,51 @@
+[dir='rtl'] {
+  .v-stepper--vertical .v-stepper__content {
+    margin: -8px 36px -16px -36px;
+    padding: 16px 23px 16px 60px;
+    width: auto;
+  }
+
+  .theme--light.v-stepper--vertical .v-stepper__content:not(:last-child) {
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  .v-stepper--vertical .v-stepper__step__step {
+    margin-right: 0;
+    margin-left: 12px;
+  }
+
+  .v-input .v-label {
+    right: 0 !important;
+    left: auto !important;
+  }
+
+  .v-text-field .v-label {
+    transform-origin: top right;
+  }
+
+  .v-input--switch {
+    direction: ltr;
+  }
+
+  .v-list__tile__title {
+    text-align: right;
+  }
+
+  .v-text-field .v-input__prepend-inner {
+    margin-left: auto;
+    padding-left: 4px;
+    margin-right: auto;
+    padding-right: 0;
+  }
+
+  .v-input--selection-controls__input {
+    margin-right: 0%;
+    margin-left: 8px;
+  }
+  .v-messages {
+    font-size: 11px;
+    &__message {
+      text-align: right;
+    }
+  }
+}
