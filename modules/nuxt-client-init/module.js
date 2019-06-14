@@ -8,4 +8,4 @@ function clientInitModule(_moduleOptions) {
 }
 
 module.exports = clientInitModule;
-module.exports.meta = require('../package.json');
+module.exports.meta = require('./package.json');
