@@ -1,0 +1,27 @@
+{
+  "name": "nuxt-client-init",
+  "version": "1.0.0",
+  "description": "client-init module for nuxtjs",
+  "license": "MIT",
+  "contributors": [
+    "armin kheirkhahan <mail@armin.pro>"
+  ],
+  "main": "module.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "nuxt test/fixture",
+    "lint": "eslint lib test",
+    "test": "yarn lint && jest",
+    "release": "yarn test && standard-version && git push --follow-tags && npm publish"
+  },
+  "files": [
+    "lib",
+    "types/*.d.ts"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "standard-version": "latest"
+  }
+}
