@@ -206,8 +206,8 @@ import Vue from 'vue'
 import Sticky from 'vue-sticky-directive'
 import FormControlls from './form-controlls/index'
 import { setTimeout } from 'timers'
-import { NuxtAxiosResource } from '~/modules/nuxt-axios/types'
-import { NuxtLoaderElement } from '~/modules/nuxt-loader/types'
+import { NuxtAxiosResource } from '../../nuxt-axios/types'
+import { NuxtLoaderElement } from '../../nuxt-loader/types'
 import { AxiosResponse } from 'axios'
 interface ISaveFunction {
   renew_after?: boolean

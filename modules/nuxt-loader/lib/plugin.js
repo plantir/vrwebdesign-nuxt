@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Loader from '@/modules/nuxt-loader/plugin/index'
+import Loader from 'vrwebdesign-nuxt/modules/nuxt-loader/plugin/index'
 
 Vue.use(Loader)
 
