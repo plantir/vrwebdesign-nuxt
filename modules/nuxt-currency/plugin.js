@@ -1,4 +1,4 @@
-import Vue from 'vue'
-import Currency from '@/modules/nuxt-currency/components/currency.vue'
+import Vue from 'vue';
+import Currency from './components/currency.vue';
 
-Vue.component('vr-currency', Currency)
+Vue.component('vr-currency', Currency);
