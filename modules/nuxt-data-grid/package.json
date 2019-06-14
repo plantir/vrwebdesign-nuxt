@@ -1,0 +1,23 @@
+{
+  "name": "nuxt-data-grid",
+  "version": "1.0.0",
+  "description": "data-grid module for nuxtjs",
+  "license": "MIT",
+  "contributors": [
+    "armin kheirkhahan <mail@armin.pro>"
+  ],
+  "main": "module.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "nuxt test/fixture",
+    "lint": "eslint lib test",
+    "test": "yarn lint && jest",
+    "release": "yarn test && standard-version && git push --follow-tags && npm publish"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "standard-version": "latest"
+  }
+}

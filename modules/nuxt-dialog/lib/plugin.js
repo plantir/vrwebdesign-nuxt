@@ -1,9 +1,8 @@
-export default (ctx, inject) => {
-  const dialog = {
-    alert: () => {
-      alert('test');
-    }
-  };
-  ctx.$dilog = dialog;
-  inject('dialog', dialog);
-};
+import Vue from 'vue'
+import Dialog from '@/modules/nuxt-dialog/plugin/index'
+
+Vue.use(Dialog)
+
+export default function(ctx, inject) {
+  inject('dialog', Dialog)
+}
