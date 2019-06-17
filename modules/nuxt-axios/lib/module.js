@@ -1,15 +1,15 @@
-const path = require('path');
-const consola = require('consola');
-const logger = consola.withScope('nuxt:axios');
-const fs = require('fs');
+const path = require('path')
+const consola = require('consola')
+const logger = consola.withScope('nuxt:axios')
+const fs = require('fs')
 
 function _interopDefault(ex) {
-  return ex && typeof ex === 'object' && 'default' in ex ? ex['default'] : ex;
+  return ex && typeof ex === 'object' && 'default' in ex ? ex['default'] : ex
 }
 
 function axiosModule(_moduleOptions) {
   // Combine options
-  const moduleOptions = { ...this.options.axios, ..._moduleOptions };
+  const moduleOptions = { ...this.options.axios, ..._moduleOptions }
 
   // Default port
   const defaultPort =
@@ -17,7 +17,7 @@ function axiosModule(_moduleOptions) {
     moduleOptions.port ||
     process.env.PORT ||
     process.env.npm_package_config_nuxt_port ||
-    3000;
+    3000
 
   // Default host
   let defaultHost =
@@ -25,15 +25,15 @@ function axiosModule(_moduleOptions) {
     moduleOptions.host ||
     process.env.HOST ||
     process.env.npm_package_config_nuxt_host ||
-    'localhost';
+    'localhost'
 
   /* istanbul ignore if */
   if (defaultHost === '0.0.0.0') {
-    defaultHost = 'localhost';
+    defaultHost = 'localhost'
   }
 
   // Default prefix
-  const prefix = process.env.API_PREFIX || moduleOptions.prefix || '/';
+  const prefix = process.env.API_PREFIX || moduleOptions.prefix || '/'
 
   // Apply defaults
   const options = {
@@ -48,50 +48,50 @@ function axiosModule(_moduleOptions) {
     retry: false,
     https: false,
     ...moduleOptions
-  };
+  }
 
   // ENV overrides
 
   /* load services */
-  let services = {};
-  var service_path = path.join(this.options.rootDir, 'services');
+  let services = {}
+  var service_path = path.join(this.options.rootDir, 'services')
   if (fs.existsSync(service_path)) {
     // Do something
     fs.readdirSync(service_path).forEach(function(file) {
-      var file_path = path.join(service_path, file);
+      var file_path = path.join(service_path, file)
+      delete require.cache[require.resolve(file_path)]
       services[file.replace(/\.(js|ts)/, '')] = _interopDefault(
         require(file_path)
-      );
-    });
+      )
+    })
   }
-  options.services = services;
-
+  options.services = services
   /* istanbul ignore if */
   if (process.env.API_URL) {
-    options.baseURL = process.env.API_URL;
+    options.baseURL = process.env.API_URL
   }
 
   /* istanbul ignore if */
   if (process.env.API_URL_BROWSER) {
-    options.browserBaseURL = process.env.API_URL_BROWSER;
+    options.browserBaseURL = process.env.API_URL_BROWSER
   }
 
   // Default browserBaseURL
   if (!options.browserBaseURL) {
-    options.browserBaseURL = options.proxy ? prefix : options.baseURL;
+    options.browserBaseURL = options.proxy ? prefix : options.baseURL
   }
 
   // Normalize options
   if (options.retry === true) {
-    options.retry = {};
+    options.retry = {}
   }
 
   // Convert http:// to https:// if https option is on
   if (options.https === true) {
     const https = s =>
-      s.indexOf('//localhost:') > -1 ? s : s.replace('http://', 'https://');
-    options.baseURL = https(options.baseURL);
-    options.browserBaseURL = https(options.browserBaseURL);
+      s.indexOf('//localhost:') > -1 ? s : s.replace('http://', 'https://')
+    options.baseURL = https(options.baseURL)
+    options.browserBaseURL = https(options.browserBaseURL)
   }
 
   // Register plugin
@@ -99,22 +99,22 @@ function axiosModule(_moduleOptions) {
     src: path.resolve(__dirname, 'plugin.js'),
     fileName: 'axios.js',
     options
-  });
+  })
 
   // Proxy integration
   if (options.proxy) {
     this.requireModule([
       '@nuxtjs/proxy',
       typeof options.proxy === 'object' ? options.proxy : {}
-    ]);
+    ])
   }
 
   // Set _AXIOS_BASE_URL_ for dynamic SSR baseURL
-  process.env._AXIOS_BASE_URL_ = options.baseURL;
+  process.env._AXIOS_BASE_URL_ = options.baseURL
 
-  logger.debug(`baseURL: ${options.baseURL}`);
-  logger.debug(`browserBaseURL: ${options.browserBaseURL}`);
+  logger.debug(`baseURL: ${options.baseURL}`)
+  logger.debug(`browserBaseURL: ${options.browserBaseURL}`)
 }
 
-module.exports = axiosModule;
-module.exports.meta = require('../package.json');
+module.exports = axiosModule
+module.exports.meta = require('../package.json')
