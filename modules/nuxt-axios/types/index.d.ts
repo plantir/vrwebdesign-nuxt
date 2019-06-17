@@ -9,12 +9,12 @@ import './vuex'
 interface NuxtAxiosResource {
   get<T = any>(id: number | string): Promise<AxiosResponse<T>>
   save<T = any>(obj: any): Promise<AxiosResponse<T>>
-  query<T = any>(params: any): Promise<AxiosResponse<T>>
+  query<T = any>(params?: any): Promise<AxiosResponse<T>>
   update<T = any>(id: number | string, obj: any): Promise<AxiosResponse<T>>
   delete<T = any>(id: number | string): Promise<AxiosResponse<T>>
   $get<T = any>(id: number | string): Promise<T>
   $save<T = any>(obj: any): Promise<T>
-  $query<T = any>(params: any): Promise<T>
+  $query<T = any>(params?: any): Promise<T>
   $update<T = any>(id: number | string, obj: any): Promise<T>
   $delete<T = any>(id: number | string): Promise<T>
   [key: string]: any

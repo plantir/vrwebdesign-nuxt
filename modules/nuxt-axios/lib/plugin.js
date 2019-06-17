@@ -213,5 +213,10 @@ export default (ctx, inject) => {
 
   // Inject axios to the context as $axios
   ctx.$axios = axios
+  let services = <%= serialize(options.services) %>
+  Object.keys(services).forEach(item=>{
+    services[item] = services[item](ctx.$axios)
+  })
+  inject('service', services)
   inject('axios', axios)
 }
