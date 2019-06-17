@@ -58,11 +58,13 @@ function axiosModule(_moduleOptions) {
   if (fs.existsSync(service_path)) {
     // Do something
     fs.readdirSync(service_path).forEach(function(file) {
-      var file_path = path.join(service_path, file)
-      delete require.cache[require.resolve(file_path)]
-      services[file.replace(/\.(js|ts)/, '')] = _interopDefault(
-        require(file_path)
-      )
+      if (file.includes('.ts') || file.includes('.js')) {
+        var file_path = path.join(service_path, file)
+        delete require.cache[require.resolve(file_path)]
+        services[file.replace(/\.(js|ts)/, '')] = _interopDefault(
+          require(file_path)
+        )
+      }
     })
   }
   options.services = services
