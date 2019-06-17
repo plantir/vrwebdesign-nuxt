@@ -1,7 +1,8 @@
-import { NuxtAxiosInstance } from '.'
+import { NuxtAxiosInstance, NuxtServiceInstance } from '.';
 
 declare module 'vuex' {
   interface Store<S> {
-    $axios: NuxtAxiosInstance,
+    $axios: NuxtAxiosInstance;
+    $service: NuxtServiceInstance;
   }
 }
