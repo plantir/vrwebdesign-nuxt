@@ -40,7 +40,7 @@ interface NuxtAxiosInstance extends AxiosInstance {
     data?: any,
     config?: AxiosRequestConfig
   ): Promise<T>
-  $resource<T = any>(path: string, actions?: any): NuxtAxiosResource
+  $resource<T = any>(path: string, actions?: any): NuxtAxiosResource<T>
   setHeader(
     name: string,
     value?: string | false,
