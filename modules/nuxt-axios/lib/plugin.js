@@ -3,8 +3,8 @@ import Axios from 'axios'
 
 // Axios.prototype cannot be modified
 const axiosExtra = {
-  setHeader (name, value, scopes = 'common') {
-    for (let scope of Array.isArray(scopes) ? scopes : [ scopes ]) {
+  setHeader(name, value, scopes = 'common') {
+    for (let scope of Array.isArray(scopes) ? scopes : [scopes]) {
       if (!value) {
         delete this.defaults.headers[scope][name];
         return
@@ -12,7 +12,7 @@ const axiosExtra = {
       this.defaults.headers[scope][name] = value
     }
   },
-  setToken (token, type, scopes = 'common') {
+  setToken(token, type, scopes = 'common') {
     const value = !token ? null : (type ? type + ' ' : '') + token
     this.setHeader('Authorization', value, scopes)
   },
@@ -32,16 +32,16 @@ const axiosExtra = {
     this.onRequestError(fn)
     this.onResponseError(fn)
   },
-  $resource(path,actions){
+  $resource(path, actions) {
     var obj = {
       get: id => this.get(path + '/' + id),
       save: obj => this.post(path, obj),
-      query: params => this.get(path, {params}),
+      query: params => this.get(path, { params }),
       update: (id, obj) => this.put(path + '/' + id, obj),
       delete: id => this.delete(path + '/' + id),
       $get: id => this.$get(path + '/' + id),
       $save: obj => this.$post(path, obj),
-      $query: params => this.$get(path, {params}),
+      $query: params => this.$get(path, { params }),
       $update: (id, obj) => this.$put(path + '/' + id, obj),
       $delete: id => this.$delete(path + '/' + id)
     }
@@ -63,17 +63,17 @@ const extendAxiosInstance = axios => {
 <% if (options.debug) { %>
 const log = (level, ...messages) => console[level]('[Axios]', ...messages)
 
-const setupDebugInterceptor = axios => {
-  // request
-  axios.onRequestError(error => {
-    log('error', 'Request error:', error)
-  })
+  const setupDebugInterceptor = axios => {
+    // request
+    axios.onRequestError(error => {
+      log('error', 'Request error:', error)
+    })
 
-  // response
-  axios.onResponseError(error => {
-    log('error', 'Response error:', error)
-  })
-  axios.onResponse(res => {
+    // response
+    axios.onResponseError(error => {
+      log('error', 'Response error:', error)
+    })
+    axios.onResponse(res => {
       log(
         'info',
         '[' + (res.status + ' ' + res.statusText) + ']',
@@ -87,92 +87,92 @@ const setupDebugInterceptor = axios => {
       }
 
       return res
-  })
-}<% } %>
+    })
+  }<% } %>
 
 <% if (options.credentials) { %>
 const setupCredentialsInterceptor = axios => {
-  // Send credentials only to relative and API Backend requests
-  axios.onRequest(config => {
-    if (config.withCredentials === undefined) {
-      if (!/^https?:\/\//i.test(config.url) || config.url.indexOf(config.baseURL) === 0) {
-        config.withCredentials = true
+    // Send credentials only to relative and API Backend requests
+    axios.onRequest(config => {
+      if (config.withCredentials === undefined) {
+        if (!/^https?:\/\//i.test(config.url) || config.url.indexOf(config.baseURL) === 0) {
+          config.withCredentials = true
+        }
       }
-    }
-  })
-}<% } %>
+    })
+  }<% } %>
 
 <% if (options.progress) { %>
 const setupProgress = (axios, ctx) => {
-  if (process.server) {
-    return
-  }
-
-  // A noop loading inteterface for when $nuxt is not yet ready
-  const noopLoading = {
-    finish: () => { },
-    start: () => { },
-    fail: () => { },
-    set: () => { }
-  }
-
-  const $loading = () => (window.$nuxt && window.$nuxt.$loading && window.$nuxt.$loading.set) ? window.$nuxt.$loading : noopLoading
-
-  let currentRequests = 0
-
-  axios.onRequest(config => {
-    if (config && config.progress === false) {
+    if (process.server) {
       return
     }
 
-    currentRequests++
-  })
-
-  axios.onResponse(response => {
-    if (response && response.config && response.config.progress === false) {
-      return
+    // A noop loading inteterface for when $nuxt is not yet ready
+    const noopLoading = {
+      finish: () => { },
+      start: () => { },
+      fail: () => { },
+      set: () => { }
     }
 
-    currentRequests--
-    if (currentRequests <= 0) {
-      currentRequests = 0
+    const $loading = () => (window.$nuxt && window.$nuxt.$loading && window.$nuxt.$loading.set) ? window.$nuxt.$loading : noopLoading
+
+    let currentRequests = 0
+
+    axios.onRequest(config => {
+      if (config && config.progress === false) {
+        return
+      }
+
+      currentRequests++
+    })
+
+    axios.onResponse(response => {
+      if (response && response.config && response.config.progress === false) {
+        return
+      }
+
+      currentRequests--
+      if (currentRequests <= 0) {
+        currentRequests = 0
+        $loading().finish()
+      }
+    })
+
+    axios.onError(error => {
+      if (error && error.config && error.config.progress === false) {
+        return
+      }
+
+      currentRequests--
+      $loading().fail()
       $loading().finish()
+    })
+
+    const onProgress = e => {
+      if (!currentRequests) {
+        return
+      }
+      const progress = ((e.loaded * 100) / (e.total * currentRequests))
+      $loading().set(Math.min(100, progress))
     }
-  })
 
-  axios.onError(error => {
-    if (error && error.config && error.config.progress === false) {
-      return
-    }
-
-    currentRequests--
-    $loading().fail()
-    $loading().finish()
-  })
-
-  const onProgress = e => {
-    if (!currentRequests) {
-      return
-    }
-    const progress = ((e.loaded * 100) / (e.total * currentRequests))
-    $loading().set(Math.min(100, progress))
-  }
-
-  axios.defaults.onUploadProgress = onProgress
-  axios.defaults.onDownloadProgress = onProgress
-}<% } %>
+    axios.defaults.onUploadProgress = onProgress
+    axios.defaults.onDownloadProgress = onProgress
+  }<% } %>
 
 export default (ctx, inject) => {
   // baseURL
   const baseURL = process.browser
-      ? '<%= options.browserBaseURL %>'
-      : (process.env._AXIOS_BASE_URL_ || '<%= options.baseURL %>')
+    ? '<%= options.browserBaseURL %>'
+    : (process.env._AXIOS_BASE_URL_ || '<%= options.baseURL %>')
 
   // Create fresh objects for all default header scopes
   // Axios creates only one which is shared across SSR requests!
   // https://github.com/mzabriskie/axios/blob/master/lib/defaults.js
   const headers = {
-    common : {
+    common: {
       'Accept': 'application/json, text/plain, */*'
     },
     delete: {},
@@ -188,11 +188,11 @@ export default (ctx, inject) => {
     headers
   }
 
-  <% if (options.proxyHeaders) { %>
-  // Proxy SSR request headers headers
-  axiosOptions.headers.common = (ctx.req && ctx.req.headers) ? Object.assign({}, ctx.req.headers) : {}
-  <% for (let h of options.proxyHeadersIgnore) { %>delete axiosOptions.headers.common['<%= h %>']
-  <% } %><% } %>
+    <% if (options.proxyHeaders) { %>
+      // Proxy SSR request headers headers
+      axiosOptions.headers.common = (ctx.req && ctx.req.headers) ? Object.assign({}, ctx.req.headers) : {}
+        <% for (let h of options.proxyHeadersIgnore) { %> delete axiosOptions.headers.common['<%= h %>']
+          <% } %><% } %>
 
   if (process.server) {
     // Don't accept brotli encoding because Node can't parse it
@@ -205,18 +205,22 @@ export default (ctx, inject) => {
   // Extend axios proto
   extendAxiosInstance(axios)
 
-  // Setup interceptors
-  <% if (options.debug) { %>setupDebugInterceptor(axios) <% } %>
-  <% if (options.credentials) { %>setupCredentialsInterceptor(axios)<% } %>
-  <% if (options.progress) { %>setupProgress(axios, ctx) <% } %>
-  <% if (options.retry) { %>axiosRetry(axios, <%= serialize(options.retry) %>)<% } %>
+    // Setup interceptors
+    <% if (options.debug) { %> setupDebugInterceptor(axios) <% } %>
+  <% if (options.credentials) { %> setupCredentialsInterceptor(axios) <% } %>
+  <% if (options.progress) { %> setupProgress(axios, ctx) <% } %>
+  <% if (options.retry) { %> axiosRetry(axios, <%= serialize(options.retry) %>) <% } %>
 
-  // Inject axios to the context as $axios
-  ctx.$axios = axios
+    // Inject axios to the context as $axios
+    ctx.$axios = axios
   let services = <%= serialize(options.services) %>
-  Object.keys(services).forEach(item=>{
-    services[item] = services[item](ctx.$axios)
-  })
+    Object.keys(services).forEach(item => {
+
+      import(`~/services/${item}`).then(T => {
+        //  create instance of class
+        services[item] = new T[`${item}`](ctx.$axios)
+      })
+    })
   inject('service', services)
   inject('axios', axios)
 }
