@@ -22,6 +22,11 @@
           border-color: $primary-color !important;
         }
       }
+      &.v-input--is-disabled {
+        .v-input__slot {
+          border-style: dashed !important;
+        }
+      }
       .v-input__slot {
         min-height: 38px;
         border-width: 1px !important;
@@ -74,23 +79,27 @@
       <template v-for="(field, fieldIndex) in row.rows">
         <component
           v-if="field.model.includes('.')"
+          v-validate="field.validation"
+          v-model="item[field.model.split('.')[0]][field.model.split('.')[1]]"
+          :disabled="field.disabled"
+          :readonly="field.readonly"
           :key="fieldIndex"
           :is="field.component || `form-controll-${field.type}`"
-          v-validate="field.validation"
           :error-messages="errors.collect(field.model)"
           :name="field.model"
           :field="field"
-          v-model="item[field.model.split('.')[0]][field.model.split('.')[1]]"
         ></component>
         <component
           v-else
+          v-validate="field.validation"
+          v-model="item[field.model]"
+          :disabled="field.disabled"
+          :readonly="field.readonly"
           :key="fieldIndex"
           :is="field.component || `form-controll-${field.type}`"
-          v-validate="field.validation"
-          :name="field.model"
           :error-messages="errors.collect(field.model)"
+          :name="field.model"
           :field="field"
-          v-model="item[field.model]"
         ></component>
       </template>
     </div>
@@ -99,6 +108,7 @@
 <script >
 import FormControlls from './form-controlls/index'
 export default {
+  inject: ['$validator'],
   components: FormControlls,
   props: {
     value: {
@@ -110,7 +120,7 @@ export default {
   },
   data() {
     return {
-      item: { ...this.value }
+      item: this.value
     }
   },
 

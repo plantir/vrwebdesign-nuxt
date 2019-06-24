@@ -7,6 +7,8 @@
       auto-grow
       browser-autocomplete="off"
       v-model="model"
+      :disabled="field.disabled"
+      :readonly="field.readonly"
       :type="field.inputType || 'text'"
       :error-messages="errors.collect(field.model)"
       :name="field.model"
