@@ -362,6 +362,9 @@ export default {
     filters: {
       default: () => []
     },
+    defaultFilters: {
+      default: () => []
+    },
     headers: {
       required: true,
       default: () => []
@@ -424,6 +427,17 @@ export default {
     }
   },
   data() {
+    let filter = []
+    if (this.defaultFilters) {
+      for (const filter_name in this.defaultFilters) {
+        if (this.defaultFilters[filter_name]) {
+          filter.push(
+            `${filter_name}:${this.defaultFilters[filter_name]}:${this
+              .defaultFilters.op || '='}`
+          )
+        }
+      }
+    }
     return {
       showFilter: true,
       filterHeight: 0,
@@ -434,11 +448,12 @@ export default {
         descending: false,
         sortBy: null
       },
-      data_filters: {},
+      data_filters: { ...this.defaultFilters },
       total_items: 0,
       lastPage: 0,
       loading: true,
-      items: []
+      items: [],
+      filter: filter
     }
   },
   mounted() {
@@ -566,11 +581,10 @@ export default {
       this.$router.push(this.$route.path + '/create')
     },
     refresh() {
-      debugger
       this._query()
     },
     resetFilter() {
-      this.data_filters = []
+      this.data_filters = { ...this.defaultFilters }
       this.sort = null
       this.pagination.sortBy = null
     }
