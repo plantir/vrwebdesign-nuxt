@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label>{{field.label}}</label>
+    <label v-if="!minimal">{{field.label}}</label>
     <v-text-field
       outline
       single-line
@@ -9,8 +9,9 @@
       :type="field.inputType || 'text'"
       :error-messages="errorMessages"
       :name="field.model"
-      :placeholder="field.placeholder"
+      :placeholder="placeholder"
       :suffix="field.suffix"
+      :label="minimalLabel"
     ></v-text-field>
   </div>
 </template>

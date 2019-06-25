@@ -181,6 +181,7 @@
                   :name="field.model"
                   :field="field"
                   v-model="form_item[field.model.split('.')[0]][field.model.split('.')[1]]"
+                  :minimal="minimal"
                 ></component>
                 <component
                   v-else
@@ -191,6 +192,7 @@
                   :error-messages="errors.collect(field.model)"
                   :field="field"
                   v-model="form_item[field.model]"
+                  :minimal="minimal"
                 ></component>
               </template>
             </div>
@@ -250,6 +252,10 @@ export default Vue.extend({
     },
     beforeDelete: {
       type: Function
+    },
+    minimal: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

@@ -16,11 +16,23 @@ export default {
     value: {
       required: true
     },
-    errorMessages: {}
+    errorMessages: {},
+    minimal: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
       model: this.value
+    }
+  },
+  computed: {
+    minimalLabel() {
+      return this.minimal ? this.field.label : "";
+    },
+    placeholder(){
+      return this.minimal ? "": this.field.placeholder;
     }
   },
   watch: {
