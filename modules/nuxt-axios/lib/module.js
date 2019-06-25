@@ -63,7 +63,8 @@ function axiosModule(_moduleOptions) {
         delete require.cache[require.resolve(file_path)]
         
         //  to have this service in services
-        services[file.replace(/\.(js|ts)/, '')] = file.replace(/\.(js|ts)/, '');
+        const serviceName = file.replace(/\.(js|ts)/, '');
+        services[serviceName] = serviceName;
       }
     })
   }
