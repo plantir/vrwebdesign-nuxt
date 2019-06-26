@@ -193,41 +193,43 @@
 <template>
   <div>
     <div class="head">
-      <div class="head-label">
-        <v-icon>{{title.icon}}</v-icon>
-        <h3 class="head-title">{{title.text}}</h3>
-      </div>
-      <div class="toolbar">
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn @click="resetFilter" v-on="on" flat icon>
-              <v-icon>la-recycle</v-icon>
-            </v-btn>
-          </template>
-          <span>حذف فیلتر ها</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn @click="showFilter = !showFilter" v-on="on" flat icon>
-              <v-icon :class="{slash:!showFilter}">la-filter</v-icon>
-            </v-btn>
-          </template>
-          <span>مخفی کردن فیلتر ها</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn @click="refresh" v-on="on" flat icon>
-              <v-icon>la-refresh</v-icon>
-            </v-btn>
-          </template>
-          <span>تازه کردن اطلاعات</span>
-        </v-tooltip>
+      <slot name="header">
+        <div class="head-label">
+          <v-icon>{{title.icon}}</v-icon>
+          <h3 class="head-title">{{title.text}}</h3>
+        </div>
+        <div class="toolbar">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn @click="resetFilter" v-on="on" flat icon>
+                <v-icon>la-recycle</v-icon>
+              </v-btn>
+            </template>
+            <span>حذف فیلتر ها</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn @click="showFilter = !showFilter" v-on="on" flat icon>
+                <v-icon :class="{slash:!showFilter}">la-filter</v-icon>
+              </v-btn>
+            </template>
+            <span>مخفی کردن فیلتر ها</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn @click="refresh" v-on="on" flat icon>
+                <v-icon>la-refresh</v-icon>
+              </v-btn>
+            </template>
+            <span>تازه کردن اطلاعات</span>
+          </v-tooltip>
 
-        <v-btn v-if="withAdd" @click="_add" class="add-new" color="info">
-          <v-icon>add</v-icon>
-          <span>ایجاد جدید</span>
-        </v-btn>
-      </div>
+          <v-btn v-if="withAdd" @click="_add" class="add-new" color="info">
+            <v-icon>add</v-icon>
+            <span>ایجاد جدید</span>
+          </v-btn>
+        </div>
+      </slot>
     </div>
     <div
       ref="filters"
@@ -362,6 +364,9 @@ export default {
     filters: {
       default: () => []
     },
+    defaultFilters: {
+      default: () => []
+    },
     headers: {
       required: true,
       default: () => []
@@ -424,6 +429,17 @@ export default {
     }
   },
   data() {
+    let filter = []
+    if (this.defaultFilters) {
+      for (const filter_name in this.defaultFilters) {
+        if (this.defaultFilters[filter_name]) {
+          filter.push(
+            `${filter_name}:${this.defaultFilters[filter_name]}:${this
+              .defaultFilters.op || '='}`
+          )
+        }
+      }
+    }
     return {
       showFilter: true,
       filterHeight: 0,
@@ -434,11 +450,12 @@ export default {
         descending: false,
         sortBy: null
       },
-      data_filters: {},
+      data_filters: { ...this.defaultFilters },
       total_items: 0,
       lastPage: 0,
       loading: true,
-      items: []
+      items: [],
+      filter: filter
     }
   },
   mounted() {
@@ -566,11 +583,10 @@ export default {
       this.$router.push(this.$route.path + '/create')
     },
     refresh() {
-      debugger
       this._query()
     },
     resetFilter() {
-      this.data_filters = []
+      this.data_filters = { ...this.defaultFilters }
       this.sort = null
       this.pagination.sortBy = null
     }

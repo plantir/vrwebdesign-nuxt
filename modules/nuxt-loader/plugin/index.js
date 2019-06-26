@@ -4,7 +4,7 @@ class Loader {
     this.Vue = Vue
     this.timeout = null
     this.mounted = false
-    this.apendedLoader = []
+    this.apendedLoader = {}
     this.loader = globalOptions
     this.loaderConstructor = this.Vue.extend(LoaderComponent)
   }
@@ -28,7 +28,8 @@ class Loader {
         $el.style.cssText = `left:${rect.left}px;top:${rect.top +
           topOffset}px;height:${rect.height}px;width:${rect.width}px`
         app.appendChild($el)
-        let index = this.apendedLoader.push(mount) - 1
+        let index = new Date().getTime()
+        this.apendedLoader[index] = mount
         indexes.push(index)
       }
       return {
@@ -46,7 +47,8 @@ class Loader {
       $el.style.cssText = `left:${rect.left}px;top:${rect.top +
         topOffset}px;height:${rect.height}px;width:${rect.width}px`
       app.appendChild($el)
-      let index = this.apendedLoader.push(mount) - 1
+      let index = new Date().getTime()
+      this.apendedLoader[index] = mount
       return {
         hide: () => {
           this.hide([index])
@@ -64,7 +66,7 @@ class Loader {
       this.apendedLoader[index].$destroy()
       this.apendedLoader[index].$off()
       elem.remove()
-      this.apendedLoader.splice(index, 1)
+      delete this.apendedLoader[index]
     }
     if (this.apendedLoader.length == 0) {
       window.removeEventListener('resize', this.onResize.bind(this))
@@ -73,23 +75,23 @@ class Loader {
   onResize() {
     clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
-      for (const mount of this.apendedLoader) {
+      Object.values(this.apendedLoader).map(mount => {
         let $el = mount.$el
         let rect = mount.loaderElement.getBoundingClientRect()
         let topOffset = window.scrollY
         $el.style.cssText = `left:${rect.left}px;top:${rect.top +
           topOffset}px;height:${rect.height}px;width:${rect.width}px`
-      }
+      })
     }, 10)
   }
   destroy() {
-    for (const element of this.apendedLoader) {
-      let elem = element.$el
-      element.$destroy()
-      element.$off()
+    Object.values(this.apendedLoader).map(mount => {
+      let elem = mount.$el
+      mount.$destroy()
+      mount.$off()
       elem.remove()
-    }
-    this.apendedLoader = []
+    })
+    this.apendedLoader = {}
     window.removeEventListener('resize', this.onResize)
   }
 }

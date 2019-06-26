@@ -1,7 +1,14 @@
 <template>
   <div class="form-group">
     <label>{{field.label}}</label>
-    <v-radio-group :mandatory="false" :error-messages="errorMessages" v-model="model" row>
+    <v-radio-group
+      :mandatory="false"
+      :disabled="field.disabled"
+      :readonly="field.readonly"
+      :error-messages="errorMessages"
+      v-model="model"
+      row
+    >
       <v-radio
         :color="item.color || field.color || 'info'"
         v-for="item in field.items"

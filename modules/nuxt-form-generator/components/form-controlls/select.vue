@@ -6,6 +6,8 @@
       single-line
       browser-autocomplete="off"
       v-model="model"
+      :disabled="field.disabled"
+      :readonly="field.readonly"
       :items="field.items"
       :error-messages="errorMessages"
       :name="field.model"

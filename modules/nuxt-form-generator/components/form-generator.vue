@@ -174,24 +174,28 @@
               <template v-for="(field, fieldIndex) in item.rows">
                 <component
                   v-if="field.model.includes('.')"
+                  v-validate="field.validation"
+                  v-model="form_item[field.model.split('.')[0]][field.model.split('.')[1]]"
+                  :disabled="field.disabled"
+                  :readonly="field.readonly"
                   :key="fieldIndex"
                   :is="field.component || `form-controll-${field.type}`"
-                  v-validate="field.validation"
                   :error-messages="errors.collect(field.model)"
                   :name="field.model"
                   :field="field"
-                  v-model="form_item[field.model.split('.')[0]][field.model.split('.')[1]]"
                   :minimal="minimal"
                 ></component>
                 <component
                   v-else
+                  v-validate="field.validation"
+                  v-model="form_item[field.model]"
+                  :disabled="field.disabled"
+                  :readonly="field.readonly"
                   :key="fieldIndex"
                   :is="field.component || `form-controll-${field.type}`"
-                  v-validate="field.validation"
-                  :name="field.model"
                   :error-messages="errors.collect(field.model)"
+                  :name="field.model"
                   :field="field"
-                  v-model="form_item[field.model]"
                   :minimal="minimal"
                 ></component>
               </template>
@@ -257,6 +261,8 @@ export default Vue.extend({
       type: Boolean,
       default: false
     }
+    editUrl: {}
+
   },
   data() {
     let action_list = [
@@ -352,8 +358,6 @@ export default Vue.extend({
             }
             result
               .then(({ data, status }) => {
-                this.form_item = data
-                this.initItem = data
                 this.$toast
                   .success()
                   .timeout(1000)
@@ -370,11 +374,19 @@ export default Vue.extend({
                     } else if (exit_after) {
                       this.goBack()
                     } else if (status == 201) {
-                      let route = this.$route.path.replace(
-                        'create',
-                        this.form_item.id
-                      )
+                      let route = this.$route.path.replace('create', data.id)
+                      if (this.editUrl) {
+                        route = this.editUrl.replace(/:[a-z]+/g, p => {
+                          let param = p.replace(':', '')
+                          return data[param]
+                        })
+                      } else {
+                        let route = this.$route.path.replace('create', data.id)
+                      }
                       this.$router.push(route)
+                    } else {
+                      this.form_item = data
+                      this.initItem = data
                     }
                   })
               })
