@@ -260,9 +260,8 @@ export default Vue.extend({
     minimal: {
       type: Boolean,
       default: false
-    }
+    },
     editUrl: {}
-
   },
   data() {
     let action_list = [
