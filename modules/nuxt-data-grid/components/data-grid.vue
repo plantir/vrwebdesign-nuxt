@@ -189,7 +189,6 @@
   }
 }
 </style>
-
 <template>
   <div>
     <div class="head">
@@ -377,9 +376,7 @@ export default {
     editMode: {
       default: 'state'
     },
-    service: {
-      required: true
-    },
+    service: {},
     editComponent: {
       default: null
     },
@@ -394,7 +391,10 @@ export default {
     },
     actions: {},
     queryService: {
-      default: '$query'
+      type: Function
+    },
+    deleteService: {
+      type: Function
     },
     dataGrid: {
       default: () => {
@@ -486,15 +486,16 @@ export default {
           page: this.pagination.page,
           perPage: this.pagination.rowsPerPage
         }
-        let service
         if (this.sort) {
           params.sort = this.sort
         }
         if (this.filter && this.filter.length) {
           params.filters = JSON.stringify(this.filter)
         }
-
-        this.service[this.queryService](params)
+        let service = this.queryService
+          ? this.queryService(params)
+          : this.service.$query(params)
+        service
           .then(res => {
             this.items = res.data
             this.loading = false
@@ -513,8 +514,10 @@ export default {
           message: 'آیا از حذف این آیتم اطمینان دارد؟'
         })
         .then(() => {
-          this.service
-            .delete(item.id)
+          let service = this.deleteService
+            ? this.deleteService(item.id)
+            : this.service.$delete(item.id)
+          service
             .then(() => {
               this.$toast.success().showSimple('آیتم با موفقت حذف شد')
               this._query()
