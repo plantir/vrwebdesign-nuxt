@@ -214,12 +214,12 @@ export default (ctx, inject) => {
     // Inject axios to the context as $axios
     ctx.$axios = axios
   let services = <%= serialize(options.services) %>
-  
-  Object.keys(services).forEach(key => {
-    const serviceModule = require(`~/services/${services[key]}`)
+  for(const service of services) {
+    const serviceModule = require(`~/services/${service}`)
     const instance = new serviceModule.default(ctx.$axios)
-    services[key] = instance;
-  })
+    services[service] = instance;
+  }
+
   
   inject('service', services)
   inject('axios', axios)
