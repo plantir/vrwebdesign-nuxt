@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label>{{field.label}}</label>
+    <label v-if="!minimal">{{field.label}}</label>
     <vr-file-upload :errorMessage="errorMessages" v-model="model"></vr-file-upload>
   </div>
 </template>

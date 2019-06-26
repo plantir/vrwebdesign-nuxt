@@ -183,6 +183,7 @@
                   :error-messages="errors.collect(field.model)"
                   :name="field.model"
                   :field="field"
+                  :minimal="minimal"
                 ></component>
                 <component
                   v-else
@@ -195,6 +196,7 @@
                   :error-messages="errors.collect(field.model)"
                   :name="field.model"
                   :field="field"
+                  :minimal="minimal"
                 ></component>
               </template>
             </div>
@@ -255,7 +257,12 @@ export default Vue.extend({
     beforeDelete: {
       type: Function
     },
+    minimal: {
+      type: Boolean,
+      default: false
+    }
     editUrl: {}
+
   },
   data() {
     let action_list = [
