@@ -97,26 +97,6 @@ export default Vue.extend({
       default: '1:1'
     }
   },
-  data() {
-    return {
-      images: <String[]>this.value || []
-    }
-  },
-  watch: {
-    value: function(val) {
-      if (!val) {
-        let pond = this.$refs.pond as Vue & { removeFiles(): void }
-        pond.removeFiles()
-        this.images = []
-        return
-      }
-      if (this.multiple) {
-        this.images = val
-      } else {
-        this.images = [val]
-      }
-    }
-  },
   methods: {
     handleFilePondInit(err, file) {
       if (this.multiple) {
@@ -137,6 +117,20 @@ export default Vue.extend({
       }
       let pond = this.$refs.pond as Vue & { removeFile(index: number): void }
       pond.removeFile(index)
+    }
+  },
+  computed: {
+    images: {
+      get() {
+        if (this.multiple) {
+          return this.value || []
+        } else {
+          return [this.value]
+        }
+      },
+      set(value) {
+        return value
+      }
     }
   }
 })
