@@ -81,6 +81,7 @@
           v-if="field.model.includes('.')"
           v-validate="field.validation"
           v-model="item[field.model.split('.')[0]][field.model.split('.')[1]]"
+          :ref="field.ref"
           :disabled="field.disabled"
           :readonly="field.readonly"
           :key="fieldIndex"
@@ -93,6 +94,7 @@
           v-else
           v-validate="field.validation"
           v-model="item[field.model]"
+          :ref="field.ref"
           :disabled="field.disabled"
           :readonly="field.readonly"
           :key="fieldIndex"
