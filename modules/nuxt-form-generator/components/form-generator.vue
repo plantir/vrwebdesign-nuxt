@@ -458,9 +458,14 @@ export default Vue.extend({
   },
   computed: {
     custom_title(): any {
-      let title = this.title.replace(/{{[a-z]+}}/g, p => {
+      let title = this.title.replace(/{{[a-z\.0-9]+}}/g, p => {
         let param = p.replace(/{|}/g, '')
-        return this.initItem[param]
+        let array_param = param.split('.')
+        let title = this.initItem
+        for (const param of array_param) {
+          title = title[param]
+        }
+        return title
       })
       return title
     }
