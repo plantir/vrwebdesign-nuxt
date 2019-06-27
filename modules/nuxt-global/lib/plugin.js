@@ -31,10 +31,14 @@ Vue.filter('persianDigit', value => {
 })
 
 Vue.filter('persianDate', (value, format, locale) => {
+  let time = value
   if (locale) {
     moment.locale(locale)
   }
-  return moment(value, 'YYYY-M-D HH:mm:ss').format(format || 'jYYYY/jM/jD')
+  try {
+    time = moment(value, 'YYYY-M-D HH:mm:ss').format(format || 'jYYYY/jM/jD')
+  } catch (error) {}
+  return time
 })
 
 Vue.filter('characterDigit', value => {
