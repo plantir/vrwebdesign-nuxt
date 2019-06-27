@@ -36,7 +36,7 @@ Vue.filter('persianDate', (value, format, locale) => {
     moment.locale(locale)
   }
   try {
-    time = moment(value, 'YYYY-M-D HH:mm:ss').format(format || 'jYYYY/jM/jD')
+    time = moment(value).format(format || 'jYYYY/jM/jD')
   } catch (error) {}
   return time
 })
