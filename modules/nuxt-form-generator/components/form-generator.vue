@@ -330,7 +330,9 @@ export default Vue.extend({
       }
       this.$loader.destroy()
       let current_route = <string>this.$router.currentRoute.name
-      let name = current_route.split('-')[0]
+      let route_array = current_route.split('-')
+      route_array.pop()
+      let name = route_array.join('-')
       this.$router.push({ name })
     },
     async save({
