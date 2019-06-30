@@ -89,6 +89,7 @@
           :error-messages="errors.collect(field.model)"
           :name="field.model"
           :field="field"
+          :data-vv-as="field.label"
         ></component>
         <component
           v-else
@@ -102,6 +103,7 @@
           :error-messages="errors.collect(field.model)"
           :name="field.model"
           :field="field"
+          :data-vv-as="field.label"
         ></component>
       </template>
     </div>
