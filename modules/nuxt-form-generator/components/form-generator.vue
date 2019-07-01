@@ -103,7 +103,7 @@
         <v-layout row wrap>
           <v-flex xl3 lg2></v-flex>
           <v-flex xl6 lg8 xs12>
-            <v-form-generator :item="item" :formData="formData" :minimal="minimal" ></v-form-generator>
+            <v-form-generator :item="item" :formData="formData" :minimal="minimal"></v-form-generator>
           </v-flex>
           <v-flex xl3 lg2></v-flex>
         </v-layout>
@@ -227,7 +227,9 @@ export default Vue.extend({
       }
       this.$loader.destroy()
       let current_route = <string>this.$router.currentRoute.name
-      let name = current_route.split('-')[0]
+      let route_array = current_route.split('-')
+      route_array.pop()
+      let name = route_array.join('-')
       this.$router.push({ name })
     },
     async save({
@@ -353,9 +355,14 @@ export default Vue.extend({
   },
   computed: {
     custom_title(): any {
-      let title = this.title.replace(/{{[a-z]+}}/g, p => {
+      let title = this.title.replace(/{{[a-z\.0-9]+}}/g, p => {
         let param = p.replace(/{|}/g, '')
-        return this.initItem[param]
+        let array_param = param.split('.')
+        let title = this.initItem
+        for (const param of array_param) {
+          title = title[param]
+        }
+        return title
       })
       return title
     }

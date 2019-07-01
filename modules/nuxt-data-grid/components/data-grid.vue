@@ -304,10 +304,10 @@
                   </v-list>
                 </v-menu>
               </div>
-              <v-btn icon depressed flat :ripple="false">
+              <v-btn v-if="!hideActionEdit" icon depressed flat :ripple="false">
                 <v-icon @click="_edit(props.item)">la-edit</v-icon>
               </v-btn>
-              <v-btn icon depressed flat :ripple="false">
+              <v-btn v-if="!hideActionDelete" icon depressed flat :ripple="false">
                 <v-icon @click="_delete(props.item)">la-trash</v-icon>
               </v-btn>
             </slot>
@@ -389,6 +389,8 @@ export default {
     withoutAction: {
       default: false
     },
+    hideActionEdit: {},
+    hideActionDelete: {},
     actions: {},
     queryService: {
       type: Function

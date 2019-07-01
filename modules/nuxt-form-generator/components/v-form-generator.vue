@@ -19,7 +19,8 @@
           :error-messages="errors.collect(field.model)"
           :name="field.model"
           :field="field"
-           :minimal="minimal"
+          :minimal="minimal"
+          :data-vv-as="field.label"
         ></component>
         <component
           v-else
@@ -34,6 +35,7 @@
           :name="field.model"
           :field="field"
           :minimal="minimal"
+          :data-vv-as="field.label"
         ></component>
       </template>
     </div>

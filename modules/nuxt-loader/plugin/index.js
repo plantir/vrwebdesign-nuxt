@@ -12,7 +12,7 @@ class Loader {
   show(element, loader = {}) {
     window.addEventListener('resize', this.onResize.bind(this))
     this.loader = Object.assign(this.loader, loader)
-    let app = document.querySelector('#app')
+    let app = document.querySelector('body')
     if (typeof element == 'string') {
       let indexes = []
       let elementList = document.querySelectorAll(element)
