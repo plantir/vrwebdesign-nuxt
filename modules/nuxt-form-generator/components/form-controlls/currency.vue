@@ -4,7 +4,7 @@
     <vr-currency
       outline
       single-line
-      browser-autocomplete="off"
+      browser-autocomplete="new-password"
       v-model="model"
       :disabled="field.disabled"
       :readonly="field.readonly"
