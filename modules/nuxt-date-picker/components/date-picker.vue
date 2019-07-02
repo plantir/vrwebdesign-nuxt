@@ -21,26 +21,38 @@
 
 <template >
   <section id="vr-date-picker">
-    <v-text-field
-      v-bind="$attrs"
-      v-model="gregorianDate"
-      class="form-control form-control-lg"
-      placeholder="YYYY/MM/DD"
-      v-on="on"
-      return-masked-value
-      mask="####/##/##"
-      id="my-custom-input"
-    ></v-text-field>
+    <v-layout row justify-end full-height>
+      <v-flex>
+        <v-btn icon @click="show=true">
+          <v-icon>event</v-icon>
+        </v-btn>
+      </v-flex>
+      <v-flex>
+        <v-text-field
+          v-model="persianDate"
+          class="form-control form-control-lg"
+          outline
+          single-line
+          placeholder="YYYY/MM/DD"
+          return-masked-value
+          mask="####/##/##"
+          id="my-custom-input"
+        ></v-text-field>
 
-    <date-picker
-      v-model="gregorianDate"
-      format="jYYYY/jMM/jDD"
-      element="my-custom-input"
-      :auto-submit="true"
-      :min="min"
-      :max="max"
-      @change="save"
-    ></date-picker>
+        <date-picker
+          v-model="persianDate"
+          format="jYYYY/jMM/jDD"
+          element="my-custom-input"
+          :editable="true"
+          :min="min"
+          :max="max"
+          :auto-submit="true"
+          @change="save"
+          @close="show=false"
+          :show="show"
+        ></date-picker>
+      </v-flex>
+    </v-layout>
   </section>
 </template>
 <script lang="ts">
@@ -54,31 +66,37 @@ export default Vue.extend({
   props: {
     value: {},
     activePicker: { type: String, default: 'day' },
-    min: { type: String, default: '1950-01-01' },
-    max: { type: String, default: new Date().toISOString().substr(0, 10) }
+    min: { type: String, default: '1300/01/01' },
+    max: {
+      type: String,
+      default: moment(new Date().toISOString().substr(0, 10)).format(
+        'jYYYY/jMM/jDD hh:mm:ss'
+      )
+    }
   },
   data() {
     return {
-      gregorianDate: this.value
-        ? moment(this.value).format('YYYY-MM-DD hh:mm:ss')
+      persianDate: this.value
+        ? moment(this.value).format('jYYYY/jMM/jDD hh:mm:ss')
         : '',
-      persianDate: ''
+      show: false
     }
   },
   watch: {
     value: function(val) {
-      if (val) this.gregorianDate = moment(val).format('YYYY-MM-DD hh:mm:ss')
-    },
-    gregorianDate: function(val) {
       if (val) {
-        this.persianDate = moment(val).format('jYYYY/jMM/jDD')
+        this.persianDate = moment(val).format('jYYYY/jMM/jDD hh:mm:ss')
       }
     }
   },
   methods: {
     save() {
-      this.$emit('input', this.gregorianDate)
-    },
+      const gregorianDate = moment(this.persianDate, 'jYYYY/jMM/jDD').format(
+        'YYYY-MM-DD hh:mm:ss'
+      )
+      console.log('gregorianDate', gregorianDate)
+      this.$emit('input', gregorianDate)
+    }
   }
 })
 </script>
