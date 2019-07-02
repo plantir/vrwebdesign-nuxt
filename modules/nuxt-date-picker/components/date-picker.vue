@@ -39,6 +39,7 @@
       :auto-submit="true"
       :min="min"
       :max="max"
+      @change="save"
     ></date-picker>
   </section>
 </template>
