@@ -103,7 +103,12 @@
         <v-layout row wrap>
           <v-flex xl3 lg2></v-flex>
           <v-flex xl6 lg8 xs12>
-            <v-form-generator :item="item" :formData="formData" :minimal="minimal"></v-form-generator>
+            <v-form-generator
+              :form="form"
+              v-model="initItem"
+              :formData="formData"
+              :minimal="minimal"
+            ></v-form-generator>
           </v-flex>
           <v-flex xl3 lg2></v-flex>
         </v-layout>
@@ -127,7 +132,6 @@ interface ISaveFunction {
   exit_after?: boolean
 }
 export default Vue.extend({
-  mixins: [baseMixin],
   components: [vFormGenerator],
   directives: { Sticky },
   components: FormControlls,
@@ -140,7 +144,18 @@ export default Vue.extend({
       required: true,
       type: Object as () => NuxtAxiosResource
     },
-
+    item: {
+      require: true,
+      default: {},
+      type: Object
+    },
+    formData: {
+      required: true
+    },
+    minimal: {
+      type: Boolean,
+      default: false
+    },
     loading: {},
     customSave: {
       type: Function
@@ -185,6 +200,7 @@ export default Vue.extend({
       })
     }
     return {
+      form: {},
       initItem: this.item,
       freezItem: JSON.parse(JSON.stringify(this.item)),
 
@@ -237,24 +253,24 @@ export default Vue.extend({
       exit_after = false
     }: ISaveFunction = {}) {
       if (this.beforeSave) {
-        this.item = await this.beforeSave(this.item)
+        this.initItem = await this.beforeSave(this.initItem)
       }
-      this.$validator
-        .validateAll()
+      this.form
+        .validate()
         .then(valid => {
           if (valid) {
             if (this.customSave) {
-              return this.customSave(this.item, {
+              return this.customSave(this.initItem, {
                 renew_after,
                 exit_after
               })
             }
             this.loader = this.$loader.show(this.$refs.loaderWrapper)
             let result: Promise<AxiosResponse<any>>
-            if (this.item.id) {
-              result = this.service.update(this.item.id, this.item)
+            if (this.initItem.id) {
+              result = this.service.update(this.initItem.id, this.initItem)
             } else {
-              result = this.service.save(this.item)
+              result = this.service.save(this.initItem)
             }
             result
               .then(({ data, status }) => {
@@ -265,7 +281,9 @@ export default Vue.extend({
                   .then(() => {
                     if (renew_after) {
                       if (this.$route.path.includes('create')) {
-                        this.item = JSON.parse(JSON.stringify(this.freezItem))
+                        this.initItem = JSON.parse(
+                          JSON.stringify(this.freezItem)
+                        )
                       } else {
                         this.$router.push('create')
                       }
@@ -283,7 +301,7 @@ export default Vue.extend({
                       }
                       this.$router.push(route)
                     } else {
-                      this.item = data
+                      this.initItem = data
                       this.initItem = data
                     }
                   })
@@ -294,13 +312,6 @@ export default Vue.extend({
               .then(() => {
                 this.loader.hide()
               })
-          } else {
-            const field = this.$validator.fields.find({
-              id: (<any>this).errors.items[0].id
-            })
-            if (field) {
-              this.$scrollTo(field.el, 1000, { offset: -150 })
-            }
           }
         })
         .catch(err => {
@@ -309,14 +320,14 @@ export default Vue.extend({
     },
     async delete() {
       if (this.customDelete) {
-        return this.customDelete(this.item)
+        return this.customDelete(this.initItem)
       }
       if (this.beforeDelete) {
         await this.beforeDelete()
       }
       this.$dialog.confirm().then(() => {
         this.service
-          .delete(this.item.id)
+          .delete(this.initItem.id)
           .then(res => {
             this.$toast
               .success()
