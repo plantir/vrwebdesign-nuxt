@@ -249,6 +249,17 @@
               :label="item.label"
             ></v-select>
           </template>
+           <template v-else-if="date">
+            <vr-date-picker
+              hide-details
+              single-line
+              outline
+              v-model="data_filters[item.model]"
+              :prepend-inner-icon="item.icon"
+              :name="item.model"
+              :label="item.label"
+            ></vr-date-picker>
+          </template>
           <template v-else>
             <v-text-field
               hide-details
