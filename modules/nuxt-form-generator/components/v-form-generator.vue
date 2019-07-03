@@ -89,6 +89,8 @@
           :error-messages="errors.collect(field.model)"
           :name="field.model"
           :field="field"
+          :minimal="minimal"
+          :data-vv-as="field.label"
         ></component>
         <component
           v-else
@@ -102,19 +104,29 @@
           :error-messages="errors.collect(field.model)"
           :name="field.model"
           :field="field"
+          :minimal="minimal"
+          :data-vv-as="field.label"
         ></component>
       </template>
     </div>
   </section>
 </template>
-<script >
+<script>
 import FormControlls from './form-controlls/index'
 export default {
   inject: ['$validator'],
   components: FormControlls,
   props: {
+    form: {
+      default: () => {
+        return {}
+      }
+    },
     value: {
       require: true
+    },
+    minimal: {
+      default: false
     },
     formData: {
       required: true
@@ -141,6 +153,30 @@ export default {
         this.$emit('input', this.item)
       },
       deep: true
+    }
+  },
+  created() {
+    this.form.moveToFirstError = this.moveToFirstError
+    this.form.validate = this.validate
+  },
+  methods: {
+    moveToFirstError() {
+      const field = this.$validator.fields.find({
+        id: this.errors.items[0].id
+      })
+      if (field) {
+        this.$scrollTo(field.el, 1000, { offset: -150 })
+      }
+    },
+    validate() {
+      return new Promise((resolve, reject) => {
+        this.$validator.validateAll().then(async valid => {
+          resolve(valid)
+          if (!valid) {
+            this.form.moveToFirstError()
+          }
+        })
+      })
     }
   }
 }

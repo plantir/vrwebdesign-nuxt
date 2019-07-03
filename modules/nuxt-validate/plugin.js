@@ -1,26 +1,7 @@
 import Vue from 'vue'
 import VeeValidate, { Validator } from 'vee-validate'
-const dictionary = {
-  en: {
-    messages: {
-      required: 'this field is required'
-    }
-  },
-  fa: {
-    messages: {
-      required: 'وارد کردن این فیلد اجباری میباشد.',
-      mobile: 'فرمت موبایل صحیح نمی باشد.',
-      email: 'فرمت ایمیل صحیح نمی باشد.',
-      nationalCode: 'کد ملی معتبر نمی باشد.',
-      phone: 'فرمت شماره تلفن صحیح نمی باشد.',
-      postalCode: 'کد پستی معتبر نمی باشد.',
-      number: 'از اعداد انگلیسی استفاده کنید',
-      digits: 'از اعداد انگلیسی استفاده کنید',
-      confirmed: 'فیلد ها مشابه یکدیگر نیستند'
-    }
-  }
-}
-Validator.localize(dictionary)
+import validationMessages from 'vee-validate/dist/locale/fa';
+import VueI18n from 'vue-i18n';
 
 Validator.extend('mobile', {
   validate(value) {
@@ -76,6 +57,15 @@ Validator.extend('postalCode', {
     return postalCode ? true : false
   }
 })
+
+Vue.use(VueI18n);
+const i18n = new VueI18n();
+i18n.locale = "fa"; // set a default locale 
+
 Vue.use(VeeValidate, {
-  locale: 'fa'
+  i18nRootKey: 'validations', // customize the root path for validation messages.
+  i18n,
+  dictionary: {
+    fa: validationMessages
+  }
 })

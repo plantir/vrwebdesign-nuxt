@@ -63,72 +63,6 @@
   .content {
     padding: 25px;
     min-height: 400px;
-    .form-section {
-      h3 {
-        display: block;
-        font-size: 1.5rem;
-        font-weight: 500;
-        padding: 0;
-        margin: 1rem 0 1rem 0;
-        color: #464457;
-      }
-      .form-group {
-        display: flex;
-        > label {
-          flex: 0 0 25%;
-          color: #646c9a;
-          padding: 12px;
-        }
-        .v-input {
-          font-size: 13px;
-          &.v-input--is-focused {
-            .v-input__slot {
-              border-color: $primary-color !important;
-            }
-          }
-          .v-input__slot {
-            min-height: 38px;
-            border-width: 1px !important;
-            border-color: #e2e5ec !important;
-            align-items: center;
-          }
-          .v-input__prepend-inner {
-            margin-top: 6px;
-          }
-          .v-input__append-inner {
-            margin-top: 6px;
-          }
-
-          .v-label {
-            top: 7px;
-            font-size: 13px;
-          }
-          input {
-            margin-top: 0;
-          }
-        }
-        .v-input--selection-controls {
-          margin-top: 0;
-          padding-top: 0;
-          .v-label {
-            top: 0;
-          }
-        }
-        .v-messages {
-          min-height: 18px;
-        }
-        .v-text-field__suffix {
-          background: #f5f5f5;
-          height: 38px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-left: -12px;
-          min-width: 40px;
-          border-radius: 4px 0 0 4px;
-        }
-      }
-    }
   }
 }
 </style>
@@ -169,39 +103,12 @@
         <v-layout row wrap>
           <v-flex xl3 lg2></v-flex>
           <v-flex xl6 lg8 xs12>
-            <div class="form-section" v-for="(item, sectionIndex) in formData" :key="sectionIndex">
-              <h3>{{item.title}}</h3>
-              <template v-for="(field, fieldIndex) in item.rows">
-                <component
-                  v-if="field.model.includes('.')"
-                  v-validate="field.validation"
-                  v-model="form_item[field.model.split('.')[0]][field.model.split('.')[1]]"
-                  :ref="field.ref"
-                  :disabled="field.disabled"
-                  :readonly="field.readonly"
-                  :key="fieldIndex"
-                  :is="field.component || `form-controll-${field.type}`"
-                  :error-messages="errors.collect(field.model)"
-                  :name="field.model"
-                  :field="field"
-                  :minimal="minimal"
-                ></component>
-                <component
-                  v-else
-                  v-validate="field.validation"
-                  v-model="form_item[field.model]"
-                  :ref="field.ref"
-                  :disabled="field.disabled"
-                  :readonly="field.readonly"
-                  :key="fieldIndex"
-                  :is="field.component || `form-controll-${field.type}`"
-                  :error-messages="errors.collect(field.model)"
-                  :name="field.model"
-                  :field="field"
-                  :minimal="minimal"
-                ></component>
-              </template>
-            </div>
+            <v-form-generator
+              :form="form"
+              v-model="initItem"
+              :formData="formData"
+              :minimal="minimal"
+            ></v-form-generator>
           </v-flex>
           <v-flex xl3 lg2></v-flex>
         </v-layout>
@@ -209,19 +116,23 @@
     </div>
   </v-card>
 </template>
+
 <script lang="ts">
 import Vue from 'vue'
+import vFormGenerator from './v-form-generator'
 import Sticky from 'vue-sticky-directive'
-import FormControlls from './form-controlls/index'
+import baseMixin from './base-mixin'
 import { setTimeout } from 'timers'
 import { NuxtAxiosResource } from '../../nuxt-axios/types'
 import { NuxtLoaderElement } from '../../nuxt-loader/types'
+import FormControlls from './form-controlls/index'
 import { AxiosResponse } from 'axios'
 interface ISaveFunction {
   renew_after?: boolean
   exit_after?: boolean
 }
 export default Vue.extend({
+  components: [vFormGenerator],
   directives: { Sticky },
   components: FormControlls,
   props: {
@@ -233,12 +144,17 @@ export default Vue.extend({
       required: true,
       type: Object as () => NuxtAxiosResource
     },
+    item: {
+      require: true,
+      default: {},
+      type: Object
+    },
     formData: {
       required: true
     },
-    item: {
-      default: {},
-      type: Object as () => any
+    minimal: {
+      type: Boolean,
+      default: false
     },
     loading: {},
     customSave: {
@@ -258,10 +174,6 @@ export default Vue.extend({
     },
     beforeDelete: {
       type: Function
-    },
-    minimal: {
-      type: Boolean,
-      default: false
     },
     editUrl: {}
   },
@@ -288,9 +200,10 @@ export default Vue.extend({
       })
     }
     return {
+      form: {},
       initItem: this.item,
       freezItem: JSON.parse(JSON.stringify(this.item)),
-      form_item: { ...this.item },
+
       offset: { top: 64 },
       loader: <NuxtLoaderElement>(<unknown>null),
       action_list: action_list
@@ -307,7 +220,7 @@ export default Vue.extend({
         if (JSON.stringify(value) == JSON.stringify(oldValue)) {
           return
         }
-        this.form_item = { ...value }
+
         this.initItem = { ...value }
       },
       deep: true
@@ -323,7 +236,7 @@ export default Vue.extend({
   methods: {
     async goBack() {
       if (this.customExit) {
-        return this.customExit(this.form_item)
+        return this.customExit(this.item)
       }
       if (this.beforeExit) {
         await this.beforeExit()
@@ -340,24 +253,24 @@ export default Vue.extend({
       exit_after = false
     }: ISaveFunction = {}) {
       if (this.beforeSave) {
-        this.form_item = await this.beforeSave(this.form_item)
+        this.initItem = await this.beforeSave(this.initItem)
       }
-      this.$validator
-        .validateAll()
+      this.form
+        .validate()
         .then(valid => {
           if (valid) {
             if (this.customSave) {
-              return this.customSave(this.form_item, {
+              return this.customSave(this.initItem, {
                 renew_after,
                 exit_after
               })
             }
             this.loader = this.$loader.show(this.$refs.loaderWrapper)
             let result: Promise<AxiosResponse<any>>
-            if (this.form_item.id) {
-              result = this.service.update(this.form_item.id, this.form_item)
+            if (this.initItem.id) {
+              result = this.service.update(this.initItem.id, this.initItem)
             } else {
-              result = this.service.save(this.form_item)
+              result = this.service.save(this.initItem)
             }
             result
               .then(({ data, status }) => {
@@ -368,7 +281,7 @@ export default Vue.extend({
                   .then(() => {
                     if (renew_after) {
                       if (this.$route.path.includes('create')) {
-                        this.form_item = JSON.parse(
+                        this.initItem = JSON.parse(
                           JSON.stringify(this.freezItem)
                         )
                       } else {
@@ -388,7 +301,7 @@ export default Vue.extend({
                       }
                       this.$router.push(route)
                     } else {
-                      this.form_item = data
+                      this.initItem = data
                       this.initItem = data
                     }
                   })
@@ -399,13 +312,6 @@ export default Vue.extend({
               .then(() => {
                 this.loader.hide()
               })
-          } else {
-            const field = this.$validator.fields.find({
-              id: (<any>this).errors.items[0].id
-            })
-            if (field) {
-              this.$scrollTo(field.el, 1000, { offset: -150 })
-            }
           }
         })
         .catch(err => {
@@ -414,14 +320,14 @@ export default Vue.extend({
     },
     async delete() {
       if (this.customDelete) {
-        return this.customDelete(this.form_item)
+        return this.customDelete(this.initItem)
       }
       if (this.beforeDelete) {
         await this.beforeDelete()
       }
       this.$dialog.confirm().then(() => {
         this.service
-          .delete(this.form_item.id)
+          .delete(this.initItem.id)
           .then(res => {
             this.$toast
               .success()
