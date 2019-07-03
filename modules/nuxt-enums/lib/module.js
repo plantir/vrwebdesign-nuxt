@@ -7,19 +7,28 @@ function _interopDefault(ex) {
 
 function axiosModule(_moduleOptions) {
   let enums = {}
-  var enum_path = path.join(this.options.rootDir, 'enums')
+  var enum_path = path.join(this.options.rootDir, 'models/enums')
   if (fs.existsSync(enum_path)) {
     // Do something
-    fs.readdirSync(enum_path).forEach(function(file) {
+    fs.readdirSync(enum_path).forEach(function (file) {
       if (file.includes('.ts') || file.includes('.js')) {
         var file_path = path.join(enum_path, file)
         delete require.cache[require.resolve(file_path)]
         //  to have this service in enums
-        const file_name = file.replace(/\.(js|ts)/, '')
+        const file_name = file.replace(/\.(ts)/, '')
         enums[file_name] = _interopDefault(require(file_path))
-        let convertToSelect = Object.keys(enums[file_name]).map(key => {
-          return { text: enums[file_name][key], value: key }
-        })
+        let convertToSelect = []
+
+        Object.keys(enums[file_name]).forEach(key => {
+          if (enums[file_name][key] instanceof Object) {
+            const temp = enums[file_name][key];
+            Object.keys(temp).forEach(innerkey => {
+              if (!convertToSelect.find(x => x.text === innerkey || x.value === innerkey)) {
+                convertToSelect.push({ text: temp[innerkey], value: innerkey })
+              }
+            })
+          }
+        });
         enums[file_name]['toSelect'] = convertToSelect
       }
     })
