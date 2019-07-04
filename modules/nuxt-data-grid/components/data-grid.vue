@@ -249,7 +249,7 @@
               :label="item.label"
             ></v-select>
           </template>
-           <template v-else-if="date">
+          <template v-else-if="item.type == 'date'">
             <vr-date-picker
               hide-details
               single-line
