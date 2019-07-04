@@ -14,6 +14,8 @@
       :placeholder="placeholder"
       :suffix="field.suffix"
       :label="minimalLabel"
+      :append-icon="field.appendIcon"
+      :prepend-icon="field.prependIcon"
     ></v-select>
   </div>
 </template>

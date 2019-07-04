@@ -3,6 +3,7 @@ export interface VRFormInput {
     | 'checkbox'
     | 'currency'
     | 'datePicker'
+    | 'timePicker'
     | 'fileUpload'
     | 'radio'
     | 'select'
@@ -15,13 +16,13 @@ export interface VRFormInput {
   readonly?: string
   component?: string
   label?: string
-  appendIcon: string
-  prependIcon: string
-  items: any[]
-  suffix: string
-  placeholder: string
+  appendIcon?: string
+  prependIcon?: string
+  items?: any[]
+  suffix?: string
+  placeholder?: string
 }
-export interface VRFormData {
+export type VRFormData = {
   title?: string
   rows: VRFormInput[]
-}
+}[]
