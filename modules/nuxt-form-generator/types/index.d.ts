@@ -12,8 +12,8 @@ export interface VRFormInput {
   model: string
   validation?: string | any
   ref?: string
-  disabled?: string
-  readonly?: string
+  disabled?: boolean
+  readonly?: boolean
   component?: string
   label?: string
   appendIcon?: string
@@ -21,6 +21,9 @@ export interface VRFormInput {
   items?: any[]
   suffix?: string
   placeholder?: string
+  multiple?: boolean
+  chips?: boolean
+  returnObject?: boolean
 }
 export type VRFormData = {
   title?: string

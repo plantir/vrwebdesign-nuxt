@@ -14,6 +14,9 @@
       :placeholder="placeholder"
       :suffix="field.suffix"
       :label="minimalLabel"
+      :multiple="field.multiple"
+      :chips="field.chips"
+      :return-object="field.returnObject"
       :append-icon="field.appendIcon"
       :prepend-icon="field.prependIcon"
     ></v-select>
