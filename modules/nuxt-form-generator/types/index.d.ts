@@ -1,11 +1,11 @@
 interface VRFormInput {
-  title: string
+  title?: string
   model: string
-  validation: string | any
-  ref: string
-  disabled: string
-  readonly: string
-  component: string
-  label: string
+  validation?: string | any
+  ref?: string
+  disabled?: string
+  readonly?: string
+  component?: string
+  label?: string
 }
 type VRFormData = VRFormInput[]
