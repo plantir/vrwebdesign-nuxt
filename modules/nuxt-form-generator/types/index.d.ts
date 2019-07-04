@@ -1,5 +1,4 @@
 export interface VRFormInput {
-  title?: string
   type?:
     | 'checkbox'
     | 'currency'
@@ -17,4 +16,7 @@ export interface VRFormInput {
   component?: string
   label?: string
 }
-export type VRFormData = VRFormInput[]
+export interface VRFormData {
+  title?: string
+  rows: VRFormInput[]
+}
