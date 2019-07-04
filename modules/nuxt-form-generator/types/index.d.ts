@@ -1,5 +1,14 @@
 interface VRFormInput {
   title?: string
+  type?:
+    | 'checkbox'
+    | 'currency'
+    | 'datePicker'
+    | 'fileUpload'
+    | 'radio'
+    | 'select'
+    | 'textArea'
+    | 'textField'
   model: string
   validation?: string | any
   ref?: string
