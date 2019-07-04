@@ -6,6 +6,7 @@
   "contributors": [
     "armin kheirkhahan <mail@armin.pro>"
   ],
+  "types": "types/index.d.ts",
   "main": "module.js",
   "publishConfig": {
     "access": "public"
