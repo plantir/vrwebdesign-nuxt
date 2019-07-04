@@ -5,7 +5,7 @@
       outline
       single-line
       auto-grow
-      browser-autocomplete="new-password"
+      :browser-autocomplete="field.browserAutocomplete || 'off'"
       v-model="model"
       :disabled="field.disabled"
       :readonly="field.readonly"

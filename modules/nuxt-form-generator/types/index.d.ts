@@ -1,5 +1,7 @@
 export interface VRFormInput {
   type?:
+    | 'autocomplete'
+    | 'commboBox'
     | 'checkbox'
     | 'currency'
     | 'datePicker'

@@ -1,3 +1,5 @@
+import autocomplete from './autocomplete.vue'
+import comboBox from './comboBox.vue'
 import checkbox from './checkbox.vue'
 import currency from './currency.vue'
 import datePicker from './datePicker.vue'
@@ -9,6 +11,8 @@ import textArea from './textArea.vue'
 import textField from './textField.vue'
 
 let items = {
+  'form-controll-autocomplete': autocomplete,
+  'form-controll-comboBox': comboBox,
   'form-controll-checkbox': checkbox,
   'form-controll-currency': currency,
   'form-controll-datePicker': datePicker,

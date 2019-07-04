@@ -4,7 +4,7 @@
     <vr-date-picker
       outline
       single-line
-      browser-autocomplete="new-password"
+      :browser-autocomplete="field.browserAutocomplete || 'off'"
       v-model="model"
       :append-icon="field.appendIcon"
       :prepend-icon="field.prependIcon"

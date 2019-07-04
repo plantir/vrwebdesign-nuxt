@@ -36,7 +36,7 @@
           <v-text-field
             outline
             single-line
-            browser-autocomplete="new-password"
+            :browser-autocomplete="field.browserAutocomplete || 'off'"
             v-model="model"
             :disabled="field.disabled"
             :readonly="field.readonly"
@@ -76,28 +76,6 @@ export default Vue.extend({
   methods: {
     allowedStep: m => m % 5 === 0
   }
-  //   props: {
-  //     field: {
-  //       required: true,
-  //       default: {}
-  //     },
-  //     value: {
-  //       required: true
-  //     }
-  //   },
-  //   data() {
-  //     return {
-  //       model: this.value
-  //     }
-  //   },
-  //   watch: {
-  //     value: function(val) {
-  //       this.model = val
-  //     },
-  //     model: function(val) {
-  //       this.$emit('input', val)
-  //     }
-  //   }
 })
 </script>
 
