@@ -15,6 +15,11 @@ export interface VRFormInput {
   readonly?: string
   component?: string
   label?: string
+  appendIcon: string
+  prependIcon: string
+  items: any[]
+  suffix: string
+  placeholder: string
 }
 export interface VRFormData {
   title?: string
