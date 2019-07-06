@@ -25,6 +25,8 @@ export interface VRFormInput {
   placeholder?: string
   multiple?: boolean
   chips?: boolean
+  async?: boolean
+  queryService: Function
   returnObject?: boolean
 }
 export type VRFormData = {

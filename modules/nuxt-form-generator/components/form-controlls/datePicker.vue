@@ -14,6 +14,7 @@
       :placeholder="placeholder"
       :suffix="field.suffix"
       :label="minimalLabel"
+      :auto-submit="true"
     ></vr-date-picker>
   </div>
 </template>
