@@ -20,105 +20,82 @@
 </style>
 
 <template >
-  <!-- <v-menu
-    v-model="datePickerMenu"
-    :close-on-content-click="false"
-    :nudge-right="40"
-    lazy
-    transition="scale-transition"
-    offset-y
-    full-width
-    min-width="290px"
-  >
-    <template v-slot:activator="{on}">
-      <v-text-field v-model="persianDate" :label="label" prepend-icon="event" readonly v-on="on"></v-text-field>
-    </template>
-    <v-date-picker
-      v-model="gregorianDate"
-      @input="datePickerMenu = false"
-      @change="save"
-      v-bind="$attrs"
-      v-on="$listeners"
-      locale="fa"
-    ></v-date-picker>
-  </v-menu>-->
   <section id="vr-date-picker">
-    <v-menu
-      v-model="menu"
-      :close-on-content-click="false"
-      offset-y
-      offset-x
-      attach
-      bottom
-      right
-      transition="slide-y-transition"
-      origin="top right"
-      nudge-left="240"
-      nudge-bottom="10"
-      min-width="290px"
-    >
-      <template v-slot:activator="{ on }">
+    <v-layout row justify-end full-height>
+      <v-flex>
+        <v-btn icon @click="show=true">
+          <v-icon>event</v-icon>
+        </v-btn>
+      </v-flex>
+      <v-flex>
         <v-text-field
-          v-bind="$attrs"
-          readonly
           v-model="persianDate"
-          :placeholder="placeholder"
-          v-on="on"
+          class="form-control form-control-lg"
+          outline
+          single-line
+          placeholder="YYYY/MM/DD"
+          return-masked-value
+          mask="####/##/##"
+          id="my-custom-input"
         ></v-text-field>
-      </template>
-      <v-date-picker
-        ref="picker"
-        v-model="gregorianDate"
-        :max="new Date().toISOString().substr(0, 10)"
-        locale="fa"
-        color="primary"
-        first-day-of-week="6"
-        min="1950-01-01"
-        @change="save"
-      ></v-date-picker>
-    </v-menu>
+
+        <date-picker
+          v-model="persianDate"
+          format="jYYYY/jMM/jDD"
+          element="my-custom-input"
+          :editable="true"
+          :min="min"
+          :max="max"
+          :auto-submit="true"
+          @change="save"
+          @close="show=false"
+          :show="show"
+        ></date-picker>
+      </v-flex>
+    </v-layout>
   </section>
 </template>
 <script lang="ts">
 import Vue from 'vue'
+import VuePersianDatetimePicker from 'vue-persian-datetime-picker'
 import moment from 'moment-jalaali'
+import { type } from 'os'
+
 export default Vue.extend({
+  components: { datePicker: VuePersianDatetimePicker },
   props: {
     value: {},
-    placeholder: {}
+    activePicker: { type: String, default: 'day' },
+    min: { type: String, default: '1300/01/01' },
+    max: {
+      type: String,
+      default: moment(new Date().toISOString().substr(0, 10)).format(
+        'jYYYY/jMM/jDD hh:mm:ss'
+      )
+    }
   },
   data() {
     return {
-      gregorianDate: this.value,
-      menu: false
+      persianDate: this.value
+        ? moment(this.value).format('jYYYY/jMM/jDD hh:mm:ss')
+        : '',
+      show: false
     }
   },
   watch: {
-    menu: function(val) {
-      if (val) {
-        setTimeout(() => {
-          let picker = this.$refs.picker as Vue & { activePicker: String }
-          picker.activePicker = 'YEAR'
-        }, 100)
-      }
-    },
     value: function(val) {
-      this.gregorianDate = val
-    },
-    gregorianDate: function(val) {
-      console.log(val)
+      if (val) {
+        this.persianDate = moment(val).format('jYYYY/jMM/jDD hh:mm:ss')
+      }
     }
   },
   methods: {
     save() {
-      this.$emit('input', this.gregorianDate)
-    }
-  },
-  computed: {
-    persianDate(): any {
-      if (this.gregorianDate) {
-        return moment(this.gregorianDate).format('jYYYY/jMM/jDD')
-      }
+      const gregorianDate = moment(this.persianDate, 'jYYYY/jMM/jDD').format(
+        'YYYY-MM-DD hh:mm:ss'
+      )
+      console.log('gregorianDate', gregorianDate)
+      this.$emit('input', gregorianDate)
     }
   }
 })
