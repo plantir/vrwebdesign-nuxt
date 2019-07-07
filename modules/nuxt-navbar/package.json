@@ -1,0 +1,27 @@
+{
+  "name": "nuxt-navbar",
+  "version": "1.0.0",
+  "description": "navbar module for nuxtjs",
+  "license": "MIT",
+  "contributors": [
+    "armin kheirkhahan <mail@armin.pro>"
+  ],
+  "main": "module.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "nuxt test/fixture",
+    "lint": "eslint lib test",
+    "test": "yarn lint && jest",
+    "release": "yarn test && standard-version && git push --follow-tags && npm publish"
+  },
+  "dependencies": {
+    "moment": "^2.24.0",
+    "moment-jalaali": "^0.8.3",
+    "vue-persian-datetime-picker": "2.0.1"
+  },
+  "devDependencies": {
+    "standard-version": "latest"
+  }
+}
