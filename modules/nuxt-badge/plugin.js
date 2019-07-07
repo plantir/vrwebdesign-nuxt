@@ -1,4 +1,4 @@
 import Vue from 'vue'
-import Navbar from 'vrwebdesign-nuxt/modules/nuxt-navbar/components/navbar.vue'
+import Badge from 'vrwebdesign-nuxt/modules/nuxt-badge/components/badge.vue'
 
-Vue.component('vr-badge', Navbar)
+Vue.component('vr-badge', Badge)
