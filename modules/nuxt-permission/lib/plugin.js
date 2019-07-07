@@ -1,14 +1,23 @@
-
 import Vue from 'vue'
 
 export default (ctx, inject) => {
 
-    let permissions = <%= serialize(options.permissions) %>
+    Vue.directive('permission', {
+        inserted: function (el, binding, vnode) {
+            let hasAccess = false;
+            const permissionObject = binding.value;
+            if (permissionObject) {
+                hasAccess = check(permissionObject)
+            }
+            if (!hasAccess)
+                vnode.elm.parentElement.removeChild(vnode.elm)
+        }
+    })
 
-        Object.keys(permissions).forEach(item => {
-            Vue.directive(`${item}`, {
-                inserted: permissions[item](el, binding, vnode, ctx)
-            })
-        })
-    inject('permissions', permissions)
+    function check(permissionObject) {
+        return ctx.store.getters['auth/isAuthorized'](permissionObject);
+    }
+
+    inject('permissions', check)
 }
+
