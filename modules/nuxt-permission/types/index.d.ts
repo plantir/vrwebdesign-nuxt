@@ -1,4 +1,6 @@
-export interface NuxtAuthorizationInstance {}
+export interface NuxtAuthorizationInstance {
+  check(permisionKey: string): boolean
+}
 declare module '@nuxt/vue-app' {
   interface Context {
     $authorization: NuxtAuthorizationInstance
