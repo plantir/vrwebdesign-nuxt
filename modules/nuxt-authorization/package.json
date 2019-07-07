@@ -1,14 +1,14 @@
 {
-  "name": "nuxt-permissions",
+  "name": "nuxt-authorization",
   "version": "5.4.2",
-  "description": "Secure and easy permissions integration with Nuxt.js",
+  "description": "Secure and easy authorization integration with Nuxt.js",
   "license": "MIT",
   "contributors": [
     "Pooya Parsa <pooya@pi0.ir>"
   ],
   "main": "lib/module.js",
   "types": "types/index.d.ts",
-  "repository": "https://github.com/nuxt-community/permissions-module",
+  "repository": "https://github.com/nuxt-community/authorization-module",
   "publishConfig": {
     "access": "public"
   },
