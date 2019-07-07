@@ -12,18 +12,17 @@ export default (ctx, inject) => {
             if (!hasAccess)
                 vnode.elm.parentElement.removeChild(vnode.elm)
         }
-    }),
+    })
 
-        function check(permissionKey) {
-            if (ctx.store.getters['auth/isAuthorized']) {
-                return ctx.store.getters['auth/isAuthorized'](permissionKey);
-            }
-            else {
-                console.log("ctx.store.getters['auth/isAuthorized'] does not exist")
-                return false;
-            }
+    function check(permissionKey) {
+        if (ctx.store.getters['auth/isAuthorized']) {
+            return ctx.store.getters['auth/isAuthorized'](permissionKey);
         }
+        else {
+            console.log("ctx.store.getters['auth/isAuthorized'] does not exist")
+            return false;
+        }
+    }
 
-    ctx.$authorization.check = check
-    // inject('authorization.check', check)
+    inject('authorization', { check: check })
 }
