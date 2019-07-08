@@ -28,6 +28,8 @@ export interface VRFormInput {
   async?: boolean
   queryService?: Function
   returnObject?: boolean
+  inputType?: string
+  browserAutocomplete?: string
 }
 export type VRFormData = {
   title?: string

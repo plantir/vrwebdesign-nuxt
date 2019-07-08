@@ -21,8 +21,8 @@
 
 <template >
   <section id="vr-date-picker">
-    <v-text-field id="date-picker" v-model="persianDate" v-bind="$attrs"></v-text-field>
-    <date-picker v-model="persianDate" v-bind="$attrs" element="date-picker"></date-picker>
+    <v-text-field :id="id" v-model="persianDate" v-bind="$attrs"></v-text-field>
+    <date-picker v-model="persianDate" v-bind="$attrs" :element="id"></date-picker>
   </section>
 </template>
 <script lang="ts">
@@ -56,6 +56,11 @@ export default Vue.extend({
       } catch (error) {
         this.$emit('input', val)
       }
+    }
+  },
+  computed: {
+    id() {
+      return `datepicker_${new Date().getMilliseconds()}`
     }
   }
 })
