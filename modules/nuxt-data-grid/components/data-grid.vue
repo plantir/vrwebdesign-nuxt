@@ -281,7 +281,7 @@
       :pagination.sync="pagination"
       :total-items="total_items"
       :loading="loading"
-      sort-icon="la-arrow-down"
+      sort-icon="la-arrow-up"
     >
       <v-progress-linear v-slot:progress color="primary" indeterminate></v-progress-linear>
       <template v-slot:items="props">
