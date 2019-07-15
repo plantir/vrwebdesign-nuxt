@@ -68,7 +68,7 @@
 </style>
 
 <template>
-  <v-card id="editItem">
+  <v-card ref="editItem" id="editItem">
     <div sticky-container>
       <div v-sticky sticky-offset="offset" sticky-side="top" class="header">
         <div class="head-lable">
@@ -284,6 +284,10 @@ export default Vue.extend({
                         this.initItem = JSON.parse(
                           JSON.stringify(this.freezItem)
                         )
+                        setTimeout(() => {
+                          this.form.resetError()
+                          this.$scrollTo(this.$refs.editItem, 1000)
+                        }, 100)
                       } else {
                         this.$router.push('create')
                       }

@@ -158,6 +158,7 @@ export default {
   created() {
     this.form.moveToFirstError = this.moveToFirstError
     this.form.validate = this.validate
+    this.form.resetError = this.resetError
   },
   methods: {
     moveToFirstError() {
@@ -177,6 +178,9 @@ export default {
           }
         })
       })
+    },
+    resetError() {
+      this.errors.clear()
     }
   }
 }
