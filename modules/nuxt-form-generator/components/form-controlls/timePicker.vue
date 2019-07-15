@@ -33,24 +33,7 @@
         min-width="290px"
       >
         <template v-slot:activator="{ on }">
-          <v-text-field
-            outline
-            single-line
-            v-bind="$attrs"
-            v-model="model"
-            v-on="on"
-            :browser-autocomplete="field.browserAutocomplete || 'off'"
-            :disabled="field.disabled"
-            :readonly="field.readonly"
-            :type="field.inputType || 'text'"
-            :error-messages="errorMessages"
-            :name="field.model"
-            :placeholder="placeholder"
-            :suffix="field.suffix"
-            :label="minimalLabel"
-            :append-icon="field.appendIcon"
-            :prepend-icon="field.prependIcon"
-          ></v-text-field>
+          <v-text-field :error-messages="errorMessages" v-bind="$attrs" v-model="model" v-on="on"></v-text-field>
         </template>
         <v-time-picker
           :allowed-minutes="allowedStep"

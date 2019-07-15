@@ -2,28 +2,14 @@
   <div class="form-group">
     <label v-if="!minimal">{{field.label}}</label>
     <v-autocomplete
-      outline
-      single-line
       cache-items
       flat
       hide-no-data
-      :browser-autocomplete="field.browserAutocomplete || 'off'"
-      v-model="model"
-      :disabled="field.disabled"
-      :readonly="field.readonly"
       :items="items"
-      :error-messages="errorMessages"
-      :name="field.model"
-      :placeholder="placeholder"
-      :suffix="field.suffix"
-      :label="minimalLabel"
-      :append-icon="field.appendIcon"
-      :prepend-icon="field.prependIcon"
-      :loading="loading"
+      v-model="model"
+      v-bind="$attrs"
       :search-input.sync="search"
-      :multiple="field.multiple"
-      :chips="field.chips"
-      :return-object="field.returnObject"
+      :loading="loading"
     >
       <template v-slot:item="data">
         <v-list-tile-content>
