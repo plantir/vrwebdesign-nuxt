@@ -3,6 +3,7 @@
     <v-checkbox
       v-bind="$attrs"
       v-on="$listeners"
+      v-model="model"
       outline
       :browser-autocomplete="field.browserAutocomplete || 'off'"
       :error-messages="errorMessages"
