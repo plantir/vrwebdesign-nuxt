@@ -45,14 +45,21 @@ export default Vue.extend({
     value: function(val) {
       if (val) {
         this.persianDate = moment(val).format('jYYYY/jMM/jDD')
+      } else {
+        this.persianDate = null
       }
     },
     persianDate: function(val) {
       try {
-        const gregorianDate = moment(this.persianDate, 'jYYYY/jMM/jDD').format(
-          'YYYY-MM-DD hh:mm:ss'
-        )
-        this.$emit('input', gregorianDate)
+        if (val) {
+          const gregorianDate = moment(
+            this.persianDate,
+            'jYYYY/jMM/jDD'
+          ).format('YYYY-MM-DD hh:mm:ss')
+          this.$emit('input', gregorianDate)
+        } else {
+          this.$emit('input', null)
+        }
       } catch (error) {
         this.$emit('input', val)
       }
