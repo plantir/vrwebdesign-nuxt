@@ -4,8 +4,9 @@
     <vr-currency
       outline
       single-line
-      :browser-autocomplete="field.browserAutocomplete || 'off'"
+      v-bind="$attrs"
       v-model="model"
+      :browser-autocomplete="field.browserAutocomplete || 'off'"
       :disabled="field.disabled"
       :readonly="field.readonly"
       :type="field.inputType || 'text'"

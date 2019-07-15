@@ -2,11 +2,11 @@
   <div class="form-group">
     <label>{{field.label}}</label>
     <v-radio-group
+      v-model="model"
       :mandatory="false"
       :disabled="field.disabled"
       :readonly="field.readonly"
       :error-messages="errorMessages"
-      v-model="model"
       row
     >
       <v-radio

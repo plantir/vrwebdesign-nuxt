@@ -30,6 +30,7 @@ export interface VRFormInput {
   returnObject?: boolean
   inputType?: string
   browserAutocomplete?: string
+  hint?: string
 }
 export type VRFormData = {
   title?: string

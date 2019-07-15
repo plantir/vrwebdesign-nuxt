@@ -4,8 +4,9 @@
     <vr-date-picker
       outline
       single-line
-      :browser-autocomplete="field.browserAutocomplete || 'off'"
+      v-bind="$attrs"
       v-model="model"
+      :browser-autocomplete="field.browserAutocomplete || 'off'"
       :append-icon="field.appendIcon"
       :prepend-icon="field.prependIcon"
       :items="field.items"
