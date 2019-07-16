@@ -75,64 +75,68 @@
 <template>
   <section>
     <div class="form-section" v-for="(row, sectionIndex) in formData" :key="sectionIndex">
-      <h3 v-if="row.title">{{row.title}}</h3>
-      <template v-for="(field, fieldIndex) in row.rows">
-        <component
-          v-if="field.model.includes('.')"
-          v-validate="field.validation"
-          v-model="item[field.model.split('.')[0]][field.model.split('.')[1]]"
-          :browser-autocomplete="field.browserAutocomplete || 'off'"
-          :disabled="field.disabled"
-          :readonly="field.readonly"
-          :items="field.items"
-          :error-messages="errors.collect(field.model)"
-          :name="field.model"
-          :placeholder="field.placeholder"
-          :suffix="field.suffix"
-          :label="minimal?field.label:null"
-          :append-icon="field.appendIcon"
-          :prepend-icon="field.prependIcon"
-          :multiple="field.multiple"
-          :chips="field.chips"
-          :return-object="field.returnObject"
-          :outline="!minimal"
-          :single-line="!minimal"
-          :ref="field.ref"
-          :key="fieldIndex"
-          :is="field.component || `form-controll-${field.type}`"
-          :field="field"
-          :minimal="minimal"
-          :data-vv-as="field.label"
-          :type="field.inputType"
-        ></component>
-        <component
-          v-else
-          v-validate="field.validation"
-          v-model="item[field.model]"
-          :browser-autocomplete="field.browserAutocomplete || 'off'"
-          :disabled="field.disabled"
-          :readonly="field.readonly"
-          :items="field.items"
-          :error-messages="errors.collect(field.model)"
-          :name="field.model"
-          :placeholder="field.placeholder"
-          :suffix="field.suffix"
-          :label="minimal?field.label:null"
-          :append-icon="field.appendIcon"
-          :prepend-icon="field.prependIcon"
-          :multiple="field.multiple"
-          :chips="field.chips"
-          :return-object="field.returnObject"
-          :outline="!minimal"
-          :single-line="!minimal"
-          :ref="field.ref"
-          :key="fieldIndex"
-          :is="field.component || `form-controll-${field.type}`"
-          :field="field"
-          :minimal="minimal"
-          :data-vv-as="field.label"
-          :type="field.inputType"
-        ></component>
+      <template v-if="!row.hide">
+        <h3 v-if="row.title">{{row.title}}</h3>
+        <template v-for="(field, fieldIndex) in row.rows">
+          <template v-hide="field.hide">
+            <component
+              v-if="field.model.includes('.')"
+              v-validate="field.validation"
+              v-model="item[field.model.split('.')[0]][field.model.split('.')[1]]"
+              :browser-autocomplete="field.browserAutocomplete || 'off'"
+              :disabled="field.disabled"
+              :readonly="field.readonly"
+              :items="field.items"
+              :error-messages="errors.collect(field.model)"
+              :name="field.model"
+              :placeholder="field.placeholder"
+              :suffix="field.suffix"
+              :label="minimal?field.label:null"
+              :append-icon="field.appendIcon"
+              :prepend-icon="field.prependIcon"
+              :multiple="field.multiple"
+              :chips="field.chips"
+              :return-object="field.returnObject"
+              :outline="!minimal"
+              :single-line="!minimal"
+              :ref="field.ref"
+              :key="fieldIndex"
+              :is="field.component || `form-controll-${field.type}`"
+              :field="field"
+              :minimal="minimal"
+              :data-vv-as="field.label"
+              :type="field.inputType"
+            ></component>
+            <component
+              v-else
+              v-validate="field.validation"
+              v-model="item[field.model]"
+              :browser-autocomplete="field.browserAutocomplete || 'off'"
+              :disabled="field.disabled"
+              :readonly="field.readonly"
+              :items="field.items"
+              :error-messages="errors.collect(field.model)"
+              :name="field.model"
+              :placeholder="field.placeholder"
+              :suffix="field.suffix"
+              :label="minimal?field.label:null"
+              :append-icon="field.appendIcon"
+              :prepend-icon="field.prependIcon"
+              :multiple="field.multiple"
+              :chips="field.chips"
+              :return-object="field.returnObject"
+              :outline="!minimal"
+              :single-line="!minimal"
+              :ref="field.ref"
+              :key="fieldIndex"
+              :is="field.component || `form-controll-${field.type}`"
+              :field="field"
+              :minimal="minimal"
+              :data-vv-as="field.label"
+              :type="field.inputType"
+            ></component>
+          </template>
+        </template>
       </template>
     </div>
   </section>

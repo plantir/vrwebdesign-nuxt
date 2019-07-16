@@ -31,8 +31,10 @@ export interface VRFormInput {
   inputType?: string
   browserAutocomplete?: string
   hint?: string
+  hide?: boolean
 }
 export type VRFormData = {
   title?: string
+  hide?: boolean
   rows: VRFormInput[]
 }[]
