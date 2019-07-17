@@ -78,7 +78,7 @@
       <template v-if="!row.hide">
         <h3 v-if="row.title">{{row.title}}</h3>
         <template v-for="(field, fieldIndex) in row.rows">
-          <template v-hide="field.hide">
+          <template v-if="!field.hide">
             <component
               v-if="field.model.includes('.')"
               v-validate="field.validation"
