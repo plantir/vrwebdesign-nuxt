@@ -10,6 +10,9 @@
   }
   .filepond--drop-label {
     cursor: pointer;
+    label {
+      cursor: pointer;
+    }
   }
   .filepond--root {
     margin: 0;
@@ -71,7 +74,7 @@
     <div class="images">
       <div v-for="(image, index) in images" :key="index">
         <v-icon @click="remove_image(index)" color="#fff">la-close</v-icon>
-        <img :src="image" alt>
+        <img :src="image" alt />
       </div>
     </div>
     <div class="error--text">{{errorMessage[0]}}</div>
@@ -83,9 +86,6 @@ import moment from 'moment-jalaali'
 export default Vue.extend({
   props: {
     value: {},
-    label: {
-      default: 'عکس خود را بکشید و رها کنید'
-    },
     multiple: {
       default: false
     },
@@ -95,6 +95,11 @@ export default Vue.extend({
     errorMessage: {},
     imageCropAspectRatio: {
       default: '1:1'
+    }
+  },
+  data() {
+    return {
+      label: 'عکس خود را بکشید و رها کنید'
     }
   },
   methods: {
