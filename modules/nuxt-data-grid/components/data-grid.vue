@@ -223,7 +223,7 @@
             <span>تازه کردن اطلاعات</span>
           </v-tooltip>
 
-          <v-btn v-if="withAdd" @click="_add" class="add-new" color="info">
+          <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round dark>
             <v-icon>add</v-icon>
             <span>ایجاد جدید</span>
           </v-btn>
