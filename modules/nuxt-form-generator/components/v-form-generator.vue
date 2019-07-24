@@ -106,6 +106,7 @@
               :minimal="minimal"
               :data-vv-as="field.label"
               :type="field.inputType"
+              :hint="field.hint"
             ></component>
             <component
               v-else
@@ -134,6 +135,7 @@
               :minimal="minimal"
               :data-vv-as="field.label"
               :type="field.inputType"
+              :hint="field.hint"
             ></component>
           </template>
         </template>
