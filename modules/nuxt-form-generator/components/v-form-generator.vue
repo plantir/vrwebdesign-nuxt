@@ -107,6 +107,7 @@
               :data-vv-as="field.label"
               :type="field.inputType"
               :hint="field.hint"
+              @input="change_field(field)"
             ></component>
             <component
               v-else
@@ -136,6 +137,7 @@
               :data-vv-as="field.label"
               :type="field.inputType"
               :hint="field.hint"
+              @input="change_field(field)"
             ></component>
           </template>
         </template>
@@ -213,6 +215,11 @@ export default {
     },
     resetError() {
       this.errors.clear()
+    },
+    change_field(field) {
+      if (field.onChange) {
+        field.onChange(this.item[field.model])
+      }
     }
   }
 }

@@ -24,9 +24,13 @@
     display: flex;
     flex-wrap: wrap;
     > div {
+      flex: 0 0 30%;
+      padding: 8px;
+    }
+    .image-wrapper {
       margin: 8px;
-      width: 150px;
-      flex: 0 0 150px;
+      // width: 150px;
+      // flex: 0 0 150px;
       position: relative;
       i {
         position: absolute;
@@ -51,9 +55,22 @@
         right: 0;
         width: 130px;
       }
+
       img {
         max-width: 100%;
         border-radius: 12px;
+      }
+    }
+    .button-wrapper {
+      margin: 0 8px;
+      .set-default {
+        position: relative;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        font-size: 0.775rem;
+        left: 0;
+        right: 0;
       }
     }
   }
@@ -73,8 +90,21 @@
     ></file-pond>
     <div class="images">
       <div v-for="(image, index) in images" :key="index">
-        <v-icon @click="remove_image(index)" color="#fff">la-close</v-icon>
-        <img :src="image" alt />
+        <div class="image-wrapper">
+          <v-icon @click="remove_image(index)" color="#fff">la-close</v-icon>
+          <v-icon v-if="set_default && image.is_default" color="#fff">la-check-circle</v-icon>
+          <img v-if="is_object" :src="image[image_src]" alt />
+          <img v-else :src="image" alt />
+        </div>
+        <div v-if="set_default" class="button-wrapper">
+          <v-btn
+            class="set-default"
+            @click="set_default(image)"
+            color="primary"
+            outline
+            block
+          >انتخاب به عنوان عکس اصلی</v-btn>
+        </div>
       </div>
     </div>
     <div class="error--text">{{errorMessage[0]}}</div>
@@ -92,6 +122,15 @@ export default Vue.extend({
     upload_url: {
       default: process.env.UPLOAD_URL || '/api/upload'
     },
+    is_object: {
+      default: false
+    },
+    image_src: {
+      default: 'src'
+    },
+    set_default: {
+      default: false
+    },
     errorMessage: {},
     imageCropAspectRatio: {
       default: '1:1'
@@ -105,10 +144,18 @@ export default Vue.extend({
   methods: {
     handleFilePondInit(err, file) {
       if (this.multiple) {
-        this.images.push(file.serverId)
+        if (this.is_object) {
+          this.images.push({ [this.image_src]: file.serverId })
+        } else {
+          this.images.push(file.serverId)
+        }
         this.$emit('input', this.images)
       } else {
-        this.images.splice(0, 1, file.serverId)
+        if (this.is_object) {
+          this.images.splice(0, 1, { [this.imgae_src]: file.serverId })
+        } else {
+          this.images.splice(0, 1, file.serverId)
+        }
         this.$emit('input', this.images[0])
       }
     },
@@ -122,6 +169,12 @@ export default Vue.extend({
       }
       let pond = this.$refs.pond as Vue & { removeFile(index: number): void }
       pond.removeFile(index)
+    },
+    set_default(image) {
+      this.images.map(item => {
+        item.is_default = false
+      })
+      image.is_default = true
     }
   },
   computed: {

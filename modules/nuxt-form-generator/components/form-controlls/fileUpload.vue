@@ -6,6 +6,9 @@
       v-model="model"
       :errorMessage="errorMessages"
       :multiple="field.multiple"
+      :is_object="field.is_object"
+      :image_src="field.image_src"
+      :is_default="field.is_default"
     ></vr-file-upload>
   </div>
 </template>
