@@ -287,15 +287,9 @@
       <template v-slot:items="props">
         <slot name="items" :props="props" :item="props.item"></slot>
 
-        <td class="text-xs-center">
+        <td v-if="!withoutAction" class="text-xs-center">
           <div class="action">
-            <slot
-              v-if="!withoutAction"
-              name="actions"
-              :_edit="_edit"
-              :_delete="_delete"
-              :item="props.item"
-            >
+            <slot name="actions" :_edit="_edit" :_delete="_delete" :item="props.item">
               <div v-if="actions" class="more-action">
                 <v-menu bottom right attach min-width="180" :nudge-right="20" nudge-bottom="20">
                   <template v-slot:activator="{ on }">
