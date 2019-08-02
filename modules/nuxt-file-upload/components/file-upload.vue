@@ -99,7 +99,7 @@
         <div v-if="set_default" class="button-wrapper">
           <v-btn
             class="set-default"
-            @click="set_default(image)"
+            @click="set_default_image(image)"
             color="primary"
             outline
             block
@@ -170,7 +170,7 @@ export default Vue.extend({
       let pond = this.$refs.pond as Vue & { removeFile(index: number): void }
       pond.removeFile(index)
     },
-    set_default(image) {
+    set_default_image(image) {
       this.images.map(item => {
         item.is_default = false
       })
