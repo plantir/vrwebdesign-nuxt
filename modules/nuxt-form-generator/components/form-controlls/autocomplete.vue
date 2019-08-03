@@ -3,18 +3,27 @@
     <label v-if="!minimal">{{field.label}}</label>
     <v-autocomplete
       cache-items
-      flat
-      hide-no-data
       :items="items"
       v-model="model"
       v-bind="$attrs"
       :search-input.sync="search"
       :loading="loading"
     >
+      <template v-slot:selection="data">{{ data.item.text }}</template>
       <template v-slot:item="data">
         <v-list-tile-content>
           <v-list-tile-title v-html="data.item.text"></v-list-tile-title>
         </v-list-tile-content>
+      </template>
+      <template v-slot:no-data>
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              نتیحه ای برای "
+              <strong>{{ search }}</strong>" یافت نشد
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </template>
     </v-autocomplete>
   </div>
@@ -34,7 +43,9 @@ export default Vue.extend({
   watch: {
     search(val, old) {
       this.isLoading = true
-      this.get_lists(val)
+      if (this.field.async) {
+        this.get_lists(val)
+      }
     }
   },
   mounted() {
