@@ -8,6 +8,7 @@
       v-bind="$attrs"
       :search-input.sync="search"
       :loading="loading"
+      :error-messages="errorMessages"
     >
       <template v-slot:selection="data">{{ data.item.text }}</template>
       <template v-slot:item="data">
