@@ -1,7 +1,7 @@
 export interface VRFormInput {
   type?:
     | 'autocomplete'
-    | 'commboBox'
+    | 'comboBox'
     | 'checkbox'
     | 'currency'
     | 'datePicker'
@@ -16,7 +16,7 @@ export interface VRFormInput {
   ref?: string
   disabled?: boolean
   readonly?: boolean
-  component?: string
+  component?: any
   label?: string
   appendIcon?: string
   prependIcon?: string
