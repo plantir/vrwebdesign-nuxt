@@ -155,6 +155,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  .more-action {
+    position: relative;
+    .v-btn {
+      margin: 0;
+    }
+  }
   > * {
     margin: 0 3px;
   }
@@ -167,24 +173,22 @@
   .v-btn--icon:before {
     // display: none;
   }
-  .more-action {
-    position: relative;
-    .v-btn {
-      margin: 0;
-    }
-    .v-menu__content {
-      box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
-      padding: 10px 0;
-      background: #fff;
-    }
-    .v-list__tile {
-      height: 34px;
-      font-size: 14px;
-      color: #a7abc3;
-      .v-icon {
-        font-size: 22px;
-        color: #a7abc3 !important;
-      }
+}
+
+.more-action-list {
+  // .v-menu__content {
+  //   box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+  //   padding: 10px 0;
+  //   background: #fff;
+  // }
+  padding: 12px 0;
+  .v-list__tile {
+    height: 34px;
+    font-size: 14px;
+    color: #a7abc3;
+    .v-icon {
+      font-size: 22px;
+      color: #a7abc3 !important;
     }
   }
 }
@@ -291,7 +295,14 @@
           <div class="action">
             <slot name="actions" :_edit="_edit" :_delete="_delete" :item="props.item">
               <div v-if="actions" class="more-action">
-                <v-menu bottom right attach min-width="180" :nudge-right="20" nudge-bottom="20">
+                <v-menu
+                  class="data-grid-action"
+                  bottom
+                  right
+                  min-width="180"
+                  :nudge-right="20"
+                  nudge-bottom="20"
+                >
                   <template v-slot:activator="{ on }">
                     <v-btn icon depressed flat :ripple="false">
                       <v-icon v-on="on">la-ellipsis-v</v-icon>
