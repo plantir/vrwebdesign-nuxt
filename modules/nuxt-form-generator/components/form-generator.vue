@@ -72,7 +72,7 @@
     <div sticky-container>
       <div v-sticky sticky-offset="offset" sticky-side="top" class="header">
         <div class="head-lable">
-          <h3>{{custom_title}}</h3>
+          <h3 v-once>{{custom_title}}</h3>
         </div>
         <div class="head-toolbar">
           <div class="btn-group">
@@ -137,7 +137,6 @@ export default Vue.extend({
   components: FormControlls,
   props: {
     title: {
-      required: true,
       type: String
     },
     service: {
@@ -242,6 +241,7 @@ export default Vue.extend({
         await this.beforeExit()
       }
       this.$loader.destroy()
+      return this.$router.go(-1)
       let current_route = <string>this.$router.currentRoute.name
       let route_array = current_route.split('-')
       route_array.pop()
@@ -304,8 +304,8 @@ export default Vue.extend({
                         let route = this.$route.path.replace('create', data.id)
                       }
                       this.$router.push(route)
-                    } else {
                       this.initItem = data
+                    } else {
                       this.initItem = data
                     }
                   })
@@ -370,6 +370,9 @@ export default Vue.extend({
   },
   computed: {
     custom_title(): any {
+      if (!this.title) {
+        return null
+      }
       let title = this.title.replace(/{{[a-z\.0-9]+}}/g, p => {
         let param = p.replace(/{|}/g, '')
         let array_param = param.split('.')
