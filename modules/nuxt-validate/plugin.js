@@ -1,8 +1,27 @@
 import Vue from 'vue'
 import VeeValidate, { Validator } from 'vee-validate'
-import validationMessages from 'vee-validate/dist/locale/fa';
-import VueI18n from 'vue-i18n';
-
+import validationMessages from 'vee-validate/dist/locale/fa'
+import VueI18n from 'vue-i18n'
+import moment from 'moment'
+Validator.extend(
+  'custom_after',
+  {
+    getMessage: (field, [target]) =>
+      `The ${field} must be bigger than the ${target} field.`,
+    validate: (value, ref) => {
+      if (!ref[0]) {
+        return true
+      }
+      let target = moment(ref[0])
+      if (moment(value) > moment(ref[0])) {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
+  { hasTarget: true }
+)
 Validator.extend('mobile', {
   validate(value) {
     let mobile = /^[0][9][0-3][0-9]{8,8}$/g.exec(value)
@@ -58,9 +77,10 @@ Validator.extend('postalCode', {
   }
 })
 
-Vue.use(VueI18n);
-const i18n = new VueI18n();
-i18n.locale = "fa"; // set a default locale 
+Vue.use(VueI18n)
+const i18n = new VueI18n()
+i18n.locale = 'fa' // set a default locale
+validationMessages.messages.custom_after = validationMessages.messages.after
 
 Vue.use(VeeValidate, {
   i18nRootKey: 'validations', // customize the root path for validation messages.
