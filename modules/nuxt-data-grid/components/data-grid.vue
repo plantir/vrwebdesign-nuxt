@@ -247,6 +247,8 @@
               :prepend-inner-icon="item.icon"
               :name="item.model"
               :label="item.label"
+              :multiple="item.multiple"
+              :chips="item.chips"
             ></v-select>
           </template>
           <template v-else-if="item.type == 'date'">
