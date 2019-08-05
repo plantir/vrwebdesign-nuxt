@@ -3,3 +3,7 @@ export interface VRGridAction {
     cb: Function,
     icon?: string
 }
+
+export interface VRDataGrid {
+    refresh: Function
+}
