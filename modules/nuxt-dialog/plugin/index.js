@@ -3,142 +3,115 @@ import DefaultView from './components/views/default.vue'
 import AlertView from './components/views/alert.vue'
 import ConfirmView from './components/views/confirm.vue'
 const DEFAULT_OPTION = {}
-class Dialog {
-  constructor(Vue, globalOptions = {}) {
-    this.Vue = Vue
-    this.mounted = false
-    this.$root = {} // The root component
-    this.registeredViews = {} // Custom components
-    this.dialog = Object.assign({ ...DEFAULT_OPTION }, globalOptions)
+export const mountIfNotMounted = (Vue, options, root) => {
+  if (!root._dynamicContainer) {
+    let node = document.createElement('div')
+    document.querySelector('body').appendChild(node)
+    new Vue({
+      parent: root,
+      render: h => h(DialogComponent)
+    }).$mount(node)
   }
-  mountIfNotMounted() {
-    if (this.mounted === true) {
-      return
-    }
 
-    this.$root = (() => {
-      let DialogConstructor = this.Vue.extend(DialogComponent)
-      let node = document.createElement('div')
-      document.querySelector('body').appendChild(node)
-
-      let Vm = new DialogConstructor()
-
-      // Vm.registeredViews = this.registeredComponents()
-
-      return Vm.$mount(node)
-    })()
-
-    this.mounted = true
-  }
-  ok(ok_txt) {
-    this.dialog.ok_txt = ok_txt
-    return this
-  }
-  cancel(cancel_txt) {
-    this.dialog.cancel_txt = cancel_txt
-    return this
-  }
-  message(message) {
-    this.dialog.message = message
-    return this
-  }
-  title(title) {
-    this.dialog.title = title
-    return this
-  }
-  component(component) {
-    this.dialog.component = component
-    return this
-  }
-  warning() {
-    this.dialog.type = 'warning'
-    return this
-  }
-  info() {
-    this.dialog.type = 'info'
-    return this
-  }
-  question() {
-    this.dialog.type = 'question'
-    return this
-  }
-  success() {
-    this.dialog.type = 'success'
-    return this
-  }
-  alert(dialog = {}) {
-    dialog = Object.assign(this.dialog, dialog)
-    dialog.component = AlertView
-    dialog.ok_txt = dialog.ok_txt || 'باشه'
-    return this.show(dialog)
-  }
-  confirm(dialog = {}) {
-    dialog = Object.assign(this.dialog, dialog)
-    dialog.component = ConfirmView
-    dialog.title = dialog.title || 'آیا از انجام این کار مطمعن هستید؟'
-    dialog.message = dialog.message || 'این کار برگشت ناپذیر می باشد!'
-    dialog.type = dialog.type || 'warning'
-    dialog.ok_txt = dialog.ok_txt || 'انجام بده'
-    dialog.cancel_txt = dialog.cancel_txt || 'منصرف شدم'
-    return this.show(dialog)
-  }
-  show(dialog = {}) {
-    this.mountIfNotMounted()
-    let dialog_options = Object.assign(this.dialog, dialog)
-    this.dialog = { ...DEFAULT_OPTION }
-    if (!dialog_options.component) {
-      dialog_options.component = DefaultView
-    }
-    return new Promise((resolve, reject) => {
-      dialog_options.id = 'dialog.' + Date.now()
-      dialog_options.resolve = resolve
-      dialog_options.reject = reject
-      this.$root.commit(dialog_options)
-    })
-  }
-  // hide(data) {
-  //   if (this.mounted === true) {
-  //     this.$root.hide(data)
-  //     let elem = this.$root.$el
-  //     this.$root.$destroy()
-  //     this.$root.$off()
-  //     elem.remove()
-  //     this.mounted = false
-  //   }
-  // }
-  // close(reason) {
-  //   if (this.mounted === true) {
-  //     this.$root.close(reason)
-  //     let elem = this.$root.$el
-  //     this.$root.$destroy()
-  //     this.$root.$off()
-  //     elem.remove()
-  //     this.mounted = false
-  //   }
-  // }
-  destroy() {
-    if (this.mounted === true) {
-      this.$root.forceCloseAll()
-      let elem = this.$root.$el
-      this.$root.$destroy()
-      this.$root.$off()
-      elem.remove()
-      this.mounted = false
-    }
-  }
+  return root._dynamicContainer
 }
 
-class DialogPlugin {
-  static install(Vue, options) {
-    Vue.dialog = new Dialog(Vue, options)
-    Object.defineProperties(Vue.prototype, {
-      $dialog: {
-        get() {
-          return Vue.dialog
+const Plugin = {
+  install(Vue, options = {}) {
+    if (this.installed) {
+      return
+    }
+    this.dialog = Object.assign({ ...DEFAULT_OPTION }, options)
+    this.installed = true
+    this.event = new Vue()
+    this.rootInstance = null
+    Vue.prototype.$dialog = {
+      ok(ok_txt) {
+        Plugin.dialog.ok_txt = ok_txt
+        return this
+      },
+      cancel(cancel_txt) {
+        Plugin.dialog.cancel_txt = cancel_txt
+        return this
+      },
+      message(message) {
+        Plugin.dialog.message = message
+        return this
+      },
+      title(title) {
+        Plugin.dialog.title = title
+        return this
+      },
+      component(component) {
+        Plugin.dialog.component = component
+        return this
+      },
+      warning() {
+        Plugin.dialog.type = 'warning'
+        return this
+      },
+      info() {
+        Plugin.dialog.type = 'info'
+        return this
+      },
+      question() {
+        Plugin.dialog.type = 'question'
+        return this
+      },
+      success() {
+        Plugin.dialog.type = 'success'
+        return this
+      },
+      alert(dialog = {}) {
+        dialog = Object.assign(Plugin.dialog, dialog)
+        dialog.component = AlertView
+        dialog.ok_txt = dialog.ok_txt || 'باشه'
+        return this.show(dialog)
+      },
+      confirm(dialog = {}) {
+        dialog = Object.assign(Plugin.dialog, dialog)
+        dialog.component = ConfirmView
+        dialog.title = dialog.title || 'آیا از انجام این کار مطمعن هستید؟'
+        dialog.message = dialog.message || 'این کار برگشت ناپذیر می باشد!'
+        dialog.type = dialog.type || 'warning'
+        dialog.ok_txt = dialog.ok_txt || 'انجام بده'
+        dialog.cancel_txt = dialog.cancel_txt || 'منصرف شدم'
+        return this.show(dialog)
+      },
+      show(dialog = {}) {
+        Plugin.root = mountIfNotMounted(Vue, options, Plugin.rootInstance)
+        let dialog_options = Object.assign(Plugin.dialog, dialog)
+        Plugin.dialog = { ...DEFAULT_OPTION }
+        if (!dialog_options.component) {
+          dialog_options.component = DefaultView
+        }
+        return new Promise((resolve, reject) => {
+          dialog_options.id = 'dialog.' + Date.now()
+          dialog_options.resolve = resolve
+          dialog_options.reject = reject
+          Plugin.root.commit(dialog_options)
+        })
+      },
+      destroy() {
+        console.log(Plugin)
+        if (Plugin.root) {
+          Plugin.root.forceCloseAll()
+          let elem = Plugin.root.$el
+          Plugin.root.$destroy()
+          Plugin.root.$off()
+          elem.remove()
+          Plugin.rootInstance._dynamicContainer = null
+        }
+      }
+    }
+    Vue.mixin({
+      beforeMount() {
+        if (Plugin.rootInstance === null) {
+          Plugin.rootInstance = this.$root
         }
       }
     })
   }
 }
 
-export default DialogPlugin
+export default Plugin
