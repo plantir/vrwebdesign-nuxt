@@ -23,7 +23,7 @@
     >
       <div v-if="show" class="dialog-wrapper">
         <component
-          :scope="dialog.scope"
+          v-bind="dialog.props"
           :dialog="dialog"
           :is="dialog.component"
           @close="close"

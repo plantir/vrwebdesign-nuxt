@@ -8,7 +8,7 @@ interface DialogParams {
   message?: string
   ok_txt?: string
   cancel_txt?: string
-  scope: any
+  props?: any
 }
 interface NuxtDialogInstance {
   ok(ok_txt: string): NuxtDialogInstance
