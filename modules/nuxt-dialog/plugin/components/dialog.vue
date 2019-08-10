@@ -133,6 +133,9 @@ export default {
       dialogs: []
     }
   },
+  created() {
+    this.$root._dynamicContainer = this
+  },
   methods: {
     commit(data) {
       this.data = data
