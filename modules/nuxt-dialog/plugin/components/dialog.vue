@@ -133,7 +133,7 @@ export default {
       dialogs: []
     }
   },
-    created(){
+  created(){
     this.$root._dynamicContainer = this
   },
   methods: {
