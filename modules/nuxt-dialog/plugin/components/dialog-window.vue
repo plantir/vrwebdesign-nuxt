@@ -24,6 +24,7 @@
       <div v-if="show" class="dialog-wrapper">
         <component
           v-bind="dialog.props"
+          :scope="dialog.scope"
           :dialog="dialog"
           :is="dialog.component"
           @close="close"
