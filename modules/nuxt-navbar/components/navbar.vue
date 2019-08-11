@@ -53,7 +53,7 @@
       <div class="head-toolbar">
         <ul class="nav-tab">
           <li class="nav-item" v-for="(item,index) in items" :key="index">
-            <nuxt-link class="nav-link" :to="item.base + item.to">
+            <nuxt-link exact class="nav-link" :to="item.base + item.to">
               <v-icon>{{item.icon}}</v-icon>
               <span>{{ item.title }}</span>
             </nuxt-link>
