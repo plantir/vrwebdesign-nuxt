@@ -3,12 +3,12 @@ import './vuex'
 
 interface DialogParams {
   component?: any
-  type?: 'warning' | 'info' | 'question' | 'success'
+  type?: 'warning' | 'info' | 'question' | 'success' | 'error'
   title?: string
   message?: string
   ok_txt?: string
-  cancel_txt?: string,
-  scope?: any,
+  cancel_txt?: string
+  scope?: any
   props?: any
 }
 interface NuxtDialogInstance {

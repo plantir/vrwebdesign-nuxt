@@ -27,6 +27,7 @@
     position: relative;
     box-sizing: content-box;
     justify-content: center;
+    align-items: center;
     width: 5rem;
     height: 5rem;
     margin: 1.25em auto 1.875rem;
@@ -133,7 +134,7 @@ export default {
       dialogs: []
     }
   },
-  created(){
+  created() {
     this.$root._dynamicContainer = this
   },
   methods: {
