@@ -6,7 +6,7 @@ const DEFAULT_OPTION = {}
 export const mountIfNotMounted = (Vue, options, root) => {
   if (!root._dynamicContainer) {
     let node = document.createElement('div')
-    document.querySelector('body').appendChild(node)
+    document.querySelector('#app').appendChild(node)
     new Vue({
       parent: root,
       render: h => h(DialogComponent)
