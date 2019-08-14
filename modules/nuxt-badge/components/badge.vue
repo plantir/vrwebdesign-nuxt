@@ -52,13 +52,7 @@ export default {
     }
   },
   mounted() {
-    if (this.color && this.color.startsWith('#')) {
-      this.$refs.badge.style.backgroundColor = this.color
-      if (this.type == 'dot') {
-        this.$refs.badge.style.color = this.color
-        this.$refs.dot.style.backgroundColor = this.color
-      }
-    }
+    this.setBackgroundColor()
   },
   computed: {
     classList() {
@@ -81,6 +75,29 @@ export default {
         classList += this.color
       }
       return classList
+    }
+  },
+  methods: {
+    setBackgroundColor() {
+      if (this.color && this.color.startsWith('#')) {
+        this.$refs.badge.style.backgroundColor = this.color
+        if (this.type == 'dot') {
+          this.$refs.badge.style.color = this.color
+          this.$refs.dot.style.backgroundColor = this.color
+        }
+      }
+    }
+  },
+  watch: {
+    color: {
+      handler(value, oldValue) {
+        if (JSON.stringify(value) == JSON.stringify(oldValue)) {
+          return
+        }
+        this.color = value
+        this.setBackgroundColor()
+      },
+      deep: true
     }
   }
 }
