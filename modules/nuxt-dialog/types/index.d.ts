@@ -24,7 +24,7 @@ interface NuxtDialogInstance {
   show(params?: DialogParams): Promise<any>
   alert(params?: DialogParams): Promise<any>
   confirm(params?: DialogParams): Promise<any>
-  destroyed(): void
+  destroy(): void
 }
 
 declare module '@nuxt/vue-app' {
