@@ -20,7 +20,9 @@ function axiosModule(_moduleOptions) {
         let convertToSelect = Object.keys(enums[file_name]).map(key => {
           try {
             let new_key = parseInt(key)
-            key = new_key
+            if (new_key != Nan) {
+              key = new_key
+            }
           } catch (error) {}
           return { text: enums[file_name][key], value: key }
         })
