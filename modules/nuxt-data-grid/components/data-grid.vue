@@ -82,6 +82,38 @@
     }
   }
 }
+.search-field {
+  > div {
+    padding: 25px;
+  }
+  .v-input {
+    font-size: 13px;
+    &.v-input--is-focused {
+      .v-input__slot {
+        border-color: $primary-color !important;
+      }
+    }
+    .v-input__slot {
+      min-height: 38px;
+      border-width: 1px !important;
+      border-color: #e2e5ec !important;
+    }
+    .v-input__prepend-inner {
+      margin-top: 6px;
+    }
+    .v-input__append-inner {
+      margin-top: 6px;
+    }
+
+    .v-label {
+      top: 7px;
+      font-size: 13px;
+    }
+    input {
+      margin-top: 0;
+    }
+  }
+}
 .theme--light.v-table tbody tr {
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   &:hover {
@@ -239,98 +271,153 @@
       class="data-table-search"
       :style="[showFilter ? { height : filterHeight } : {}]"
     >
-      <v-layout row wrap>
-        <v-flex :class="`xs${item.size||3}`" pa-2 v-for="(item, index) in filters" :key="index">
-          <template v-if="item.type == 'select'">
-            <v-select
-              single-line
-              hide-details
-              outline
-              v-model="data_filters[item.model]"
-              :items="item.items"
-              :prepend-inner-icon="item.icon"
-              :name="item.model"
-              :label="item.label"
-              :multiple="item.multiple"
-              :chips="item.chips"
-            ></v-select>
-          </template>
-          <template v-else-if="item.type == 'date'">
-            <vr-date-picker
-              hide-details
-              single-line
-              outline
-              v-model="data_filters[item.model]"
-              :prepend-inner-icon="item.icon"
-              :name="item.model"
-              :label="item.label"
-            ></vr-date-picker>
-          </template>
-          <template v-else>
+      <slot name="filters">
+        <v-layout row wrap>
+          <v-flex xs3 v-if="withSearch">
             <v-text-field
               hide-details
               single-line
               outline
-              v-model="data_filters[item.model]"
-              :prepend-inner-icon="item.icon"
-              :name="item.model"
-              :label="item.label"
+              v-model="search"
+              append-icon="search"
+              label="Search"
             ></v-text-field>
-          </template>
-        </v-flex>
-      </v-layout>
+          </v-flex>
+          <v-flex :class="`xs${item.size||3}`" pa-2 v-for="(item, index) in filters" :key="index">
+            <template v-if="item.type == 'select'">
+              <v-select
+                single-line
+                hide-details
+                outline
+                v-model="data_filters[item.model]"
+                :items="item.items"
+                :prepend-inner-icon="item.icon"
+                :name="item.model"
+                :label="item.label"
+                :multiple="item.multiple"
+                :chips="item.chips"
+              ></v-select>
+            </template>
+            <template v-else-if="item.type == 'date'">
+              <vr-date-picker
+                hide-details
+                single-line
+                outline
+                v-model="data_filters[item.model]"
+                :prepend-inner-icon="item.icon"
+                :name="item.model"
+                :label="item.label"
+              ></vr-date-picker>
+            </template>
+            <template v-else>
+              <v-text-field
+                hide-details
+                single-line
+                outline
+                v-model="data_filters[item.model]"
+                :prepend-inner-icon="item.icon"
+                :name="item.model"
+                :label="item.label"
+              ></v-text-field>
+            </template>
+          </v-flex>
+        </v-layout>
+      </slot>
+    </div>
+    <div>
+      <slot name="action-header"></slot>
     </div>
     <v-data-table
       :headers="custom_headers"
+      v-model="selected"
       hide-actions
-      :items="items"
+      :items="rows"
       :pagination.sync="pagination"
       :total-items="total_items"
       :loading="loading"
-      sort-icon="la-arrow-up"
+      :select-all="selectAll"
+      :search="search"
     >
       <v-progress-linear v-slot:progress color="primary" indeterminate></v-progress-linear>
+      <template v-slot:headers="props">
+        <tr>
+          <th width="5%" v-if="selectAll">
+            <v-checkbox
+              :input-value="props.all"
+              :indeterminate="props.indeterminate"
+              primary
+              hide-details
+              @click.stop="toggleAll"
+            ></v-checkbox>
+          </th>
+          <th
+            v-for="header in props.headers"
+            :key="header.text"
+            :width="header.width"
+            :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '',header.align == 'right'?'text-xs-right':header.align == 'left'?'text-xs-left':'text-xs-center']"
+            @click="changeSort(header.value)"
+          >
+            <v-icon small>la-arrow-up</v-icon>
+            {{ header.text }}
+          </th>
+        </tr>
+      </template>
       <template v-slot:items="props">
-        <slot name="items" :props="props" :item="props.item"></slot>
+        <tr :active="props.selected" @click="props.selected = !props.selected">
+          <td v-if="selectAll">
+            <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
+          </td>
+          <slot name="items" :props="props" :item="props.item"></slot>
 
-        <td v-if="!withoutAction" class="text-xs-center">
-          <div class="action">
-            <slot name="actions" :_edit="_edit" :_delete="_delete" :item="props.item">
-              <div v-if="actions" class="more-action">
-                <v-menu
-                  class="data-grid-action"
-                  bottom
-                  right
-                  min-width="180"
-                  :nudge-right="20"
-                  nudge-bottom="20"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-btn icon depressed flat :ripple="false">
-                      <v-icon v-on="on">la-ellipsis-v</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list class="more-action-list">
-                    <v-list-tile
-                      @click="action.cb(props.item)"
-                      v-for="(action, index) in actions"
-                      :key="index"
-                    >
-                      <v-icon class="pl-2">{{action.icon}}</v-icon>
-                      <v-list-tile-title>{{action.title}}</v-list-tile-title>
-                    </v-list-tile>
-                  </v-list>
-                </v-menu>
-              </div>
-              <v-btn v-if="!hideActionEdit" icon depressed flat :ripple="false">
-                <v-icon @click="_edit(props.item)">la-edit</v-icon>
-              </v-btn>
-              <v-btn v-if="!hideActionDelete" icon depressed flat :ripple="false">
-                <v-icon @click="_delete(props.item)">la-trash</v-icon>
-              </v-btn>
-            </slot>
-          </div>
-        </td>
+          <td v-if="!withoutAction" class="text-xs-center">
+            <div class="action">
+              <slot name="actions" :_edit="_edit" :_delete="_delete" :item="props.item">
+                <div v-if="actions" class="more-action">
+                  <v-menu
+                    class="data-grid-action"
+                    bottom
+                    right
+                    min-width="180"
+                    :nudge-right="20"
+                    nudge-bottom="20"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-btn icon depressed flat :ripple="false">
+                        <v-icon v-on="on">la-ellipsis-v</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-list class="more-action-list">
+                      <v-list-tile
+                        @click="action.cb(props.item)"
+                        v-for="(action, index) in actions"
+                        :key="index"
+                      >
+                        <v-icon class="pl-2">{{action.icon}}</v-icon>
+                        <v-list-tile-title>{{action.title}}</v-list-tile-title>
+                      </v-list-tile>
+                    </v-list>
+                  </v-menu>
+                </div>
+                <v-btn v-if="!hideActionEdit" icon depressed flat :ripple="false">
+                  <v-icon @click="_edit(props.item)">la-edit</v-icon>
+                </v-btn>
+                <v-btn v-if="!hideActionDelete" icon depressed flat :ripple="false">
+                  <v-icon @click="_delete(props.item)">la-trash</v-icon>
+                </v-btn>
+              </slot>
+            </div>
+          </td>
+        </tr>
+      </template>
+      <template v-slot:no-results>
+        <v-alert
+          :value="true"
+          color="error"
+          icon="warning"
+        >Your search for "{{ search }}" found no results.</v-alert>
+      </template>
+      <template v-slot:no-data>
+        <div class="text-xs-center">متاسفم, چیزی برای نمایش وجود ندارد :(</div>
       </template>
     </v-data-table>
     <div class="footer-wrapper">
@@ -388,6 +475,12 @@ export default {
       required: true,
       default: () => []
     },
+    selectAll: {
+      default: false
+    },
+    value: {
+      default: () => []
+    },
     withAdd: {
       default: true
     },
@@ -405,6 +498,18 @@ export default {
       default: null
     },
     withoutAction: {
+      default: false
+    },
+    pageSize: {
+      default: 10
+    },
+    serverPagination: {
+      default: true
+    },
+    items: {
+      default: () => []
+    },
+    withSearch: {
       default: false
     },
     hideActionEdit: {},
@@ -446,6 +551,12 @@ export default {
         this._query()
       },
       deep: true
+    },
+    selected: {
+      handler() {
+        this.$emit('input', this.selected)
+      },
+      deep: true
     }
   },
   data() {
@@ -466,7 +577,7 @@ export default {
       sort: null,
       pagination: {
         page: 1,
-        rowsPerPage: 10,
+        rowsPerPage: this.pageSize,
         descending: false,
         sortBy: null
       },
@@ -474,8 +585,10 @@ export default {
       total_items: 0,
       lastPage: 0,
       loading: true,
-      items: [],
-      filter: filter
+      rows: [...this.items],
+      selected: [...this.value],
+      filter: filter,
+      search: ''
     }
   },
   mounted() {
@@ -498,7 +611,23 @@ export default {
       this.$refs['filters'].style.display = null
       this.$refs['filters'].style.height = 0
     },
+    toggleAll() {
+      if (this.selected.length) this.selected = []
+      else this.selected = this.rows.slice()
+    },
+    changeSort(column) {
+      if (this.pagination.sortBy === column) {
+        this.pagination.descending = !this.pagination.descending
+      } else {
+        this.pagination.sortBy = column
+        this.pagination.descending = false
+      }
+    },
     _query() {
+      if (!this.serverPagination) {
+        this.loading = false
+        return
+      }
       clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
         this.loading = true
@@ -517,7 +646,7 @@ export default {
           : this.service.$query(params)
         service
           .then(res => {
-            this.items = res.data
+            this.rows = res.data
             this.loading = false
             this.total_items = res.total
             this.lastPage = res.lastPage
