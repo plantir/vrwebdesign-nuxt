@@ -13,10 +13,10 @@ export default (ctx, inject) => {
   })
 
   function check(permissionKey) {
-    if (ctx.store.getters['auth/isAuthorized']) {
-      return ctx.store.getters['auth/isAuthorized'](permissionKey)
+    if (ctx.store.getters['authorization/isAuthorized']) {
+      return ctx.store.getters['authorization/isAuthorized'](permissionKey)
     } else {
-      console.log("ctx.store.getters['auth/isAuthorized'] does not exist")
+      console.log("ctx.store.getters['authorization/isAuthorized'] does not exist")
       return false
     }
   }
