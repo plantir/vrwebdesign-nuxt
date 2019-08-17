@@ -36,8 +36,8 @@ export interface VRFormInput {
   is_object?: boolean
   image_src?: string
   is_default?: boolean
-  select_text: string
-  select_value: string | number
+  select_text?: string
+  select_value?: string 
 }
 export type VRFormData = {
   title?: string
