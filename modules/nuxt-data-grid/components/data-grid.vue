@@ -37,6 +37,7 @@
   transform: rotate(45deg) translate(-2px, -2px);
 }
 .toolbar {
+  display: flex;
   .v-btn--icon {
     margin: 0;
   }
@@ -226,11 +227,12 @@
             </template>
             <span>تازه کردن اطلاعات</span>
           </v-tooltip>
-
-          <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
-            <v-icon>add</v-icon>
-            <span>ایجاد جدید</span>
-          </v-btn>
+          <slot name="addItem">
+            <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
+              <v-icon>add</v-icon>
+              <span>ایجاد جدید</span>
+            </v-btn>
+          </slot>
         </div>
       </slot>
     </div>
