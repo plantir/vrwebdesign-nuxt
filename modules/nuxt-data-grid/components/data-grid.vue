@@ -37,7 +37,6 @@
   transform: rotate(45deg) translate(-2px, -2px);
 }
 .toolbar {
-  display: flex;
   .v-btn--icon {
     margin: 0;
   }
@@ -259,12 +258,11 @@
             </template>
             <span>تازه کردن اطلاعات</span>
           </v-tooltip>
-          <slot name="addItem">
-            <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
-              <v-icon>add</v-icon>
-              <span>ایجاد جدید</span>
-            </v-btn>
-          </slot>
+
+          <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
+            <v-icon>add</v-icon>
+            <span>ایجاد جدید</span>
+          </v-btn>
         </div>
       </slot>
     </div>
@@ -537,6 +535,12 @@ export default {
           this.sort = '-' + this.sort
         }
         this._query()
+      },
+      deep: true
+    },
+    items: {
+      handler() {
+        this.rows = [...this.items]
       },
       deep: true
     },
