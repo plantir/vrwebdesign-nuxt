@@ -594,7 +594,7 @@ export default {
       rows: [...this.items],
       selected: [...this.value],
       filter: filter,
-      search: ''
+      search: null
     }
   },
   mounted() {
