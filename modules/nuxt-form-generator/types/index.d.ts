@@ -38,6 +38,7 @@ export interface VRFormInput {
   is_default?: boolean
   select_text?: string
   select_value?: string | number
+  upload_url?: string
 }
 export type VRFormData = {
   title?: string

@@ -9,6 +9,7 @@
       :is_object="field.is_object"
       :image_src="field.image_src"
       :is_default="field.is_default"
+      :upload_url="field.upload_url"
     ></vr-file-upload>
   </div>
 </template>
