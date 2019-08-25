@@ -18,13 +18,10 @@ function axiosModule(_moduleOptions) {
         const file_name = file.replace(/\.(js|ts)/, '')
         enums[file_name] = _interopDefault(require(file_path))
         let convertToSelect = Object.keys(enums[file_name]).map(key => {
-          try {
-            let new_key = parseInt(key)
-            if (new_key != 'NaN') {
-              key = new_key
-            }
-          } catch (error) {}
-          return { text: enums[file_name][key], value: key }
+          return {
+            text: enums[file_name][key],
+            value: isNaN(key) ? key : parseInt(key)
+          }
         })
         enums[file_name]['toSelect'] = convertToSelect
       }
