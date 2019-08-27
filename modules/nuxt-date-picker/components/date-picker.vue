@@ -20,7 +20,7 @@
 </style>
 
 <template >
-  <div id="vr-date-picker" @focus="activate">
+  <div id="vr-date-picker" ref="datePickerWrapper" @focus="activate">
     <v-text-field
       :id="id"
       v-model="persianDate"
@@ -111,6 +111,7 @@ export default Vue.extend({
   methods: {
     activate() {
       this.$refs.dateInputControl.focus()
+      this.$refs.datePickerWrapper.tabIndex = -1
     }
   }
 })
