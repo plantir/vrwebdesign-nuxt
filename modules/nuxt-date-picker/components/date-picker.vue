@@ -20,10 +20,30 @@
 </style>
 
 <template >
-  <section id="vr-date-picker">
-    <v-text-field :id="id" v-model="persianDate" v-bind="$attrs"></v-text-field>
-    <date-picker v-model="persianDate" :type="type" v-bind="$attrs" :element="id"></date-picker>
-  </section>
+  <div id="vr-date-picker" ref="datePickerWrapper" @focus="activate">
+    <v-text-field
+      :id="id"
+      v-model="persianDate"
+      v-bind="$attrs"
+      :mask="type=='date'?'####/##/##':''"
+      ref="dateInputControl"
+      class="form-control is-editable"
+      :append-icon="type=='date'?'date_range':'access_time'"
+      @click:append="show=true"
+    ></v-text-field>
+
+    <date-picker
+      v-model="persianDate"
+      :type="type"
+      v-bind="$attrs"
+      :element="id"
+      tabindex="-1"
+      :show="show"
+      :editable="editable"
+      @close="show=false"
+      :auto-submit="autoSubmit"
+    ></date-picker>
+  </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
@@ -39,6 +59,12 @@ export default Vue.extend({
     },
     format: {
       default: 'jYYYY/jMM/jDD'
+    },
+    editable: {
+      default: true
+    },
+    autoSubmit: {
+      default: true
     }
   },
   data() {
@@ -50,29 +76,42 @@ export default Vue.extend({
   watch: {
     value: function(val) {
       if (val) {
-        this.persianDate = moment(val).format(this.format)
+        try {
+          this.persianDate = moment(val).format(this.format)
+        } catch (error) {}
       } else {
         this.persianDate = null
       }
     },
     persianDate: function(val) {
+      if (!val || val.length < 8) {
+        return
+      }
+
+      let emitValue = null
       try {
-        if (val) {
-          const gregorianDate = moment(this.persianDate, this.format).format(
-            'YYYY-MM-DD HH:mm:ss'
-          )
-          this.$emit('input', gregorianDate)
-        } else {
-          this.$emit('input', null)
+        const gregorianDate = moment(this.persianDate, this.format).format(
+          'YYYY-MM-DD HH:mm:ss'
+        )
+        if (moment(gregorianDate).isValid()) {
+          emitValue = gregorianDate
         }
       } catch (error) {
-        this.$emit('input', val)
+        emitValue = val
+      } finally {
+        this.$emit('input', emitValue)
       }
     }
   },
   computed: {
     id() {
       return `datepicker_${new Date().getMilliseconds()}`
+    }
+  },
+  methods: {
+    activate() {
+      this.$refs.dateInputControl.focus()
+      this.$refs.datePickerWrapper.tabIndex = -1
     }
   }
 })

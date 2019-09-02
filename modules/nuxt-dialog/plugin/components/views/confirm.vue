@@ -1,4 +1,8 @@
-
+<style lang="scss">
+.alert-dialog{
+  padding: 40px;
+}
+</style>
 <template>
   <div class="alert-dialog" v-if="dialog">
     <div class="dialog-header">
