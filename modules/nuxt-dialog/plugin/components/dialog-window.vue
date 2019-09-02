@@ -13,7 +13,7 @@
       appear
       @after-leave="animationEnded('backdrop')"
     >
-      <div v-if="show" @click="close('close')" class="backdrop"></div>
+      <div v-if="show" @click="close('click-backDrop')" class="backdrop"></div>
     </transition>
     <transition
       enter-active-class="animated zoomIn"
@@ -66,6 +66,13 @@ export default {
       }
     },
     close(reason) {
+      if (
+        reason === 'click-backDrop' &&
+        this.dialog.persistent &&
+        this.dialog.persistent === true
+      ) {
+        return
+      }
       this.show = false
       this.returnData = reason
       this.emit_type = 'close'

@@ -12,11 +12,12 @@
 }
 .dialog-wrapper {
   background: #fff;
-  padding: 40px;
-  width: 420px;
+  padding: 0;
   max-width: 100%;
   border-radius: 4px;
   position: relative;
+  display: block;
+  overflow: auto;
 }
 .dialog-header {
   display: flex;
