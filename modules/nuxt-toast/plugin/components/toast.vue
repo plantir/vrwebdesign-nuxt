@@ -127,7 +127,7 @@
       :vertical="toast.vertical"
       @change="change"
     >
-      {{ toast.message }}
+      <div v-html="toast.message"></div>
       <v-icon @click="close" color="#fff">la-close</v-icon>
     </v-snackbar>
   </section>
