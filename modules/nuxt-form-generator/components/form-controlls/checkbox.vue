@@ -10,7 +10,7 @@
   <div class="form-group">
     <label></label>
     <v-checkbox
-      v-bind="$attrs"
+      v-bind="Object.assign($attrs,field)"
       v-model="model"
       outline
       :browser-autocomplete="field.browserAutocomplete || 'off'"

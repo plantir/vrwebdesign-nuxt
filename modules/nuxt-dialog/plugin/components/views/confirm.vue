@@ -1,6 +1,7 @@
 <style lang="scss">
-.alert-dialog{
+.alert-dialog {
   padding: 40px;
+  width: 420px;
 }
 </style>
 <template>

@@ -4,14 +4,18 @@
     <template v-if="field.select_text">
       <v-select
         :error-messages="errorMessages"
-        v-bind="$attrs"
+        v-bind="Object.assign($attrs,field)"
         v-model="model"
         :item-text="field.select_text"
         :item-value="field.select_value"
       ></v-select>
     </template>
     <template v-else>
-      <v-select :error-messages="errorMessages" v-bind="$attrs" v-model="model"></v-select>
+      <v-select
+        :error-messages="errorMessages"
+        v-bind="Object.assign($attrs,field)"
+        v-model="model"
+      ></v-select>
     </template>
   </div>
 </template>

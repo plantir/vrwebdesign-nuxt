@@ -1,7 +1,12 @@
 <template>
   <div class="form-group">
     <label v-if="!minimal">{{field.label}}</label>
-    <v-textarea :error-messages="errorMessages" auto-grow v-bind="$attrs" v-model="model"></v-textarea>
+    <v-textarea
+      :error-messages="errorMessages"
+      auto-grow
+      v-bind="Object.assign($attrs,field)"
+      v-model="model"
+    ></v-textarea>
   </div>
 </template>
 <script lang="ts">

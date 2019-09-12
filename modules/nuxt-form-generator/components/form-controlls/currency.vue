@@ -1,7 +1,11 @@
 <template>
   <div class="form-group">
     <label v-if="!minimal">{{field.label}}</label>
-    <vr-currency :error-messages="errorMessages" v-bind="$attrs" v-model="model"></vr-currency>
+    <vr-currency
+      :error-messages="errorMessages"
+      v-bind="Object.assign($attrs,field)"
+      v-model="model"
+    ></vr-currency>
   </div>
 </template>
 <script lang="ts">

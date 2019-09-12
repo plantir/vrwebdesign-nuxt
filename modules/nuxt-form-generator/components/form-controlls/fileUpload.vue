@@ -2,7 +2,7 @@
   <div class="form-group">
     <label v-if="!minimal">{{field.label}}</label>
     <vr-file-upload
-      v-bind="$attrs"
+      v-bind="Object.assign($attrs,field)"
       v-model="model"
       :errorMessage="errorMessages"
       :multiple="field.multiple"

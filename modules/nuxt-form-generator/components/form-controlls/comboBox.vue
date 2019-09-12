@@ -4,7 +4,7 @@
     <v-combobox
       :search-input.sync="search"
       :error-messages="errorMessages"
-      v-bind="$attrs"
+      v-bind="Object.assign($attrs,field)"
       v-model="model"
     >
       <template v-slot:item="data">

@@ -3,7 +3,7 @@
     <label v-if="!minimal">{{field.label}}</label>
     <vr-date-picker
       :error-messages="errorMessages"
-      v-bind="$attrs"
+      v-bind="Object.assign($attrs,field)"
       v-model="model"
       :auto-submit="true"
     ></vr-date-picker>

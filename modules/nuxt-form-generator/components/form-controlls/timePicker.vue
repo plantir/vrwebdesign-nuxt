@@ -33,7 +33,12 @@
         min-width="290px"
       >
         <template v-slot:activator="{ on }">
-          <v-text-field :error-messages="errorMessages" v-bind="$attrs" v-model="model" v-on="on"></v-text-field>
+          <v-text-field
+            :error-messages="errorMessages"
+            v-bind="Object.assign($attrs,field)"
+            v-model="model"
+            v-on="on"
+          ></v-text-field>
         </template>
         <v-time-picker
           :allowed-minutes="allowedStep"

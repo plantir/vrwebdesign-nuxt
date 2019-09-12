@@ -5,7 +5,7 @@
       cache-items
       :items="items"
       v-model="model"
-      v-bind="$attrs"
+      v-bind="Object.assign($attrs,field)"
       :search-input.sync="search"
       :loading="loading"
       :error-messages="errorMessages"
