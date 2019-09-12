@@ -17,7 +17,6 @@
 $line-awesome-font-path: '~vrwebdesign-nuxt/assets/fonts/Lineawesome';
 @font-face {
   font-family: 'LineAwesome';
-  src: url('#{$line-awesome-font-path}/line-awesome.eot?v=1.1.');
   src: url('#{$line-awesome-font-path}/line-awesome.eot??v=1.1.#iefix')
       format('embedded-opentype'),
     url('#{$line-awesome-font-path}/line-awesome.woff2?v=1.1.') format('woff2'),
