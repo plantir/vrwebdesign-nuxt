@@ -353,8 +353,8 @@
             ></v-checkbox>
           </th>
           <th
-            v-for="header in props.headers"
-            :key="header.text"
+            v-for="(header, index) in props.headers"
+            :key="index"
             :width="header.width"
             :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '',header.align == 'right'?'text-xs-right':header.align == 'left'?'text-xs-left':'text-xs-center']"
             @click="changeSort(header.value)"
@@ -545,6 +545,12 @@ export default {
       },
       deep: true
     },
+    defaultFilters: {
+      handler() {
+        this.data_filters = { ...this.defaultFilters }
+      },
+      deep: true
+    },
     data_filters: {
       handler() {
         this.filter = []
@@ -657,6 +663,8 @@ export default {
             this.loading = false
             this.total_items = res.total
             this.lastPage = res.lastPage
+
+            this.$emit('rows', this.rows)
           })
           .finally(() => {
             this.loading = false
@@ -667,7 +675,7 @@ export default {
       this.$dialog
         .confirm({
           title: 'حذف آیتم',
-          message: 'آیا از حذف این آیتم اطمینان دارد؟'
+          message: 'آیا از حذف این آیتم اطمینان دارید؟'
         })
         .then(() => {
           let service = this.deleteService
@@ -679,7 +687,7 @@ export default {
               this._query()
             })
             .catch(err => {
-              this.$toast.error().showSimple('خطایی رخ داده است')
+              this.$toast.error().showSimple(err.message || 'خطایی رخ داده است')
             })
         })
     },
