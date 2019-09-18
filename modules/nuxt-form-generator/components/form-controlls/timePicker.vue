@@ -17,7 +17,7 @@
     ></v-text-field>
   </div>-->
   <div class="form-group">
-    <label v-if="!minimal">{{field.label}}</label>
+    <label :class="caption_class"  v-if="!minimal">{{field.label}}</label>
     <section>
       <v-menu
         ref="menu"

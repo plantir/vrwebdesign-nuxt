@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label>{{field.label}}</label>
+    <label :class="caption_class">{{field.label}}</label>
     <v-radio-group
       v-model="model"
       :mandatory="false"

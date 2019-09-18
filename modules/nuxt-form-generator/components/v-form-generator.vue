@@ -11,10 +11,14 @@
   .form-group {
     display: flex;
     > label {
-      flex: 0 0 120px;
+      flex: 0 0 25%;
       color: #646c9a;
       padding: 12px;
-      padding-left: 20px;
+    }
+    .caption_class_left {
+      flex: 0 0 100px;
+      padding-left: 10px;
+      padding-right: 0;
       text-align: left;
     }
     .v-input {
@@ -111,6 +115,7 @@
               :type="field.inputType"
               :hint="field.hint"
               @input="change_field(field)"
+                :caption_class="row.labels_text_align==='left'?`caption_class_left`:``"
             ></component>
             <component
               v-else
@@ -141,6 +146,7 @@
               :type="field.inputType"
               :hint="field.hint"
               @input="change_field(field)"
+                :caption_class="row.labels_text_align==='left'?`caption_class_left`:``"
             ></component>
           </template>
           </v-flex>

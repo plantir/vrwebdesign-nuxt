@@ -8,7 +8,7 @@
 </style>
 <template>
   <div class="form-group">
-    <label></label>
+    <label :class="caption_class"></label>
     <v-checkbox
       v-bind="Object.assign($attrs,field)"
       v-model="model"

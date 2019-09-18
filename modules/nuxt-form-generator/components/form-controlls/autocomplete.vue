@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label v-if="!minimal">{{field.label}}</label>
+    <label :class="caption_class" v-if="!minimal">{{field.label}}</label>
     <v-autocomplete
       cache-items
       :items="items"

@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label v-if="!minimal">{{field.label}}</label>
+    <label :class="caption_class" v-if="!minimal">{{field.label}}</label>
     <v-text-field
       :error-messages="errorMessages"
       v-bind="Object.assign($attrs,field)"

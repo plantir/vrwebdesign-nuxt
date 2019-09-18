@@ -46,5 +46,6 @@ export interface VRFormInput {
 export type VRFormData = {
   title?: string
   hide?: boolean
+  labels_text_align?: 'left' | 'right' | 'center'
   rows: VRFormInput[]
 }[]

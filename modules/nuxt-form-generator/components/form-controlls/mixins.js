@@ -20,6 +20,10 @@ export default {
     minimal: {
       type: Boolean,
       default: false
+    },
+    caption_class: {
+      type: String,
+      default: ''
     }
   },
   data() {
