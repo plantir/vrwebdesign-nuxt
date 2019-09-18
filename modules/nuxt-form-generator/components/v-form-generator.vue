@@ -11,9 +11,11 @@
   .form-group {
     display: flex;
     > label {
-      flex: 0 0 25%;
+      flex: 0 0 120px;
       color: #646c9a;
       padding: 12px;
+      padding-left: 20px;
+      text-align: left;
     }
     .v-input {
       font-size: 13px;
@@ -77,8 +79,9 @@
     <div class="form-section" v-for="(row, sectionIndex) in formData" :key="sectionIndex">
       <template v-if="!row.hide">
         <h3 v-if="row.title">{{row.title}}</h3>
-        <template v-for="(field, fieldIndex) in row.rows">
-          <template v-if="!field.hide">
+        <v-layout row wrap>
+          <v-flex :class="`xs12 lg${field.size||12}`" v-for="(field, fieldIndex) in row.rows">
+            <template v-if="!field.hide">
             <component
               v-if="field.model.includes('.')"
               v-validate="field.validation"
@@ -140,7 +143,8 @@
               @input="change_field(field)"
             ></component>
           </template>
-        </template>
+          </v-flex>
+        </v-layout>
       </template>
     </div>
   </section>

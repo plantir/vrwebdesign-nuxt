@@ -1,16 +1,16 @@
 export interface VRFormInput {
   type?:
-    | 'autocomplete'
-    | 'comboBox'
-    | 'checkbox'
-    | 'currency'
-    | 'datePicker'
-    | 'timePicker'
-    | 'fileUpload'
-    | 'radio'
-    | 'select'
-    | 'textArea'
-    | 'textField'
+  | 'autocomplete'
+  | 'comboBox'
+  | 'checkbox'
+  | 'currency'
+  | 'datePicker'
+  | 'timePicker'
+  | 'fileUpload'
+  | 'radio'
+  | 'select'
+  | 'textArea'
+  | 'textField'
   model: string
   validation?: string | any
   ref?: string
@@ -41,6 +41,7 @@ export interface VRFormInput {
   upload_url?: string
   clearable?: boolean
   [key: string]: any
+  size?: number
 }
 export type VRFormData = {
   title?: string

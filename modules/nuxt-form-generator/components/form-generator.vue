@@ -101,8 +101,8 @@
       </div>
       <div ref="loaderWrapper" class="content">
         <v-layout row wrap>
-          <v-flex xl3 lg2></v-flex>
-          <v-flex xl6 lg8 xs12>
+          <v-flex :class="compactDesign?`xl2 lg1`:`xl3 lg2`"></v-flex>
+          <v-flex :class="compactDesign?'xl8 lg10 xs12':'xl6 lg8 xs12'">
             <v-form-generator
               :form="form"
               v-model="initItem"
@@ -110,7 +110,7 @@
               :minimal="minimal"
             ></v-form-generator>
           </v-flex>
-          <v-flex xl3 lg2></v-flex>
+          <v-flex :class="compactDesign?`xl2 lg1`:`xl3 lg2`" xl3 lg2></v-flex>
         </v-layout>
       </div>
     </div>
@@ -136,6 +136,10 @@ export default Vue.extend({
   directives: { Sticky },
   components: FormControlls,
   props: {
+    compactDesign: {
+      default: false,
+      type: Boolean
+    },
     title: {
       type: String
     },
