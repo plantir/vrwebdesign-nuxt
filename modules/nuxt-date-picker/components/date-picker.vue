@@ -84,10 +84,7 @@ export default Vue.extend({
       }
     },
     persianDate: function(val) {
-      if (!val || val.length < 8) {        
-        if (val === '') {
-          this.$emit('input', null)
-        }
+      if (!val || val.length < 8) {               
         return
       }
 
@@ -100,6 +97,7 @@ export default Vue.extend({
           emitValue = gregorianDate
         }
       } catch (error) {
+        emitValue = val
       } finally {
         this.$emit('input', emitValue)
       }
