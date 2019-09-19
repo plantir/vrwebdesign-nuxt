@@ -84,7 +84,7 @@
       <template v-if="!row.hide">
         <h3 v-if="row.title">{{row.title}}</h3>
         <v-layout row wrap>
-          <v-flex :class="`xs12 lg${field.size||12}`" v-for="(field, fieldIndex) in row.rows">
+          <v-flex :class="`xs12 lg${field.size||12}`" v-for="(field, fieldIndex) in row.rows" :key="fieldIndex">
             <template v-if="!field.hide">
             <component
               v-if="field.model.includes('.')"
