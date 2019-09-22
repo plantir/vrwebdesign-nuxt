@@ -131,7 +131,6 @@ export default {
   },
   data() {
     return {
-      data: {},
       dialogs: []
     }
   },
@@ -140,7 +139,6 @@ export default {
   },
   methods: {
     commit(data) {
-      this.data = data
       this.dialogs.push(data)
     },
     forceCloseAll() {
@@ -152,7 +150,7 @@ export default {
       if (dialogIndex !== -1) {
         this.$delete(this.dialogs, dialogIndex)
       }
-      this.data.resolve(data)
+      dialog.resolve(data)
     },
     close({ dialog, data }) {
       dialog.show = false
@@ -160,7 +158,7 @@ export default {
       if (dialogIndex !== -1) {
         this.$delete(this.dialogs, dialogIndex)
       }
-      this.data.reject(data)
+      dialog.reject(data)
     }
   }
 }
