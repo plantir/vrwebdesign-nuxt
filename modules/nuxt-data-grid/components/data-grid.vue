@@ -260,10 +260,10 @@
             <span>تازه کردن اطلاعات</span>
           </v-tooltip>
           <slot name="header_add">
-          <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
-            <v-icon>add</v-icon>
-            <span>ایجاد جدید</span>
-          </v-btn>
+            <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
+              <v-icon>add</v-icon>
+              <span>ایجاد جدید</span>
+            </v-btn>
           </slot>
         </div>
       </slot>
@@ -526,6 +526,10 @@ export default {
       default: () => {
         return {}
       }
+    },
+    defaultSort: {
+      type: String,
+      default: null
     }
   },
   watch: {
@@ -564,7 +568,7 @@ export default {
         this.$emit('input', this.selected)
       },
       deep: true
-    }
+    },    
   },
   data() {
     let filter = []
@@ -581,7 +585,7 @@ export default {
     return {
       showFilter: true,
       filterHeight: 0,
-      sort: null,
+      sort: this.defaultSort,
       pagination: {
         page: 1,
         rowsPerPage: this.pageSize,
