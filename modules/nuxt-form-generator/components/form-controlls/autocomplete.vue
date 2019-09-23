@@ -10,7 +10,16 @@
       :loading="loading"
       :error-messages="errorMessages"
     >
-      <template v-slot:selection="data">{{ data.item.text }}</template>
+      <template v-slot:selection="data">
+        <v-chip
+          v-if="field.chips"
+          close
+          :selected="data.selected"
+          class="chip--select-multi"
+          @input="remove(data.item)"
+        >{{ data.item.text }}</v-chip>
+        <span v-else>{{ data.item.text }}</span>
+      </template>
       <template v-slot:item="data">
         <v-list-tile-content>
           <v-list-tile-title v-html="data.item.text"></v-list-tile-title>
@@ -61,6 +70,10 @@ export default Vue.extend({
         this.items = items
         this.loading = false
       })
+    },
+    remove(item) {
+      const index = this.model.findIndex(model => item.value == model.value)
+      if (index >= 0) this.model.splice(index, 1)
     }
   }
 })
