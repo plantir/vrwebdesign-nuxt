@@ -260,10 +260,10 @@
             <span>تازه کردن اطلاعات</span>
           </v-tooltip>
           <slot name="header_add">
-          <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
-            <v-icon>add</v-icon>
-            <span>ایجاد جدید</span>
-          </v-btn>
+            <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
+              <v-icon>add</v-icon>
+              <span>ایجاد جدید</span>
+            </v-btn>
           </slot>
         </div>
       </slot>
@@ -472,6 +472,7 @@ export default {
     defaultFilters: {
       default: () => []
     },
+    defaultSort: {},
     headers: {
       required: true,
       default: () => []
@@ -586,7 +587,7 @@ export default {
         page: 1,
         rowsPerPage: this.pageSize,
         descending: false,
-        sortBy: null
+        sortBy: this.defaultSort
       },
       data_filters: { ...this.defaultFilters },
       total_items: 0,
