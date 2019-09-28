@@ -125,16 +125,14 @@ import baseMixin from './base-mixin'
 import { setTimeout } from 'timers'
 import { NuxtAxiosResource } from '../../nuxt-axios/types'
 import { NuxtLoaderElement } from '../../nuxt-loader/types'
-import FormControlls from './form-controlls/index'
 import { AxiosResponse } from 'axios'
 interface ISaveFunction {
   renew_after?: boolean
   exit_after?: boolean
 }
 export default Vue.extend({
-  components: [vFormGenerator],
   directives: { Sticky },
-  components: FormControlls,
+  components: { vFormGenerator },
   props: {
     title: {
       type: String

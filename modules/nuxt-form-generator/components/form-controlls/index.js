@@ -11,16 +11,16 @@ import textArea from './textArea.vue'
 import textField from './textField.vue'
 
 let items = {
-  'form-controll-autocomplete': autocomplete,
-  'form-controll-comboBox': comboBox,
-  'form-controll-checkbox': checkbox,
-  'form-controll-currency': currency,
-  'form-controll-datePicker': datePicker,
-  'form-controll-timePicker': timePicker,
-  'form-controll-fileUpload': fileUpload,
-  'form-controll-radio': radio,
-  'form-controll-select': select,
-  'form-controll-textArea': textArea,
-  'form-controll-textField': textField
+  'vr-autocomplete': autocomplete,
+  'vr-comboBox': comboBox,
+  'vr-checkbox': checkbox,
+  'vr-currency': currency,
+  'vr-datePicker': datePicker,
+  'vr-timePicker': timePicker,
+  'vr-fileUpload': fileUpload,
+  'vr-radio': radio,
+  'vr-select': select,
+  'vr-textArea': textArea,
+  'vr-textField': textField
 }
 export default items

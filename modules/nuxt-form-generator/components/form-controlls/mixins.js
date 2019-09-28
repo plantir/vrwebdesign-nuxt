@@ -29,10 +29,10 @@ export default {
   },
   computed: {
     minimalLabel() {
-      return this.minimal ? this.field.label : "";
+      return this.minimal ? this.field.label : ''
     },
-    placeholder(){
-      return this.minimal ? "": this.field.placeholder;
+    placeholder() {
+      return this.minimal ? '' : this.field.placeholder
     }
   },
   watch: {
