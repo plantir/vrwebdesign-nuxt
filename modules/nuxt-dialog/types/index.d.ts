@@ -11,6 +11,7 @@ interface DialogParams {
   scope?: any
   props?: any
   persistent?: boolean
+  icon?: string
 }
 interface NuxtDialogInstance {
   ok(ok_txt: string): NuxtDialogInstance
