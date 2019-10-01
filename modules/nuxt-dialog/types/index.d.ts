@@ -17,6 +17,7 @@ interface NuxtDialogInstance {
   ok(ok_txt: string): NuxtDialogInstance
   cancel(cancel_txt: string): NuxtDialogInstance
   message(message: string): NuxtDialogInstance
+  icon(icon: string): NuxtDialogInstance
   title(title: string): NuxtDialogInstance
   warning(): NuxtDialogInstance
   info(): NuxtDialogInstance

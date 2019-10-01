@@ -38,6 +38,10 @@ const Plugin = {
         Plugin.dialog.message = message
         return this
       },
+      icon(icon) {
+        Plugin.dialog.icon = icon
+        return this
+      },
       title(title) {
         Plugin.dialog.title = title
         return this
