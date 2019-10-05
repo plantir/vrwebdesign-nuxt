@@ -20,6 +20,7 @@ interface NuxtDialogInstance {
   icon(icon: string): NuxtDialogInstance
   title(title: string): NuxtDialogInstance
   warning(): NuxtDialogInstance
+  wrapper(element: Vue | Element | String): NuxtDialogInstance
   info(): NuxtDialogInstance
   question(): NuxtDialogInstance
   success(): NuxtDialogInstance
