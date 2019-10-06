@@ -352,16 +352,24 @@
               @click.stop="toggleAll"
             ></v-checkbox>
           </th>
-          <th
-            v-for="header in props.headers"
-            :key="header.text"
-            :width="header.width"
-            :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '',header.align == 'right'?'text-xs-right':header.align == 'left'?'text-xs-left':'text-xs-center']"
-            @click="changeSort(header.value)"
-          >
-            <v-icon small>la-arrow-up</v-icon>
-            {{ header.text }}
-          </th>
+          <template v-for="header in props.headers">
+            <th
+              v-if="header.sortable"
+              :key="header.text"
+              :width="header.width"
+              :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '',header.align == 'right'?'text-xs-right':header.align == 'left'?'text-xs-left':'text-xs-center']"
+              @click="changeSort(header.value)"
+            >
+              <v-icon small>la-arrow-up</v-icon>
+              {{ header.text }}
+            </th>
+            <th
+              v-else
+              :key="header.text"
+              :width="header.width"
+              :class="['column',,header.align == 'right'?'text-xs-right':header.align == 'left'?'text-xs-left':'text-xs-center']"
+            >{{ header.text }}</th>
+          </template>
         </tr>
       </template>
       <template v-slot:items="props">
@@ -754,9 +762,15 @@ export default {
 
   computed: {
     custom_headers() {
-      let action_exist = this.headers.some(item => item.name == 'action')
+      let headers = this.headers.map(item => {
+        if (item.sortable == null) {
+          item.sortable = true
+        }
+        return item
+      })
+      let action_exist = headers.some(item => item.name == 'action')
       if (!action_exist && !this.withoutAction) {
-        this.headers.push({
+        headers.push({
           text: '',
           name: 'action',
           align: 'center',
@@ -764,7 +778,7 @@ export default {
           width: '10%'
         })
       }
-      return this.headers
+      return headers
     },
     start_item() {
       return (this.pagination.page - 1) * this.pagination.rowsPerPage + 1
