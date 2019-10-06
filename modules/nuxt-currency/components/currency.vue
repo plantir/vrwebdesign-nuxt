@@ -26,7 +26,6 @@ export default {
   },
   watch: {
     value: function(val) {
-      debugger
       if (isNaN(val)) {
         return
       }
