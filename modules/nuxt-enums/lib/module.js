@@ -30,6 +30,7 @@ function axiosModule(_moduleOptions) {
   this.options.enums = enums
 
   this.addPlugin({
+    ssr: false,
     src: path.resolve(__dirname, 'plugin.js'),
     fileName: 'enums.js',
     options: this.options
