@@ -16,7 +16,6 @@ export default (ctx, inject) => {
     if (ctx.store.getters['authorization/isAuthorized']) {
       return ctx.store.getters['authorization/isAuthorized'](permissionKey);
     } else {
-      const name = 'armin';
       return false;
     }
   }
