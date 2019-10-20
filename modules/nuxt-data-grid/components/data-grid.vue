@@ -516,6 +516,10 @@ export default {
     serverPagination: {
       default: true
     },
+     watchFilters: {
+      type: Boolean,
+      default: true
+    },
     items: {
       default: () => []
     },
@@ -568,7 +572,9 @@ export default {
             )
           }
         }
-        this._query()
+        if(this.watchFilters){
+          this._query()
+        }
       },
       deep: true
     },
