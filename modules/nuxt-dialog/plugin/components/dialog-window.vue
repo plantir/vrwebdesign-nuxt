@@ -6,7 +6,7 @@
 
 
 <template>
-  <div class="dialog-container">
+  <div class="dialog-container" :class="dialog.container_custom_class||''">
     <transition
       enter-active-class="animated fadeIn"
       leave-active-class="animated fadeOut"
@@ -21,7 +21,7 @@
       @after-leave="animationEnded('content')"
       appear
     >
-      <div v-if="show" class="dialog-wrapper">
+      <div v-if="show" class="dialog-wrapper"  :class="dialog.dialog_wrapper_custom_class||''">
         <component
           v-bind="dialog.props"
           :scope="dialog.scope"

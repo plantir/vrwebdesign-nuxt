@@ -516,6 +516,10 @@ export default {
     serverPagination: {
       default: true
     },
+     watchFilters: {
+      type: Boolean,
+      default: true
+    },
     items: {
       default: () => []
     },
@@ -535,6 +539,10 @@ export default {
       default: () => {
         return {}
       }
+    },
+    defaultSort: {
+      type: String,
+      default: null
     }
   },
   watch: {
@@ -564,7 +572,9 @@ export default {
             )
           }
         }
-        this._query()
+        if(this.watchFilters){
+          this._query()
+        }
       },
       deep: true
     },
@@ -573,7 +583,7 @@ export default {
         this.$emit('input', this.selected)
       },
       deep: true
-    }
+    },    
   },
   data() {
     let filter = []
@@ -590,7 +600,7 @@ export default {
     return {
       showFilter: true,
       filterHeight: 0,
-      sort: null,
+      sort: this.defaultSort,
       pagination: {
         page: 1,
         rowsPerPage: this.pageSize,

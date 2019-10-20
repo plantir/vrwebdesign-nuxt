@@ -309,7 +309,9 @@ export default Vue.extend({
                   })
               })
               .catch(err => {
-                this.$toast.error().showSimple('خطایی رخ داده است')
+                this.$toast
+                  .error()
+                  .showSimple(err.data.message || 'خطایی رخ داده است')
               })
               .then(() => {
                 this.loader.hide()
