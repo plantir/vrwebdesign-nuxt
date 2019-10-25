@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Dialog from '~/modules/nuxt-dialog/plugin/index'
+import Dialog from 'vrwebdesign-nuxt/modules/nuxt-dialog/plugin/index'
 
 Vue.use(Dialog)
 
