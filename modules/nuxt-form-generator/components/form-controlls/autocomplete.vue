@@ -21,19 +21,19 @@
         <span v-else>{{ data.item.text }}</span>
       </template>
       <template v-slot:item="data">
-        <v-list-tile-content>
-          <v-list-tile-title v-html="data.item.text"></v-list-tile-title>
-        </v-list-tile-content>
+        <v-list-item-content>
+          <v-list-item-title v-html="data.item.text"></v-list-item-title>
+        </v-list-item-content>
       </template>
       <template v-slot:no-data>
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile-title>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>
               نتیحه ای برای "
               <strong>{{ search }}</strong>" یافت نشد
-            </v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </template>
     </v-autocomplete>
   </div>
@@ -47,33 +47,33 @@ export default Vue.extend({
     return {
       loading: false,
       search: null,
-      items: this.field.async ? [] : this.field.items
+      items: (<any>this).field.async ? [] : (<any>this).field.items
     }
   },
   watch: {
     search(val, old) {
-      this.isLoading = true
-      if (this.field.async) {
+      (<any>this).isLoading = true
+      if ((<any>this).field.async) {
         this.get_lists(val)
       }
     }
   },
   mounted() {
-    if (this.field.async) {
+    if ((<any>this).field.async) {
       this.get_lists('')
     }
   },
 
   methods: {
     get_lists(val) {
-      this.field.queryService(val).then(items => {
+      (<any>this).field.queryService(val).then(items => {
         this.items = items
         this.loading = false
       })
     },
     remove(item) {
-      const index = this.model.findIndex(model => item.value == model.value)
-      if (index >= 0) this.model.splice(index, 1)
+      const index = (<any>this).model.findIndex(model => item.value == model.value)
+      if (index >= 0) (<any>this).model.splice(index, 1)
     }
   }
 })

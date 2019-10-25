@@ -2,9 +2,9 @@
   <!-- <div >
    
     <v-text-field
-      outline
+      outlined
       single-line
-      browser-autocomplete="new-password"
+      autocomplete="new-password"
       v-model="model"
       :disabled="field.disabled"
       :readonly="field.readonly"

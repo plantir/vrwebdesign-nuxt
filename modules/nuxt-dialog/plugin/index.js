@@ -3,14 +3,10 @@ import DefaultView from './components/views/default.vue'
 import AlertView from './components/views/alert.vue'
 import ConfirmView from './components/views/confirm.vue'
 const DEFAULT_OPTION = {}
-const mountIfNotMounted = (Vue, options, root) => {
+export const mountIfNotMounted = (Vue, options, root) => {
   if (!root._dynamicContainer) {
     let node = document.createElement('div')
-    if (options.wrapper) {
-      options.wrapper.appendChild(node)
-    } else {
-      document.querySelector('#app').appendChild(node)
-    }
+    document.querySelector('#app').appendChild(node)
     new Vue({
       parent: root,
       render: h => h(DialogComponent)
@@ -48,11 +44,6 @@ const Plugin = {
       },
       component(component) {
         Plugin.dialog.component = component
-        return this
-      },
-      wrapper(wrapper) {
-        Plugin.rootInstance._dynamicContainer = null
-        options.wrapper = wrapper
         return this
       },
       warning() {
@@ -102,6 +93,7 @@ const Plugin = {
         })
       },
       destroy() {
+        console.log(Plugin)
         if (Plugin.root) {
           Plugin.root.forceCloseAll()
           let elem = Plugin.root.$el

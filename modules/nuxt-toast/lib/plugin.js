@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Toast from 'vrwebdesign-nuxt/modules/nuxt-toast/plugin/index'
+import Toast from '~/modules/nuxt-toast/plugin/index'
 
 Vue.use(Toast)
 

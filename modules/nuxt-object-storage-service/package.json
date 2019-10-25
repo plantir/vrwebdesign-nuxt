@@ -1,0 +1,31 @@
+{
+  "name": "nuxt-object-storage-service",
+  "version": "5.4.2",
+  "description": "object-storage-service based on amazon-s3 for Nuxt.js",
+  "license": "MIT",
+  "contributors": [
+    "Narges Momenyan <momenyan@gmail.com>"
+  ],
+  "main": "lib/module.js",
+  "types": "types/index.d.ts",
+  "repository": "https://github.com/nuxt-community/object-storage-service-module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "nuxt test/fixture",
+    "lint": "eslint lib test",
+    "test": "yarn lint && jest",
+    "release": "yarn test && standard-version && git push --follow-tags && npm publish"
+  },
+  "files": [
+    "lib",
+    "types/*.d.ts"
+  ],
+  "dependencies": {
+    "minio":"^7.0.12"
+  },
+  "devDependencies": {
+    "@types/minio": "^7.0.3"
+  }
+}

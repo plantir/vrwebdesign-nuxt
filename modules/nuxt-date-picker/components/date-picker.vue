@@ -14,7 +14,7 @@
     font-weight: 600;
   }
   .v-date-picker-table .v-btn {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 }
 </style>
@@ -25,13 +25,13 @@
       :id="id"
       v-model="persianDate"
       v-bind="$attrs"
-      :mask="type=='date'?'####/##/##':''"
+      
       ref="dateInputControl"
       class="form-control is-editable"
       :append-icon="type=='date'?'date_range':'access_time'"
       @click:append="show=true"
     ></v-text-field>
-
+<!-- :mask="type=='date'?'####/##/##':''" -->
     <date-picker
       v-model="persianDate"
       :type="type"
@@ -84,10 +84,7 @@ export default Vue.extend({
       }
     },
     persianDate: function(val) {
-      if (!val || val.length < 8) {
-        if (val === '') {
-          this.$emit('input', null)
-        }
+      if (!val || val.length < 8) {               
         return
       }
 
@@ -100,6 +97,7 @@ export default Vue.extend({
           emitValue = gregorianDate
         }
       } catch (error) {
+        emitValue = val
       } finally {
         this.$emit('input', emitValue)
       }
@@ -112,8 +110,8 @@ export default Vue.extend({
   },
   methods: {
     activate() {
-      this.$refs.dateInputControl.focus()
-      this.$refs.datePickerWrapper.tabIndex = -1
+      (<any>this).$refs.dateInputControl.focus()
+      (<any>this).$refs.datePickerWrapper.tabIndex = -1
     }
   }
 })
