@@ -10,6 +10,7 @@ span.vr-badge {
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  white-space: nowrap;
   &.badge-dot {
     background: transparent !important;
     font-weight: 700;
