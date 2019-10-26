@@ -14,6 +14,11 @@
       flex: 0 0 25%;
       color: #646c9a;
       padding: 12px;
+      &.required:after {
+        content: '*';
+        margin-right: 4px;
+        color: #e91e63;
+      }
     }
     .v-input {
       font-size: 13px;
