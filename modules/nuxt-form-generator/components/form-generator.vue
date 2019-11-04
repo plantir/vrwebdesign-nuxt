@@ -149,6 +149,11 @@ export default Vue.extend({
     formData: {
       required: true
     },
+    form: {
+      default: () => {
+        return {}
+      }
+    },
     minimal: {
       type: Boolean,
       default: false
@@ -197,7 +202,6 @@ export default Vue.extend({
       })
     }
     return {
-      form: {},
       initItem: this.item,
       freezItem: JSON.parse(JSON.stringify(this.item)),
 

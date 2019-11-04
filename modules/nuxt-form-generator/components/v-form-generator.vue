@@ -79,6 +79,15 @@
 
 <template>
   <section>
+    <div v-for="err in errors.items">
+      <v-alert
+        type="error"
+        :value="true"
+        transition="scale-transition"
+        dismissible
+        outline
+      >{{err.msg}}</v-alert>
+    </div>
     <div class="form-section" v-for="(row, sectionIndex) in formData" :key="sectionIndex">
       <template v-if="!row.hide">
         <h3 v-if="row.title">{{row.title}}</h3>
@@ -198,28 +207,43 @@ export default {
     this.form.moveToFirstError = this.moveToFirstError
     this.form.validate = this.validate
     this.form.resetError = this.resetError
+    this.form.setError = this.setError
   },
   methods: {
     moveToFirstError() {
-      const field = this.$validator.fields.find({
-        id: this.errors.items[0].id
-      })
-      if (field) {
-        this.$scrollTo(field.el, 1000, { offset: -150 })
+      if (this.errors.items[0].id) {
+        const field = this.$validator.fields.find({
+          id: this.errors.items[0].id
+        })
+        if (field) {
+          this.$scrollTo(field.el, 1000, { offset: -150 })
+        }
+      } else {
+        this.$scrollTo('body', 1000, { offset: -150 })
       }
     },
     validate() {
       return new Promise((resolve, reject) => {
+        // inja bayad ye gohi bokhoram
         this.$validator.validateAll().then(async valid => {
-          resolve(valid)
-          if (!valid) {
+          if (this.$validator.errors.items.length) {
+            this.$validator.errors.items[0].regenerate()
             this.form.moveToFirstError()
+            resolve(false)
+          } else {
+            resolve(valid)
+            if (!valid) {
+              this.form.moveToFirstError()
+            }
           }
         })
       })
     },
     resetError() {
       this.errors.clear()
+    },
+    setError(err) {
+      this.errors.add(err)
     },
     change_field(field) {
       if (field.onChange) {
