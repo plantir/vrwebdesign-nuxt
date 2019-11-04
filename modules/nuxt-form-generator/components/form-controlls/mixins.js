@@ -39,7 +39,7 @@ export default {
         return false
       }
       if (
-        typeof this.field.validation == Object &&
+        typeof this.field.validation == 'object' &&
         !this.field.validation.required
       ) {
         return false
