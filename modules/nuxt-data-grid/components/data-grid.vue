@@ -471,7 +471,7 @@ export default {
     title: {
       required: true,
       default: () => {
-        return {};
+        return {}
       }
     },
     filters: {
@@ -537,7 +537,7 @@ export default {
     },
     dataGrid: {
       default: () => {
-        return {};
+        return {}
       }
     },
     defaultSort: {
@@ -548,52 +548,58 @@ export default {
   watch: {
     pagination: {
       handler() {
-        this.sort = this.pagination.sortBy;
+        this.sort = this.pagination.sortBy
         if (this.pagination.descending) {
-          this.sort = '-' + this.sort;
+          this.sort = '-' + this.sort
         }
-        this._query();
+        this._query()
       },
       deep: true
     },
     items: {
       handler() {
-        this.rows = [...this.items];
+        this.rows = [...this.items]
       },
       deep: true
     },
     data_filters: {
       handler() {
-        this.filter = [];
+        this.filter = []
         for (const filter_name in this.data_filters) {
           if (this.data_filters[filter_name]) {
             this.filter.push(
               `${filter_name}:${this.data_filters[filter_name]}:like`
-            );
+            )
           }
         }
         if (this.watchFilters) {
-          this._query();
+          this._query()
         }
       },
       deep: true
     },
     selected: {
       handler() {
-        this.$emit('input', this.selected);
+        this.$emit('input', this.selected)
+      },
+      deep: true
+    },
+    value: {
+      handler() {
+        this.selected = this.value
       },
       deep: true
     }
   },
   data() {
-    let filter = [];
+    let filter = []
     if (this.defaultFilters) {
       for (const filter_name in this.defaultFilters) {
         if (this.defaultFilters[filter_name]) {
           filter.push(
             `${filter_name}:${this.defaultFilters[filter_name]}:${this
               .defaultFilters.op || '='}`
-          );
+          )
         }
       }
     }
@@ -615,72 +621,72 @@ export default {
       selected: [...this.value],
       filter: filter,
       search: null
-    };
+    }
   },
   mounted() {
-    this.initFilters();
-    this._query();
+    this.initFilters()
+    this._query()
     this.dataGrid.refresh = () => {
-      this.refresh();
-    };
+      this.refresh()
+    }
   },
   methods: {
     initFilters: function() {
-      this.$refs['filters'].style.height = 'auto';
-      this.$refs['filters'].style.position = 'absolute';
-      this.$refs['filters'].style.visibility = 'hidden';
-      this.$refs['filters'].style.display = 'block';
-      const height = getComputedStyle(this.$refs['filters']).height;
-      this.filterHeight = height;
-      this.$refs['filters'].style.position = null;
-      this.$refs['filters'].style.visibility = null;
-      this.$refs['filters'].style.display = null;
-      this.$refs['filters'].style.height = 0;
+      this.$refs['filters'].style.height = 'auto'
+      this.$refs['filters'].style.position = 'absolute'
+      this.$refs['filters'].style.visibility = 'hidden'
+      this.$refs['filters'].style.display = 'block'
+      const height = getComputedStyle(this.$refs['filters']).height
+      this.filterHeight = height
+      this.$refs['filters'].style.position = null
+      this.$refs['filters'].style.visibility = null
+      this.$refs['filters'].style.display = null
+      this.$refs['filters'].style.height = 0
     },
     toggleAll() {
-      if (this.selected.length) this.selected = [];
-      else this.selected = this.rows.slice();
+      if (this.selected.length) this.selected = []
+      else this.selected = this.rows.slice()
     },
     changeSort(column) {
       if (this.pagination.sortBy === column) {
-        this.pagination.descending = !this.pagination.descending;
+        this.pagination.descending = !this.pagination.descending
       } else {
-        this.pagination.sortBy = column;
-        this.pagination.descending = false;
+        this.pagination.sortBy = column
+        this.pagination.descending = false
       }
     },
     _query() {
       if (!this.serverPagination) {
-        this.loading = false;
-        return;
+        this.loading = false
+        return
       }
-      clearTimeout(this.timeout);
+      clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
-        this.loading = true;
+        this.loading = true
         let params = {
           page: this.pagination.page,
           perPage: this.pagination.rowsPerPage
-        };
+        }
         if (this.sort) {
-          params.sort = this.sort;
+          params.sort = this.sort
         }
         if (this.filter && this.filter.length) {
-          params.filters = JSON.stringify(this.filter);
+          params.filters = JSON.stringify(this.filter)
         }
         let service = this.queryService
           ? this.queryService(params)
-          : this.service.$query(params);
+          : this.service.$query(params)
         service
           .then(res => {
-            this.rows = res.data;
-            this.loading = false;
-            this.total_items = res.total;
-            this.lastPage = res.lastPage;
+            this.rows = res.data
+            this.loading = false
+            this.total_items = res.total
+            this.lastPage = res.lastPage
           })
           .finally(() => {
-            this.loading = false;
-          });
-      }, 100);
+            this.loading = false
+          })
+      }, 100)
     },
     _delete(item) {
       this.$dialog
@@ -691,16 +697,16 @@ export default {
         .then(() => {
           let service = this.deleteService
             ? this.deleteService(item.id)
-            : this.service.$delete(item.id);
+            : this.service.$delete(item.id)
           service
             .then(() => {
-              this.$toast.success().showSimple('آیتم با موفقت حذف شد');
-              this._query();
+              this.$toast.success().showSimple('آیتم با موفقت حذف شد')
+              this._query()
             })
             .catch(err => {
-              this.$toast.error().showSimple('خطایی رخ داده است');
-            });
-        });
+              this.$toast.error().showSimple('خطایی رخ داده است')
+            })
+        })
     },
     _edit(item) {
       if (this.editMode == 'dialog' && this.editComponent) {
@@ -713,23 +719,23 @@ export default {
             this.service
               .update(item.id, newItem)
               .then(res => {
-                this.$toast.success().showSimple('با موفقیت به روز رسانی شد');
+                this.$toast.success().showSimple('با موفقیت به روز رسانی شد')
               })
               .catch(err => {
-                this.$toast.error().showSimple('خطایی رخ داده است');
-              });
-          });
-        return;
+                this.$toast.error().showSimple('خطایی رخ داده است')
+              })
+          })
+        return
       }
       if (this.editUrl) {
         let url = this.editUrl.replace(/:[a-z]+/g, p => {
-          let param = p.replace(':', '');
-          return item[param];
-        });
-        this.$router.push(url);
-        return;
+          let param = p.replace(':', '')
+          return item[param]
+        })
+        this.$router.push(url)
+        return
       }
-      this.$router.push(this.$route.path + '/' + item.id);
+      this.$router.push(this.$route.path + '/' + item.id)
     },
     _add() {
       if (this.editMode == 'dialog' && this.editComponent) {
@@ -742,31 +748,31 @@ export default {
             this.service
               .save(newItem)
               .then(res => {
-                this.$toast.success().showSimple('با موفقیت ایجاد شد');
+                this.$toast.success().showSimple('با موفقیت ایجاد شد')
               })
               .catch(err => {
-                this.$toast.error().showSimple('خطایی رخ داده است');
-              });
-          });
-        return;
+                this.$toast.error().showSimple('خطایی رخ داده است')
+              })
+          })
+        return
       }
       if (this.createUrl) {
         let url = this.createUrl.replace(/:[a-z]+/g, p => {
-          let param = p.replace(':', '');
-          return item[param];
-        });
-        this.$router.push(url);
-        return;
+          let param = p.replace(':', '')
+          return item[param]
+        })
+        this.$router.push(url)
+        return
       }
-      this.$router.push(this.$route.path + '/create');
+      this.$router.push(this.$route.path + '/create')
     },
     refresh() {
-      this._query();
+      this._query()
     },
     resetFilter() {
-      this.data_filters = { ...this.defaultFilters };
-      this.sort = null;
-      this.pagination.sortBy = null;
+      this.data_filters = { ...this.defaultFilters }
+      this.sort = null
+      this.pagination.sortBy = null
     }
   },
 
@@ -774,11 +780,11 @@ export default {
     custom_headers() {
       let headers = this.headers.map(item => {
         if (item.sortable == null) {
-          item.sortable = true;
+          item.sortable = true
         }
-        return item;
-      });
-      let action_exist = headers.some(item => item.name == 'action');
+        return item
+      })
+      let action_exist = headers.some(item => item.name == 'action')
       if (!action_exist && !this.withoutAction) {
         headers.push({
           text: '',
@@ -786,17 +792,17 @@ export default {
           align: 'center',
           sortable: false,
           width: '10%'
-        });
+        })
       }
-      return headers;
+      return headers
     },
     start_item() {
-      return (this.pagination.page - 1) * this.pagination.rowsPerPage + 1;
+      return (this.pagination.page - 1) * this.pagination.rowsPerPage + 1
     },
     end_item() {
-      let end_item = this.pagination.page * this.pagination.rowsPerPage;
-      return end_item > this.total_items ? this.total_items : end_item;
+      let end_item = this.pagination.page * this.pagination.rowsPerPage
+      return end_item > this.total_items ? this.total_items : end_item
     }
   }
-};
+}
 </script>
