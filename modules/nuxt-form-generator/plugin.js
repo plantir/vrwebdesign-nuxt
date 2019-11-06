@@ -34,7 +34,8 @@ export default ({ app: { router } }) => {
     if (to.fullPath.split('/')[1] !== from.fullPath.split('/')[1]) {
       return
     }
-    if (from.fullPath.split('/').length < 3) {
+    let come_from_id = from.fullPath.match(/\/\d+(\/info)?$/g)
+    if (!come_from_id) {
       return
     }
     router.go(-1)
