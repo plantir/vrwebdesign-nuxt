@@ -38,6 +38,7 @@
 }
 .toolbar {
   display: flex;
+  align-items: center;
   .v-btn--icon {
     margin: 0;
   }
