@@ -314,6 +314,10 @@ export default Vue.extend({
                 } catch (error) {
                   msg = 'خطایی رخ داده است'
                 }
+                this.$toast
+                  .error()
+                  .timeout(5000)
+                  .showSimple(msg)
               })
               .then(() => {
                 this.loader.hide()
