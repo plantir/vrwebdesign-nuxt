@@ -38,7 +38,6 @@
 }
 .toolbar {
   display: flex;
-  align-items: center;
   .v-btn--icon {
     margin: 0;
   }
@@ -232,8 +231,8 @@
     <div class="head">
       <slot name="header">
         <div class="head-label">
-          <v-icon>{{title.icon}}</v-icon>
-          <h3 class="head-title">{{title.text}}</h3>
+          <v-icon>{{ title.icon }}</v-icon>
+          <h3 class="head-title">{{ title.text }}</h3>
         </div>
         <div class="toolbar">
           <v-tooltip bottom>
@@ -247,7 +246,7 @@
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn @click="showFilter = !showFilter" v-on="on" flat icon>
-                <v-icon :class="{slash:!showFilter}">la-filter</v-icon>
+                <v-icon :class="{ slash: !showFilter }">la-filter</v-icon>
               </v-btn>
             </template>
             <span>مخفی کردن فیلتر ها</span>
@@ -260,8 +259,30 @@
             </template>
             <span>تازه کردن اطلاعات</span>
           </v-tooltip>
+          <v-tooltip bottom v-if="withRecycle">
+            <template v-slot:activator="{ on }">
+              <v-btn @click="recycle" v-on="on" flat icon>
+                <v-icon
+                  :color="
+                    filter.some(item => item.includes('is_deleted'))
+                      ? 'green'
+                      : 'black'
+                  "
+                  >restore_from_trash</v-icon
+                >
+              </v-btn>
+            </template>
+            <span>بازیابی رکوردها</span>
+          </v-tooltip>
           <slot name="header_add">
-            <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
+            <v-btn
+              v-if="withAdd"
+              @click="_add"
+              class="add-new"
+              color="primary"
+              round
+              outline
+            >
               <v-icon>add</v-icon>
               <span>ایجاد جدید</span>
             </v-btn>
@@ -272,7 +293,7 @@
     <div
       ref="filters"
       class="data-table-search"
-      :style="[showFilter ? { height : filterHeight } : {}]"
+      :style="[showFilter ? { height: filterHeight } : {}]"
     >
       <slot name="filters">
         <v-layout row wrap>
@@ -286,7 +307,12 @@
               label="Search"
             ></v-text-field>
           </v-flex>
-          <v-flex :class="`xs${item.size||3}`" pa-2 v-for="(item, index) in filters" :key="index">
+          <v-flex
+            :class="`xs${item.size || 3}`"
+            pa-2
+            v-for="(item, index) in filters"
+            :key="index"
+          >
             <template v-if="item.type == 'select'">
               <v-select
                 single-line
@@ -341,7 +367,11 @@
       :select-all="selectAll"
       :search="search"
     >
-      <v-progress-linear v-slot:progress color="primary" indeterminate></v-progress-linear>
+      <v-progress-linear
+        v-slot:progress
+        color="primary"
+        indeterminate
+      ></v-progress-linear>
       <template v-slot:headers="props">
         <tr>
           <th width="5%" v-if="selectAll">
@@ -358,7 +388,16 @@
               v-if="header.sortable"
               :key="header.text"
               :width="header.width"
-              :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '',header.align == 'right'?'text-xs-right':header.align == 'left'?'text-xs-left':'text-xs-center']"
+              :class="[
+                'column sortable',
+                pagination.descending ? 'desc' : 'asc',
+                header.value === pagination.sortBy ? 'active' : '',
+                header.align == 'right'
+                  ? 'text-xs-right'
+                  : header.align == 'left'
+                  ? 'text-xs-left'
+                  : 'text-xs-center'
+              ]"
               @click="changeSort(header.value)"
             >
               <v-icon small>la-arrow-up</v-icon>
@@ -368,21 +407,41 @@
               v-else
               :key="header.text"
               :width="header.width"
-              :class="['column',,header.align == 'right'?'text-xs-right':header.align == 'left'?'text-xs-left':'text-xs-center']"
-            >{{ header.text }}</th>
+              :class="[
+                'column',
+                ,
+                header.align == 'right'
+                  ? 'text-xs-right'
+                  : header.align == 'left'
+                  ? 'text-xs-left'
+                  : 'text-xs-center'
+              ]"
+            >
+              {{ header.text }}
+            </th>
           </template>
         </tr>
       </template>
       <template v-slot:items="props">
         <tr :active="props.selected" @click="props.selected = !props.selected">
           <td v-if="selectAll">
-            <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
+            <v-checkbox
+              :input-value="props.selected"
+              primary
+              hide-details
+            ></v-checkbox>
           </td>
           <slot name="items" :props="props" :item="props.item"></slot>
 
           <td v-if="!withoutAction" class="text-xs-center">
             <div class="action">
-              <slot name="actions" :_edit="_edit" :_delete="_delete" :item="props.item">
+              <slot
+                name="actions"
+                :_recycle="_recycle"
+                :_edit="_edit"
+                :_delete="_delete"
+                :item="props.item"
+              >
                 <div v-if="actions" class="more-action">
                   <v-menu
                     class="data-grid-action"
@@ -403,29 +462,54 @@
                         v-for="(action, index) in actions"
                         :key="index"
                       >
-                        <v-icon class="pl-2">{{action.icon}}</v-icon>
-                        <v-list-tile-title>{{action.title}}</v-list-tile-title>
+                        <v-icon class="pl-2">{{ action.icon }}</v-icon>
+                        <v-list-tile-title>{{
+                          action.title
+                        }}</v-list-tile-title>
                       </v-list-tile>
                     </v-list>
                   </v-menu>
                 </div>
-                <v-btn v-if="!hideActionEdit" icon depressed flat :ripple="false">
+                <v-btn
+                  v-if="!hideActionEdit"
+                  icon
+                  depressed
+                  flat
+                  :ripple="false"
+                >
                   <v-icon @click="_edit(props.item)">la-edit</v-icon>
                 </v-btn>
-                <v-btn v-if="!hideActionDelete" icon depressed flat :ripple="false">
-                  <v-icon @click="_delete(props.item)">la-trash</v-icon>
-                </v-btn>
+                <span v-if="filter.some(item => item.includes('is_deleted'))">
+                  <v-btn
+                    v-if="!hideActionRecycle"
+                    icon
+                    depressed
+                    flat
+                    :ripple="false"
+                  >
+                    <v-icon @click="_recycle(props.item)">la-recycle</v-icon>
+                  </v-btn>
+                </span>
+                <span v-else>
+                  <v-btn
+                    v-if="!hideActionDelete"
+                    icon
+                    depressed
+                    flat
+                    :ripple="false"
+                  >
+                    <v-icon @click="_delete(props.item)">la-trash</v-icon>
+                  </v-btn>
+                </span>
               </slot>
             </div>
           </td>
         </tr>
       </template>
       <template v-slot:no-results>
-        <v-alert
-          :value="true"
-          color="error"
-          icon="warning"
-        >Your search for "{{ search }}" found no results.</v-alert>
+        <v-alert :value="true" color="error" icon="warning"
+          >Your search for "{{ search }}" found no results.</v-alert
+        >
       </template>
       <template v-slot:no-data>
         <div class="text-xs-center">متاسفم, چیزی برای نمایش وجود ندارد :(</div>
@@ -440,19 +524,20 @@
         color="info"
       ></v-pagination>
       <div class="page-size-wrapper">
-        <div
-          class="item-size"
-        >نمایش {{start_item | persianDigit}} تا {{end_item | persianDigit}} از {{total_items | persianDigit}}</div>
+        <div class="item-size">
+          نمایش {{ start_item | persianDigit }} تا
+          {{ end_item | persianDigit }} از {{ total_items | persianDigit }}
+        </div>
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <div class="page-size" v-on="on">
-              {{pagination.rowsPerPage}}
+              {{ pagination.rowsPerPage }}
               <v-icon>la-angle-up</v-icon>
             </div>
           </template>
           <v-list>
             <v-list-tile
-              v-for="(item, index) in [5,10,20,100]"
+              v-for="(item, index) in [5, 10, 20, 100]"
               :key="index"
               @click="pagination.rowsPerPage = item"
             >
@@ -466,7 +551,7 @@
     </div>
   </div>
 </template>
-<script >
+<script>
 export default {
   props: {
     title: {
@@ -527,13 +612,20 @@ export default {
     withSearch: {
       default: false
     },
+    withRecycle: {
+      default: false
+    },
     hideActionEdit: {},
     hideActionDelete: {},
+    hideActionRecycle: {},
     actions: {},
     queryService: {
       type: Function
     },
     deleteService: {
+      type: Function
+    },
+    recycleService: {
       type: Function
     },
     dataGrid: {
@@ -579,15 +671,15 @@ export default {
       },
       deep: true
     },
-    selected: {
-      handler() {
-        this.$emit('input', this.selected)
-      },
-      deep: true
-    },
     value: {
       handler() {
         this.selected = this.value
+      },
+      deep: true
+    },
+    selected: {
+      handler() {
+        this.$emit('input', this.selected)
       },
       deep: true
     }
@@ -709,6 +801,26 @@ export default {
             })
         })
     },
+    _recycle(item) {
+      this.$dialog
+        .confirm({
+          title: 'بازیابی آیتم',
+          message: 'آیا از بازیابی این آیتم اطمینان دارد؟'
+        })
+        .then(() => {
+          let service = this.recycleService
+            ? this.recycleService(item.id)
+            : this.service.$recycle(item.id)
+          service
+            .then(() => {
+              this.$toast.success().showSimple('آیتم با موفقت بازیابی شد')
+              this._query()
+            })
+            .catch(err => {
+              this.$toast.error().showSimple('خطایی رخ داده است')
+            })
+        })
+    },
     _edit(item) {
       if (this.editMode == 'dialog' && this.editComponent) {
         this.$dialog
@@ -768,6 +880,17 @@ export default {
       this.$router.push(this.$route.path + '/create')
     },
     refresh() {
+      this._query()
+    },
+    recycle() {
+      let is_deleted_index = this.filter.findIndex(item =>
+        item.includes('is_deleted')
+      )
+      if (is_deleted_index !== -1) {
+        this.filter.splice(is_deleted_index, 1)
+      } else {
+        this.filter.push('is_deleted:1')
+      }
       this._query()
     },
     resetFilter() {
