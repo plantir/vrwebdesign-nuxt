@@ -18,7 +18,7 @@ class Toast {
     this.$root = (() => {
       let ToastConstructor = this.Vue.extend(ToastComponent)
       let node = document.createElement('div')
-      document.querySelector('.v-application').appendChild(node)
+      document.querySelector('body').appendChild(node)
       let Vm = new ToastConstructor()
       return Vm.$mount(node)
     })()
@@ -53,20 +53,43 @@ class Toast {
     this.toast.timeout = timeout
     return this
   }
-  success() {
+  success(customClass) {
+    if (customClass) {
+      this.toast.customClass = customClass
+    }
+    else {
     this.toast.color = 'success'
+    }
     return this
   }
   warning() {
+    if (customClass) {
+      this.toast.customClass = customClass
+    }
+    else {
     this.toast.color = 'warning'
+    }
+    
     return this
   }
   info() {
+    if (customClass) {
+      this.toast.customClass = customClass
+    }
+    else {
     this.toast.color = 'info'
+    }
+    
     return this
   }
   error() {
+    if (customClass) {
+      this.toast.customClass = customClass
+    }
+    else {
     this.toast.color = 'error'
+    }
+    
     return this
   }
   showSimple(message) {

@@ -12,9 +12,9 @@ interface ToastParams {
   message?: string
 }
 interface NuxtToastInstance {
-  success(): NuxtToastInstance
+  success(customClass?:string): NuxtToastInstance
   warning(): NuxtToastInstance
-  info(): NuxtToastInstance
+  info(customClass?:string): NuxtToastInstance
   error(): NuxtToastInstance
   top(): NuxtToastInstance
   right(): NuxtToastInstance
