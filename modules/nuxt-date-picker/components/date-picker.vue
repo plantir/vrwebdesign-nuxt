@@ -84,7 +84,10 @@ export default Vue.extend({
       }
     },
     persianDate: function(val) {
-      if (!val || val.length < 8) {               
+      if (!val || val.length < 8) {
+        if (val === '') {
+          this.$emit('input', null)
+        }
         return
       }
 
@@ -97,7 +100,6 @@ export default Vue.extend({
           emitValue = gregorianDate
         }
       } catch (error) {
-        emitValue = val
       } finally {
         this.$emit('input', emitValue)
       }
@@ -110,8 +112,8 @@ export default Vue.extend({
   },
   methods: {
     activate() {
-      (<any>this).$refs.dateInputControl.focus()
-      (<any>this).$refs.datePickerWrapper.tabIndex = -1
+      this.$refs.dateInputControl.focus()
+      this.$refs.datePickerWrapper.tabIndex = -1
     }
   }
 })

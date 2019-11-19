@@ -529,6 +529,10 @@ export default {
         return {}
       }
     },
+    defaultSort: {
+      type: String,
+      default: null
+    },
     disable_pagination: {
       type: Boolean,
       default: false
@@ -610,7 +614,7 @@ export default {
     return {
       showFilter: true,
       filterHeight: 0,
-      sort: null,
+      sort: this.defaultSort,
       pagination: {
         page: 1,
         rowsPerPage: this.pageSize,
@@ -793,9 +797,15 @@ export default {
 
   computed: {
     custom_headers() {
-      let action_exist = this.headers.some(item => item.name == 'action')
+      let headers = this.headers.map(item => {
+        if (item.sortable == null) {
+          item.sortable = true;
+        }
+        return item;
+      });
+      let action_exist = headers.some(item => item.name == 'action');
       if (!action_exist && !this.withoutAction) {
-        this.headers.push({
+        headers.push({
           text: '',
           name: 'action',
           align: 'center',
@@ -803,7 +813,7 @@ export default {
           width: '10%'
         })
       }
-      return this.headers
+      return headers;
     },
     start_item() {
       return (this.pagination.page - 1) * this.pagination.rowsPerPage + 1

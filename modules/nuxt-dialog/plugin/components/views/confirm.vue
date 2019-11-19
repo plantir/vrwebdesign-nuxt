@@ -2,6 +2,7 @@
 .alert-dialog {
   padding: 40px;
   width: 420px;
+  max-width: 100%;
 }
 </style>
 <template>

@@ -35,15 +35,15 @@ declare module '@nuxt/vue-app' {
   }
 }
 
-// declare module 'vue/types/vue' {
-//   interface Vue {
-//     $scrollTo: (
-//       element: Vue | Element | Vue[] | Element[] | String,
-//       duration?: number,
-//       option?: {
-//         container?: Vue | Element | Vue[] | Element[] | String
-//         offset?: number
-//       }
-//     ) => void
-//   }
-// }
+declare module 'vue/types/vue' {
+  interface Vue {
+    $scrollTo: (
+      element: Vue | Element | Vue[] | Element[] | String,
+      duration?: number,
+      option?: {
+        container?: Vue | Element | Vue[] | Element[] | String
+        offset?: number
+      }
+    ) => void
+  }
+}

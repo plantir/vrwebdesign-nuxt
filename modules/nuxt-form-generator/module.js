@@ -1,10 +1,11 @@
 const path = require('path')
-function dialogModule(_moduleOptions) {
+function formGeneratorModule(_moduleOptions) {
   // Register plugin
   this.addPlugin({
+    ssr: false,
     src: path.resolve(__dirname, 'plugin.js'),
     fileName: 'formGenerator.js'
   })
 }
 
-module.exports = dialogModule
+module.exports = formGeneratorModule
