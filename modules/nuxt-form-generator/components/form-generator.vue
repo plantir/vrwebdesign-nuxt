@@ -72,26 +72,33 @@
     <div sticky-container>
       <div v-sticky sticky-offset="offset" sticky-side="top" class="header">
         <div class="head-lable">
-          <h3 v-once>{{custom_title}}</h3>
+          <h3 v-once>{{ custom_title }}</h3>
         </div>
         <div class="head-toolbar">
           <div class="btn-group">
             <v-menu offset-y attach bottom left min-width="180">
-              <v-btn class="btn-dropdown" depressed color="info" slot="activator">
+              <v-btn
+                class="btn-dropdown"
+                depressed
+                color="info"
+                slot="activator"
+              >
                 <v-icon>la-angle-down</v-icon>
               </v-btn>
               <v-list>
                 <v-list-tile
-                  v-for="(item,index) in action_list"
+                  v-for="(item, index) in action_list"
                   @click="action(item.action)"
                   :key="index"
                 >
-                  <v-icon class="pl-2">{{item.icon}}</v-icon>
+                  <v-icon class="pl-2">{{ item.icon }}</v-icon>
                   <v-list-tile-title>{{ item.title }}</v-list-tile-title>
                 </v-list-tile>
               </v-list>
             </v-menu>
-            <v-btn @click="save" class="action-btn" depressed color="info">ذخیره</v-btn>
+            <v-btn @click="save" class="action-btn" depressed color="info"
+              >ذخیره</v-btn
+            >
           </div>
           <v-btn flat color="accent" @click="goBack">
             <span>بازگشت</span>
@@ -101,8 +108,8 @@
       </div>
       <div ref="loaderWrapper" class="content">
         <v-layout row wrap>
-          <v-flex xl3 lg2></v-flex>
-          <v-flex xl6 lg8 xs12>
+          <v-flex lg2></v-flex>
+          <v-flex lg8 xs12>
             <v-form-generator
               :form="form"
               v-model="initItem"
@@ -110,7 +117,7 @@
               :minimal="minimal"
             ></v-form-generator>
           </v-flex>
-          <v-flex xl3 lg2></v-flex>
+          <v-flex lg2></v-flex>
         </v-layout>
       </div>
     </div>
