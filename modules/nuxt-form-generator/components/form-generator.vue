@@ -317,7 +317,7 @@ export default Vue.extend({
               .catch(err => {
                 let msg
                 try {
-                  msg = err.response.data.error.message
+                  msg = err.response.data.message
                 } catch (error) {
                   msg = 'خطایی رخ داده است'
                 }
