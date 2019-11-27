@@ -5,7 +5,7 @@
   <section>
     <v-snackbar
       v-model="toast.show"
-      :color="toast.color||''"
+      :color="toast.customClass?toast.color:''"
       :bottom="toast.bottom"
       :left="toast.left"
       :multi-line="toast.multiLine"
@@ -43,9 +43,7 @@ export default {
     commit(toast) {
       this.toast = toast
     },
-    change() {
-      console.log('object')
-    },
+    change() {},
     close() {
       this.toast.show = false
       this.toast.resolve()
