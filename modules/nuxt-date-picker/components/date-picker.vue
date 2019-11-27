@@ -25,16 +25,18 @@
       :id="id"
       v-model="persianDate"
       v-bind="$attrs"
-      
       ref="dateInputControl"
       class="form-control is-editable"
-      :append-icon="type=='date'?'date_range':'access_time'"
-      @click:append="show=true"
+      :append-icon="($attrs.disabled || $attrs.readonly)?''
+        : (type == 'datePicker'
+          ? 'date_range'
+          : 'access_time')"
+      @click:append="showDatePicker"
+  v-mask="type=='datePicker'?'####/##/##':''"
     ></v-text-field>
-<!-- :mask="type=='date'?'####/##/##':''" -->
     <date-picker
       v-model="persianDate"
-      :type="type"
+        :type="type=='datePicker'?'date':'time'"
       v-bind="$attrs"
       :element="id"
       tabindex="-1"
@@ -49,13 +51,17 @@
 import Vue from 'vue'
 import VuePersianDatetimePicker from 'vue-persian-datetime-picker'
 import moment from 'moment-jalaali'
+import { mask } from 'vue-the-mask'
 
 export default Vue.extend({
+  directives: {
+    mask
+  },
   components: { datePicker: VuePersianDatetimePicker },
   props: {
     value: {},
     type: {
-      default: 'date'
+      default: 'datePicker'
     },
     format: {
       default: 'jYYYY/jMM/jDD'
@@ -84,7 +90,10 @@ export default Vue.extend({
       }
     },
     persianDate: function(val) {
-      if (!val || val.length < 8) {               
+      if (!val || val.length < 8) {  
+         if (val === '') {
+          this.$emit('input', null)
+        }             
         return
       }
 
@@ -112,7 +121,18 @@ export default Vue.extend({
     activate() {
       (<any>this).$refs.dateInputControl.focus()
       (<any>this).$refs.datePickerWrapper.tabIndex = -1
-    }
+    },
+    showDatePicker() {
+      debugger
+      if (
+        this.$refs.dateInputControl.disabled &&
+        this.$refs.dateInputControl.readonly
+      ) {
+        this.show = false
+      } else {
+        this.show = true
+      }
+  }
   }
 })
 </script>
