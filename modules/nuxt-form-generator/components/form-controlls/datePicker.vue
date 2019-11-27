@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label v-if="!minimal">{{field.label}}</label>
+    <label :class="{required}" v-if="!minimal">{{field.label}}</label>
     <vr-date-picker
       :error-messages="errorMessages"
       v-bind="Object.assign($attrs,field)"

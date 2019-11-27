@@ -123,6 +123,7 @@
 import Vue from 'vue'
 import vFormGenerator from './v-form-generator.vue'
 import Sticky from 'vue-sticky-directive'
+import baseMixin from './base-mixin'
 import { setTimeout } from 'timers'
 import { NuxtAxiosResource } from '../../nuxt-axios/types'
 import { NuxtLoaderElement } from '../../nuxt-loader/types'
@@ -209,7 +210,7 @@ export default Vue.extend({
   },
   mounted() {
     if (this.loading) {
-      (<any>this).loader = (<any>this).$loader.show((<any>this).$refs.loaderWrapper)
+      this.loader = this.$loader.show(this.$refs.loaderWrapper)
     }
   },
   watch: {
@@ -219,28 +220,28 @@ export default Vue.extend({
           return
         }
 
-        (<any>this).initItem = { ...value }
+        this.initItem = { ...value }
       },
       deep: true
     },
     loading: function(value) {
       if (value) {
-        this.loader = (<any>this).$loader.show((<any>this).$refs.loaderWrapper)
+        this.loader = this.$loader.show(this.$refs.loaderWrapper)
       } else if (this.loader) {
-        (<any>this).loader.hide()
+        this.loader.hide()
       }
     }
   },
   methods: {
     async goBack() {
-      if ((<any>this).customExit) {
-        return (<any>this).customExit((<any>this).item)
+      if (this.customExit) {
+        return this.customExit(this.item)
       }
-      if ((<any>this).beforeExit) {
-        await (<any>this).beforeExit()
+      if (this.beforeExit) {
+        await this.beforeExit()
       }
-      (<any>this).$loader.destroy()
-      return (<any>this).$router.go(-1)
+      this.$loader.destroy()
+      return this.$router.go(-1)
       let current_route = <string>this.$router.currentRoute.name
       let route_array = current_route.split('-')
       route_array.pop()
@@ -251,25 +252,25 @@ export default Vue.extend({
       renew_after = false,
       exit_after = false
     }: ISaveFunction = {}) {
-      if ((<any>this).beforeSave) {
-        (<any>this).initItem = await (<any>this).beforeSave((<any>this).initItem)
+      if (this.beforeSave) {
+        this.initItem = await this.beforeSave(this.initItem)
       }
-      (<any>this).form
+      this.form
         .validate()
         .then(valid => {
           if (valid) {
-            if ((<any>this).customSave) {
-              return (<any>this).customSave((<any>this).initItem, {
+            if (this.customSave) {
+              return this.customSave(this.initItem, {
                 renew_after,
                 exit_after
               })
             }
-            (<any>this).loader = this.$loader.show(this.$refs.loaderWrapper)
+            this.loader = this.$loader.show(this.$refs.loaderWrapper)
             let result: Promise<AxiosResponse<any>>
-            if ((<any>this).initItem.id) {
-              result = (<any>this).service.update((<any>this).initItem.id, (<any>this).initItem)
+            if (this.initItem.id) {
+              result = this.service.update(this.initItem.id, this.initItem)
             } else {
-              result = (<any>this).service.save((<any>this).initItem)
+              result = this.service.save(this.initItem)
             }
             result
               .then(({ data, status }) => {
@@ -280,40 +281,42 @@ export default Vue.extend({
                   .then(() => {
                     if (renew_after) {
                       if (this.$route.path.includes('create')) {
-                        (<any>this).initItem = JSON.parse(
-                          JSON.stringify((<any>this).freezItem)
+                        this.initItem = JSON.parse(
+                          JSON.stringify(this.freezItem)
                         )
                         setTimeout(() => {
-                          (<any>this).form.resetError()
-                          this.$scrollTo((<any>this).$refs.editItem, 1000)
+                          this.form.resetError()
+                          this.$scrollTo(this.$refs.editItem, 1000)
                         }, 100)
                       } else {
                         this.$router.push('create')
                       }
                     } else if (exit_after) {
-                      (<any>this).goBack()
+                      this.goBack()
                     } else if (status == 201) {
                       let route = this.$route.path.replace('create', data.id)
-                      if ((<any>this).editUrl) {
-                        route = (<any>this).editUrl.replace(/:[a-z]+/g, p => {
+                      if (this.editUrl) {
+                        route = this.editUrl.replace(/:[a-z]+/g, p => {
                           let param = p.replace(':', '')
                           return data[param]
                         })
                       } else {
                         let route = this.$route.path.replace('create', data.id)
                       }
-                      (<any>this).$router.push(route)
-                      (<any>this).initItem = data
+                      this.$router.push(route)
+                      this.initItem = data
                     } else {
-                      (<any>this).initItem = data
+                      this.initItem = data
                     }
                   })
               })
               .catch(err => {
-                this.$toast.error().showSimple('خطایی رخ داده است')
+                this.$toast
+                  .error()
+                  .showSimple(err.data.message || 'خطایی رخ داده است')
               })
               .then(() => {
-                (<any>this).loader.hide()
+                this.loader.hide()
               })
           }
         })
@@ -322,22 +325,22 @@ export default Vue.extend({
         })
     },
     async delete() {
-      if ((<any>this).customDelete) {
-        return (<any>this).customDelete((<any>this).initItem)
+      if (this.customDelete) {
+        return this.customDelete(this.initItem)
       }
-      if ((<any>this).beforeDelete) {
-        await (<any>this).beforeDelete()
+      if (this.beforeDelete) {
+        await this.beforeDelete()
       }
       this.$dialog.confirm().then(() => {
-        (<any>this).service
-          .delete((<any>this).initItem.id)
+        this.service
+          .delete(this.initItem.id)
           .then(res => {
             this.$toast
               .success()
               .timeout(1000)
               .showSimple('با موفقیت حذف شد')
               .then(() => {
-                (<any>this).goBack()
+                this.goBack()
               })
           })
           .catch(err => {
@@ -348,19 +351,19 @@ export default Vue.extend({
     action(action_name) {
       switch (action_name) {
         case 'save':
-          (<any>this).save()
+          this.save()
           break
         case 'save & exit':
-          (<any>this).save({ exit_after: true })
+          this.save({ exit_after: true })
           break
         case 'save & create':
-          (<any>this).save({ renew_after: true })
+          this.save({ renew_after: true })
           break
         case 'delete':
-          (<any>this).delete()
+          this.delete()
           break
         case 'back':
-          (<any>this).goBack()
+          this.goBack()
           break
         default:
           break
@@ -372,7 +375,7 @@ export default Vue.extend({
       if (!this.title) {
         return null
       }
-      let title = (<any>this).title.replace(/{{[a-z\.0-9]+}}/g, p => {
+      let title = this.title.replace(/{{[a-z\.0-9]+}}/g, p => {
         let param = p.replace(/{|}/g, '')
         let array_param = param.split('.')
         let title = this.initItem

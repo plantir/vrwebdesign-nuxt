@@ -10,8 +10,3 @@ export interface VRDataGrid {
     total_items?: number
     lastPage?: number
 }
-
-// export interface VRGridPagination {
-//     custom_class?: string
-//     float?: 'right' | 'left'
-// }

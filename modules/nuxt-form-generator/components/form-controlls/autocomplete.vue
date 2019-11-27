@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label v-if="!minimal">{{field.label}}</label>
+    <label :class="{required}" v-if="!minimal">{{field.label}}</label>
     <v-autocomplete
       cache-items
       :items="items"
@@ -47,33 +47,33 @@ export default Vue.extend({
     return {
       loading: false,
       search: null,
-      items: (<any>this).field.async ? [] : (<any>this).field.items
+      items: this.field.async ? [] : this.field.items
     }
   },
   watch: {
     search(val, old) {
-      (<any>this).isLoading = true
-      if ((<any>this).field.async) {
+      this.isLoading = true
+      if (this.field.async) {
         this.get_lists(val)
       }
     }
   },
   mounted() {
-    if ((<any>this).field.async) {
+    if (this.field.async) {
       this.get_lists('')
     }
   },
 
   methods: {
     get_lists(val) {
-      (<any>this).field.queryService(val).then(items => {
+      this.field.queryService(val).then(items => {
         this.items = items
         this.loading = false
       })
     },
     remove(item) {
-      const index = (<any>this).model.findIndex(model => item.value == model.value)
-      if (index >= 0) (<any>this).model.splice(index, 1)
+      const index = this.model.findIndex(model => item.value == model.value)
+      if (index >= 0) this.model.splice(index, 1)
     }
   }
 })

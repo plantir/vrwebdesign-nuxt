@@ -33,6 +33,24 @@ export default {
     },
     placeholder() {
       return this.minimal ? '' : this.field.placeholder
+    },
+    required() {
+      if (!this.field.validation) {
+        return false
+      }
+      if (
+        typeof this.field.validation == Object &&
+        !this.field.validation.required
+      ) {
+        return false
+      }
+      if (
+        typeof this.field.validation == String &&
+        !this.field.validation.includes('required')
+      ) {
+        return false
+      }
+      return true
     }
   },
   watch: {
