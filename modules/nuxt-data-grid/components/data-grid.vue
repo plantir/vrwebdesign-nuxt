@@ -239,22 +239,21 @@
   }
 }
 
-.tr-data{
+.tr-data {
   text-align: right;
 }
 
 .tr-contextmenu {
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
 }
-
 </style>
 <template>
   <div>
     <div class="head">
       <slot name="header">
         <div class="head-label">
-          <v-icon>{{title.icon}}</v-icon>
-          <h3 class="head-title">{{title.text}}</h3>
+          <v-icon>{{ title.icon }}</v-icon>
+          <h3 class="head-title">{{ title.text }}</h3>
         </div>
         <div class="toolbar">
           <v-tooltip bottom>
@@ -268,7 +267,7 @@
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn @click="showFilter = !showFilter" v-on="on" text icon>
-                <v-icon :class="{slash:!showFilter}">la-filter</v-icon>
+                <v-icon :class="{ slash: !showFilter }">la-filter</v-icon>
               </v-btn>
             </template>
             <span>مخفی کردن فیلتر ها</span>
@@ -282,7 +281,13 @@
             <span>تازه کردن اطلاعات</span>
           </v-tooltip>
           <slot name="header_add">
-            <v-btn v-if="withAdd" @click="_add" class="add-new" rounded outlined>
+            <v-btn
+              v-if="withAdd"
+              @click="_add"
+              class="add-new"
+              rounded
+              outlined
+            >
               <v-icon>add</v-icon>
               <span>ایجاد جدید</span>
             </v-btn>
@@ -293,7 +298,7 @@
     <div
       ref="filters"
       class="data-table-search"
-      :style="[showFilter ? { height : filterHeight } : {}]"
+      :style="[showFilter ? { height: filterHeight } : {}]"
     >
       <slot name="filters">
         <v-layout row wrap>
@@ -307,7 +312,12 @@
               label="Search"
             ></v-text-field>
           </v-flex>
-          <v-flex :class="`xs${item.size||3}`" pa-2 v-for="(item, index) in filters" :key="index">
+          <v-flex
+            :class="`xs${item.size || 3}`"
+            pa-2
+            v-for="(item, index) in filters"
+            :key="index"
+          >
             <template v-if="item.type == 'select'">
               <v-select
                 single-line
@@ -366,25 +376,38 @@
         :sort-by.sync="pagination.sortBy"
         :sort-desc.sync="pagination.descending"
         :search="search"
-        :server-items-length="serverPagination?total_items:-1"
+        :server-items-length="serverPagination ? total_items : -1"
       >
-        <v-progress-linear v-slot:progress color="primary" indeterminate></v-progress-linear>
+        <v-progress-linear
+          v-slot:progress
+          color="primary"
+          indeterminate
+        ></v-progress-linear>
         <template v-slot:item="props">
           <tr
             :active="props.selected"
             @click="row_clicked(props)"
             @contextmenu="contextmenu($event, props)"
             class="tr-data"
-            :class="(props.index == contextMenuRowIndex)?'tr-contextmenu':''"
+            :class="props.index == contextMenuRowIndex ? 'tr-contextmenu' : ''"
           >
             <td v-if="selectAll">
-              <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
+              <v-checkbox
+                :input-value="props.selected"
+                primary
+                hide-details
+              ></v-checkbox>
             </td>
             <slot name="items" :props="props" :item="props.item"></slot>
 
             <td v-if="!withoutAction" class="text-xs-center">
               <div class="action">
-                <slot name="actions" :_edit="_edit" :_delete="_delete" :item="props.item">
+                <slot
+                  name="actions"
+                  :_edit="_edit"
+                  :_delete="_delete"
+                  :item="props.item"
+                >
                   <div v-if="actions" class="more-action">
                     <v-menu
                       class="data-grid-action"
@@ -405,16 +428,30 @@
                           v-for="(action, index) in actions"
                           :key="index"
                         >
-                          <v-icon class="pl-2">{{action.icon}}</v-icon>
-                          <v-list-item-title>{{action.title}}</v-list-item-title>
+                          <v-icon class="pl-2">{{ action.icon }}</v-icon>
+                          <v-list-item-title>{{
+                            action.title
+                          }}</v-list-item-title>
                         </v-list-item>
                       </v-list>
                     </v-menu>
                   </div>
-                  <v-btn v-if="!hideActionEdit" icon depressed text :ripple="false">
+                  <v-btn
+                    v-if="!hideActionEdit"
+                    icon
+                    depressed
+                    text
+                    :ripple="false"
+                  >
                     <v-icon @click="_edit(props.item)">la-edit</v-icon>
                   </v-btn>
-                  <v-btn v-if="!hideActionDelete" icon depressed text :ripple="false">
+                  <v-btn
+                    v-if="!hideActionDelete"
+                    icon
+                    depressed
+                    text
+                    :ripple="false"
+                  >
                     <v-icon @click="_delete(props.item)">la-trash</v-icon>
                   </v-btn>
                 </slot>
@@ -423,10 +460,14 @@
           </tr>
         </template>
         <template v-slot:no-results-text>
-          <v-alert color="error" icon="warning">Your search for "{{ search }}" found no results.</v-alert>
+          <v-alert color="error" icon="warning"
+            >Your search for "{{ search }}" found no results.</v-alert
+          >
         </template>
         <template v-slot:no-data>
-          <div class="text-xs-center">متاسفم، چیزی برای نمایش وجود ندارد :(</div>
+          <div class="text-xs-center">
+            متاسفم، چیزی برای نمایش وجود ندارد :(
+          </div>
         </template>
       </v-data-table>
 
@@ -443,42 +484,43 @@
       >
         <v-list class="more-action-list">
           <v-list-item
-            @click="action.cb(props.item)"
+            @click="call_action(action)"
             v-for="(action, index) in actions"
             :key="index"
           >
-            <v-icon class="pl-2">{{action.icon}}</v-icon>
-            <v-list-item-title>{{action.title}}</v-list-item-title>
+            <v-icon class="pl-2">{{ action.icon }}</v-icon>
+            <v-list-item-title>{{ action.title }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
     </div>
     <div
-      v-if="!disable_pagination && (total_items && total_items>0)"
+      v-if="!disable_pagination && total_items && total_items > 0"
       class="footer-wrapper"
-      :class="custom_class_footer_wrapper||''"
+      :class="custom_class_footer_wrapper || ''"
     >
       <v-pagination
         v-model="pagination.page"
         :length="lastPage"
         :total-visible="7"
         color="info"
-        :class="custom_class_pagination||''"
+        :class="custom_class_pagination || ''"
       ></v-pagination>
       <div v-if="!hide_page_size" class="page-size-wrapper">
-        <div
-          class="item-size"
-        >نمایش {{start_item | persianDigit}} تا {{end_item | persianDigit}} از {{total_items | persianDigit}}</div>
+        <div class="item-size">
+          نمایش {{ start_item | persianDigit }} تا
+          {{ end_item | persianDigit }} از {{ total_items | persianDigit }}
+        </div>
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <div class="page-size" v-on="on">
-              {{pagination.rowsPerPage}}
+              {{ pagination.rowsPerPage }}
               <v-icon>la-angle-up</v-icon>
             </div>
           </template>
           <v-list>
             <v-list-item
-              v-for="(item, index) in [5,10,20,100]"
+              v-for="(item, index) in [5, 10, 20, 100]"
               :key="index"
               @click="pagination.rowsPerPage = item"
             >
@@ -492,7 +534,7 @@
     </div>
   </div>
 </template>
-<script >
+<script>
 export default {
   props: {
     title: {
@@ -594,7 +636,6 @@ export default {
     },
     dataGrid: {
       handler() {
-        debugger
         if (this.dataGrid.total_items) {
           this.total_items = this.dataGrid.total_items
         }
@@ -656,6 +697,7 @@ export default {
       contextMenuRowIndex: -1,
       contextMenu_x: 0,
       contextMenu_y: 0,
+      contextMenuItem: null,
       showFilter: true,
       filterHeight: 0,
       sort: null,
@@ -689,18 +731,21 @@ export default {
     },
     contextmenu(e, props) {
       if (this.withContextMenu) {
-      e.preventDefault()
-      this.contextMenuRowIndex = -1
-      this.showContextMenu = false
+        e.preventDefault()
+        this.contextMenuRowIndex = -1
+        this.showContextMenu = false
         this.contextMenu_x = e.clientX
         this.contextMenu_y = e.clientY
-      this.$nextTick(() => {
-        this.contextMenuRowIndex = props.index
-        this.showContextMenu = true
-      })
-
+        this.contextMenuItem = props.item
+        this.$nextTick(() => {
+          this.contextMenuRowIndex = props.index
+          this.showContextMenu = true
+        })
         this.$emit('contextmenu', { $event: e, props: props })
       }
+    },
+    call_action(action) {
+      action.cb(this.contextMenuItem)
     },
     initFilters: function() {
       if (this.filters && this.filters.length > 0) {
