@@ -242,6 +242,11 @@
 .tr-data{
   text-align: right;
 }
+
+.tr-contextmenu {
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
 </style>
 <template>
   <div>
@@ -277,7 +282,7 @@
             <span>تازه کردن اطلاعات</span>
           </v-tooltip>
           <slot name="header_add">
-            <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" rounded outlined>
+            <v-btn v-if="withAdd" @click="_add" class="add-new" rounded outlined>
               <v-icon>add</v-icon>
               <span>ایجاد جدید</span>
             </v-btn>
@@ -365,7 +370,13 @@
       >
         <v-progress-linear v-slot:progress color="primary" indeterminate></v-progress-linear>
         <template v-slot:item="props">
-          <tr :active="props.selected" @click="row_clicked(props)" class="tr-data">
+          <tr
+            :active="props.selected"
+            @click="row_clicked(props)"
+            @contextmenu="contextmenu($event, props)"
+            class="tr-data"
+            :class="(props.index == contextMenuRowIndex)?'tr-contextmenu':''"
+          >
             <td v-if="selectAll">
               <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
             </td>
@@ -418,6 +429,29 @@
           <div class="text-xs-center">متاسفم، چیزی برای نمایش وجود ندارد :(</div>
         </template>
       </v-data-table>
+
+      <v-menu
+        class="data-grid-action"
+        bottom
+        right
+        min-width="180"
+        :nudge-right="20"
+        nudge-bottom="20"
+        v-model="showContextMenu"
+        :position-x="contextMenu_x"
+        :position-y="contextMenu_y"
+      >
+        <v-list class="more-action-list">
+          <v-list-item
+            @click="action.cb(props.item)"
+            v-for="(action, index) in actions"
+            :key="index"
+          >
+            <v-icon class="pl-2">{{action.icon}}</v-icon>
+            <v-list-item-title>{{action.title}}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
     <div
       v-if="!disable_pagination && (total_items && total_items>0)"
@@ -501,6 +535,9 @@ export default {
       default: null
     },
     withoutAction: {
+      default: false
+    },
+    withContextMenu: {
       default: false
     },
     pageSize: {
@@ -593,6 +630,13 @@ export default {
     disable_pagination: {
       handler() {},
       deep: true
+    },
+    showContextMenu: {
+      handler() {
+        if (!this.showContextMenu) {
+          this.contextMenuRowIndex = -1
+        }
+      }
     }
   },
   data() {
@@ -608,6 +652,10 @@ export default {
       }
     }
     return {
+      showContextMenu: false,
+      contextMenuRowIndex: -1,
+      contextMenu_x: 0,
+      contextMenu_y: 0,
       showFilter: true,
       filterHeight: 0,
       sort: null,
@@ -638,6 +686,21 @@ export default {
     row_clicked(props) {
       props.selected = !props.selected
       this.$emit('row_clicked', props.item)
+    },
+    contextmenu(e, props) {
+      if (this.withContextMenu) {
+      e.preventDefault()
+      this.contextMenuRowIndex = -1
+      this.showContextMenu = false
+        this.contextMenu_x = e.clientX
+        this.contextMenu_y = e.clientY
+      this.$nextTick(() => {
+        this.contextMenuRowIndex = props.index
+        this.showContextMenu = true
+      })
+
+        this.$emit('contextmenu', { $event: e, props: props })
+      }
     },
     initFilters: function() {
       if (this.filters && this.filters.length > 0) {
