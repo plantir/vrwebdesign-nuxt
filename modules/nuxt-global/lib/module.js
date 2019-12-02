@@ -1,5 +1,5 @@
 const path = require('path')
-function toastModule(_moduleOptions) {
+function globalPlugin(_moduleOptions) {
   // Register plugin
   this.addPlugin({
     src: path.resolve(__dirname, 'plugin.js'),
@@ -7,4 +7,4 @@ function toastModule(_moduleOptions) {
   })
 }
 
-module.exports = toastModule
+module.exports = globalPlugin

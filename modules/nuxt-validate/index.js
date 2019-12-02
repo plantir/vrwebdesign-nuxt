@@ -1,13 +1,16 @@
-const {
-  resolve
-} = require('path')
+const { resolve } = require('path')
 
 const defaults = {
   lang: 'en'
 }
 
 module.exports = function nuxtValidate(moduleOptions) {
-  const options = Object.assign({}, defaults, this.options.nuxtValidate, moduleOptions)
+  const options = Object.assign(
+    {},
+    defaults,
+    this.options.nuxtValidate,
+    moduleOptions
+  )
 
   // Remove module options
   const nuxtValidateOptions = Object.assign({}, options)
