@@ -25,3 +25,19 @@ Vue.component('vr-textField', textField)
 
 Vue.component('vr-form-generator', FormGenerator)
 Vue.component('v-form-generator', VFormGenerator)
+
+export default ({ app: { router } }) => {
+  router.afterEach((to, from) => {
+    if (!to.fullPath.includes('create')) {
+      return
+    }
+    if (to.fullPath.split('/')[1] !== from.fullPath.split('/')[1]) {
+      return
+    }
+    let come_from_id = from.fullPath.match(/\/\d+(\/info)?$/g)
+    if (!come_from_id) {
+      return
+    }
+    router.go(-1)
+  })
+}

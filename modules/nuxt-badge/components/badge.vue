@@ -37,12 +37,10 @@ span.vr-badge {
 </style>
 
 <template >
-  <section>
-    <span ref="badge" class="vr-badge" :class="classList">
-      <span ref="dot" class="dot" :class="dotClassList" v-if="type == 'dot'"></span>
-      <slot></slot>
-    </span>
-  </section>
+  <span ref="badge" class="vr-badge" :class="classList">
+    <span ref="dot" class="dot" :class="dotClassList" v-if="type == 'dot'"></span>
+    <slot></slot>
+  </span>
 </template>
 <script>
 export default {

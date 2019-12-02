@@ -48,4 +48,14 @@
       text-align: right;
     }
   }
+  .v-alert {
+    .v-alert__icon {
+      margin-right: 0;
+      margin-left: 16px;
+    }
+    .v-icon--right {
+      margin-left: 0;
+      margin-right: 16px;
+    }
+  }
 }

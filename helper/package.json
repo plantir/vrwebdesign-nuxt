@@ -1,0 +1,21 @@
+{
+  "name": "vrwebdesign-nuxt-baseservice",
+  "version": "1.0.0",
+  "repository": "nuxt/nuxt.js",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "types/*.d.ts"
+  ],
+  "main": "dist/BaseService.js",
+  "typings": "dist/BaseService.d.ts",
+  "dependencies": {
+    "@nuxt/utils": "2.7.1",
+    "axios": "^0.19.0",
+    "consola": "^2.6.1",
+    "std-env": "^2.2.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

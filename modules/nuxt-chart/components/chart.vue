@@ -11,7 +11,7 @@
     }
   }
 
-  .highcharts-label.highcharts-tooltip.highcharts-color-0 {
+  .highcharts-label.highcharts-tooltip {
     direction: rtl;
     text-align: right;
 
@@ -31,64 +31,62 @@
   <section class="highchart-wrapper" ref="chart"></section>
 </template>
 <script>
+const YAXIS_OBJ = {
+  title: {
+    text: 'عنوان نمودار Y'
+  },
+  labels: {
+    formatter: function() {
+      return this.value
+    }
+  }
+}
+const XAXIS_OBJ = {
+  labels: {
+    formatter: function() {
+      return this.value
+    }
+  }
+}
 import Highcharts from 'highcharts'
 export default {
   props: {
-    type: {
-      default: 'area'
-    },
-    title: {
-      default: 'عنوان نمودار'
-    },
-    subtitle: {
-      default: 'زیر عنوان نمودار'
-    },
-    series: {
-      default: () => []
-    },
-    xAxis: {
-      default: () => []
-    },
-    yAxis: {
-      default: () => []
+    type: {},
+    title: {},
+    subtitle: {},
+    series: {},
+    xAxis: {},
+    yAxis: {},
+    service: {},
+    options: {
+      default: () => {
+        return {}
+      }
     }
   },
-  mounted() {
+  async mounted() {
+    let options
+    if (this.service) {
+      options = await this.service()
+      options = Object.assign(options, this.options)
+    } else {
+      options = this.options
+    }
+    options.yAxis = Object.assign(YAXIS_OBJ, options.yAxis || {})
+    options.xAxis = Object.assign(XAXIS_OBJ, options.xAxis || {})
     Highcharts.chart(this.$refs.chart, {
       chart: {
-        type: this.type
+        type: options.type
       },
       title: {
-        text: this.title
+        text: options.title
       },
       subtitle: {
-        text: this.subtitle
+        text: options.subtitle
       },
-      xAxis: {
-        title: {
-          text: this.xAxis.title
-        },
-        labels: {
-          formatter:
-            this.xAxis.labels ||
-            function() {
-              return this.value
-            }
-        }
-      },
-      yAxis: {
-        title: {
-          text: this.yAxis.title
-        },
-        labels: {
-          formatter:
-            this.yAxis.labels ||
-            function() {
-              return this.value
-            }
-        }
-      },
-      series: this.series,
+      xAxis: options.xAxis,
+      yAxis: options.yAxis,
+      series: options.series,
       tooltip: {
         crosshairs: true,
         useHTML: true,
@@ -104,7 +102,6 @@ export default {
           }
         },
         area: {
-          pointStart: 1940,
           marker: {
             enabled: false,
             symbol: 'circle',

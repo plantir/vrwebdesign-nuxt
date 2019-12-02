@@ -280,6 +280,21 @@
             </template>
             <span>تازه کردن اطلاعات</span>
           </v-tooltip>
+          <v-tooltip bottom v-if="withRecycle">
+            <template v-slot:activator="{ on }">
+              <v-btn @click="recycle" v-on="on" flat icon>
+                <v-icon
+                  :color="
+                    filter.some(item => item.includes('is_deleted'))
+                      ? 'green'
+                      : 'black'
+                  "
+                  >restore_from_trash</v-icon
+                >
+              </v-btn>
+            </template>
+            <span>بازیابی رکوردها</span>
+          </v-tooltip>
           <slot name="header_add">
             <v-btn
               v-if="withAdd"
@@ -287,6 +302,7 @@
               class="add-new"
               rounded
               outlined
+              color="primary"
             >
               <v-icon>add</v-icon>
               <span>ایجاد جدید</span>
@@ -594,13 +610,20 @@ export default {
     withSearch: {
       default: false
     },
+    withRecycle: {
+      default: false
+    },
     hideActionEdit: {},
     hideActionDelete: {},
+    hideActionRecycle: {},
     actions: {},
     queryService: {
       type: Function
     },
     deleteService: {
+      type: Function
+    },
+    recycleService: {
       type: Function
     },
     dataGrid: {
@@ -658,7 +681,15 @@ export default {
             )
           }
         }
-        this._query()
+        if (this.watchFilters) {
+          this._query()
+        }
+      },
+      deep: true
+    },
+    value: {
+      handler() {
+        this.selected = this.value
       },
       deep: true
     },
@@ -794,7 +825,6 @@ export default {
       clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
         this.loading = true
-
         let service = this.queryService
           ? this.queryService(params)
           : this.service.$query(params)
@@ -824,6 +854,26 @@ export default {
           service
             .then(() => {
               this.$toast.success().showSimple('آیتم با موفقت حذف شد')
+              this._query()
+            })
+            .catch(err => {
+              this.$toast.error().showSimple('خطایی رخ داده است')
+            })
+        })
+    },
+    _recycle(item) {
+      this.$dialog
+        .confirm({
+          title: 'بازیابی آیتم',
+          message: 'آیا از بازیابی این آیتم اطمینان دارد؟'
+        })
+        .then(() => {
+          let service = this.recycleService
+            ? this.recycleService(item.id)
+            : this.service.$recycle(item.id)
+          service
+            .then(() => {
+              this.$toast.success().showSimple('آیتم با موفقت بازیابی شد')
               this._query()
             })
             .catch(err => {
@@ -892,6 +942,17 @@ export default {
     refresh() {
       this._query()
     },
+    recycle() {
+      let is_deleted_index = this.filter.findIndex(item =>
+        item.includes('is_deleted')
+      )
+      if (is_deleted_index !== -1) {
+        this.filter.splice(is_deleted_index, 1)
+      } else {
+        this.filter.push('is_deleted:1')
+      }
+      this._query()
+    },
     resetFilter() {
       this.data_filters = { ...this.defaultFilters }
       this.sort = null
@@ -901,7 +962,13 @@ export default {
 
   computed: {
     custom_headers() {
-      let action_exist = this.headers.some(item => item.name == 'action')
+      let headers = this.headers.map(item => {
+        if (item.sortable == null) {
+          item.sortable = true
+        }
+        return item
+      })
+      let action_exist = headers.some(item => item.name == 'action')
       if (!action_exist && !this.withoutAction) {
         this.headers.push({
           text: '',
@@ -911,7 +978,7 @@ export default {
           width: '10%'
         })
       }
-      return this.headers
+      return headers
     },
     start_item() {
       return (this.pagination.page - 1) * this.pagination.rowsPerPage + 1

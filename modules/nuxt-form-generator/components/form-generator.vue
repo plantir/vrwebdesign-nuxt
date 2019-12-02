@@ -72,28 +72,30 @@
     <div sticky-container>
       <div v-sticky sticky-offset="offset" sticky-side="top" class="header">
         <div class="head-lable">
-          <h3 v-once>{{custom_title}}</h3>
+          <h3 v-once>{{ custom_title }}</h3>
         </div>
         <div class="head-toolbar">
           <div class="btn-group">
             <v-menu offset-y attach bottom left min-width="180">
-             <template v-slot:activator="{ on }">
+              <template v-slot:activator="{ on }">
                 <v-btn class="btn-dropdown" depressed color="info" v-on="on">
-                <v-icon>la-angle-down</v-icon>
-              </v-btn>
-             </template>
+                  <v-icon>la-angle-down</v-icon>
+                </v-btn>
+              </template>
               <v-list>
                 <v-list-item
-                  v-for="(item,index) in action_list"
+                  v-for="(item, index) in action_list"
                   @click="action(item.action)"
                   :key="index"
                 >
-                  <v-icon class="pl-2">{{item.icon}}</v-icon>
+                  <v-icon class="pl-2">{{ item.icon }}</v-icon>
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
-            <v-btn @click="save" class="action-btn" depressed color="info">ذخیره</v-btn>
+            <v-btn @click="save" class="action-btn" depressed color="info"
+              >ذخیره</v-btn
+            >
           </div>
           <v-btn text color="accent" @click="goBack">
             <span>بازگشت</span>
@@ -103,8 +105,8 @@
       </div>
       <div ref="loaderWrapper" class="content">
         <v-layout row wrap>
-          <v-flex xl3 lg2></v-flex>
-          <v-flex xl6 lg8 xs12>
+          <v-flex lg2></v-flex>
+          <v-flex lg8 xs12>
             <v-form-generator
               :form="form"
               v-model="initItem"
@@ -112,7 +114,7 @@
               :minimal="minimal"
             ></v-form-generator>
           </v-flex>
-          <v-flex xl3 lg2></v-flex>
+          <v-flex lg2></v-flex>
         </v-layout>
       </div>
     </div>
@@ -149,6 +151,11 @@ export default Vue.extend({
     },
     formData: {
       required: true
+    },
+    form: {
+      default: () => {
+        return {}
+      }
     },
     minimal: {
       type: Boolean,
@@ -198,7 +205,6 @@ export default Vue.extend({
       })
     }
     return {
-      form: {},
       initItem: this.item,
       freezItem: JSON.parse(JSON.stringify(this.item)),
 
@@ -209,7 +215,9 @@ export default Vue.extend({
   },
   mounted() {
     if (this.loading) {
-      (<any>this).loader = (<any>this).$loader.show((<any>this).$refs.loaderWrapper)
+      ;(<any>this).loader = (<any>this).$loader.show(
+        (<any>this).$refs.loaderWrapper
+      )
     }
   },
   watch: {
@@ -219,7 +227,7 @@ export default Vue.extend({
           return
         }
 
-        (<any>this).initItem = { ...value }
+        ;(<any>this).initItem = { ...value }
       },
       deep: true
     },
@@ -227,7 +235,7 @@ export default Vue.extend({
       if (value) {
         this.loader = (<any>this).$loader.show((<any>this).$refs.loaderWrapper)
       } else if (this.loader) {
-        (<any>this).loader.hide()
+        ;(<any>this).loader.hide()
       }
     }
   },
@@ -239,22 +247,19 @@ export default Vue.extend({
       if ((<any>this).beforeExit) {
         await (<any>this).beforeExit()
       }
-      (<any>this).$loader.destroy()
-      return (<any>this).$router.go(-1)
-      let current_route = <string>this.$router.currentRoute.name
-      let route_array = current_route.split('-')
-      route_array.pop()
-      let name = route_array.join('-')
-      this.$router.push({ name })
+      this.$loader.destroy()
+      return this.$router.go(-1)
     },
     async save({
       renew_after = false,
       exit_after = false
     }: ISaveFunction = {}) {
       if ((<any>this).beforeSave) {
-        (<any>this).initItem = await (<any>this).beforeSave((<any>this).initItem)
+        ;(<any>this).initItem = await (<any>this).beforeSave(
+          (<any>this).initItem
+        )
       }
-      (<any>this).form
+      ;(<any>this).form
         .validate()
         .then(valid => {
           if (valid) {
@@ -264,10 +269,13 @@ export default Vue.extend({
                 exit_after
               })
             }
-            (<any>this).loader = this.$loader.show(this.$refs.loaderWrapper)
+            ;(<any>this).loader = this.$loader.show(this.$refs.loaderWrapper)
             let result: Promise<AxiosResponse<any>>
             if ((<any>this).initItem.id) {
-              result = (<any>this).service.update((<any>this).initItem.id, (<any>this).initItem)
+              result = (<any>this).service.update(
+                (<any>this).initItem.id,
+                (<any>this).initItem
+              )
             } else {
               result = (<any>this).service.save((<any>this).initItem)
             }
@@ -280,18 +288,18 @@ export default Vue.extend({
                   .then(() => {
                     if (renew_after) {
                       if (this.$route.path.includes('create')) {
-                        (<any>this).initItem = JSON.parse(
+                        ;(<any>this).initItem = JSON.parse(
                           JSON.stringify((<any>this).freezItem)
                         )
                         setTimeout(() => {
-                          (<any>this).form.resetError()
+                          ;(<any>this).form.resetError()
                           this.$scrollTo((<any>this).$refs.editItem, 1000)
                         }, 100)
                       } else {
                         this.$router.push('create')
                       }
                     } else if (exit_after) {
-                      (<any>this).goBack()
+                      ;(<any>this).goBack()
                     } else if (status == 201) {
                       let route = this.$route.path.replace('create', data.id)
                       if ((<any>this).editUrl) {
@@ -302,18 +310,28 @@ export default Vue.extend({
                       } else {
                         let route = this.$route.path.replace('create', data.id)
                       }
-                      (<any>this).$router.push(route)
-                      (<any>this).initItem = data
+                      ;(<any>this).$router.push(route)(
+                        <any>this
+                      ).initItem = data
                     } else {
-                      (<any>this).initItem = data
+                      ;(<any>this).initItem = data
                     }
                   })
               })
               .catch(err => {
-                this.$toast.error().showSimple('خطایی رخ داده است')
+                let msg
+                try {
+                  msg = err.response.data.message
+                } catch (error) {
+                  msg = 'خطایی رخ داده است'
+                }
+                this.$toast
+                  .error()
+                  .timeout(5000)
+                  .showSimple(msg)
               })
               .then(() => {
-                (<any>this).loader.hide()
+                ;(<any>this).loader.hide()
               })
           }
         })
@@ -329,7 +347,7 @@ export default Vue.extend({
         await (<any>this).beforeDelete()
       }
       this.$dialog.confirm().then(() => {
-        (<any>this).service
+        ;(<any>this).service
           .delete((<any>this).initItem.id)
           .then(res => {
             this.$toast
@@ -337,7 +355,7 @@ export default Vue.extend({
               .timeout(1000)
               .showSimple('با موفقیت حذف شد')
               .then(() => {
-                (<any>this).goBack()
+                ;(<any>this).goBack()
               })
           })
           .catch(err => {
@@ -348,19 +366,19 @@ export default Vue.extend({
     action(action_name) {
       switch (action_name) {
         case 'save':
-          (<any>this).save()
+          ;(<any>this).save()
           break
         case 'save & exit':
-          (<any>this).save({ exit_after: true })
+          ;(<any>this).save({ exit_after: true })
           break
         case 'save & create':
-          (<any>this).save({ renew_after: true })
+          ;(<any>this).save({ renew_after: true })
           break
         case 'delete':
-          (<any>this).delete()
+          ;(<any>this).delete()
           break
         case 'back':
-          (<any>this).goBack()
+          ;(<any>this).goBack()
           break
         default:
           break
