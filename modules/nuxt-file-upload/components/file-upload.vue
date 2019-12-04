@@ -170,8 +170,7 @@ export default Vue.extend({
         this.images = []
         this.$emit('input', null)
       }
-      let pond = this.$refs.pond as Vue & { removeFile(index: number): void }
-      pond.removeFile(index)
+      this.$refs.pond.removeFile(index)
     },
     set_default_image(image) {
       this.images.map(item => {
