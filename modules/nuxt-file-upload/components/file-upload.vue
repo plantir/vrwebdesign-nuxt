@@ -77,8 +77,8 @@
 }
 </style>
 
-<template >
-  <section id="vr-file-upload" :class="{'has-error':errorMessage.length}">
+<template>
+  <section id="vr-file-upload" :class="{ 'has-error': errorMessage.length }">
     <file-pond
       name="file"
       ref="pond"
@@ -92,7 +92,9 @@
       <div v-for="(image, index) in images" :key="index">
         <div class="image-wrapper">
           <v-icon @click="remove_image(index)" color="#fff">la-close</v-icon>
-          <v-icon v-if="set_default && image.is_default" color="#fff">la-check-circle</v-icon>
+          <v-icon v-if="set_default && image.is_default" color="#fff"
+            >la-check-circle</v-icon
+          >
           <img v-if="is_object" :src="image[image_src]" alt />
           <img v-else :src="image" alt />
         </div>
@@ -103,11 +105,12 @@
             color="primary"
             outlined
             block
-          >انتخاب به عنوان عکس اصلی</v-btn>
+            >انتخاب به عنوان عکس اصلی</v-btn
+          >
         </div>
       </div>
     </div>
-    <div class="error--text">{{errorMessage[0]}}</div>
+    <div class="error--text">{{ errorMessage[0] }}</div>
   </section>
 </template>
 <script lang="ts">
@@ -143,35 +146,35 @@ export default Vue.extend({
   },
   methods: {
     handleFilePondInit(err, file) {
-      if ((<any>this).multiple) {
-        if ((<any>this).is_object) {
-          (<any>this).images.push({ [(<any>this).image_src]: file.serverId })
+      if (this.multiple) {
+        if (this.is_object) {
+          this.images.push({ [this.image_src]: file.serverId })
         } else {
-          (<any>this).images.push(file.serverId)
+          this.images.push(file.serverId)
         }
-        this.$emit('input', (<any>this).images)
+        this.$emit('input', this.images)
       } else {
-        if ((<any>this).is_object) {
-          (<any>this).images.splice(0, 1, { [(<any>this).imgae_src]: file.serverId })
+        if (this.is_object) {
+          this.images.splice(0, 1, { [this.imgae_src]: file.serverId })
         } else {
-          (<any>this).images.splice(0, 1, file.serverId)
+          this.images.splice(0, 1, file.serverId)
         }
-        this.$emit('input', (<any>this).images[0])
+        this.$emit('input', this.images[0])
       }
     },
     remove_image(index) {
-      if ((<any>this).multiple) {
-        (<any>this).images.splice(index, 1)
-        this.$emit('input', (<any>this).images || [])
+      if (this.multiple) {
+        this.images.splice(index, 1)
+        this.$emit('input', this.images || [])
       } else {
-        (<any>this).images = []
+        this.images = []
         this.$emit('input', null)
       }
       let pond = this.$refs.pond as Vue & { removeFile(index: number): void }
       pond.removeFile(index)
     },
     set_default_image(image) {
-      (<any>this).images.map(item => {
+      this.images.map(item => {
         item.is_default = false
       })
       image.is_default = true
@@ -180,10 +183,10 @@ export default Vue.extend({
   computed: {
     images: {
       get() {
-        if ((<any>this).multiple) {
-          return (<any>this).value || []
+        if (this.multiple) {
+          return this.value || []
         } else {
-          return [(<any>this).value]
+          return [this.value]
         }
       },
       set(value) {

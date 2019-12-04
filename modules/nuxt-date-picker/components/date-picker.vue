@@ -19,19 +19,18 @@
 }
 </style>
 
-<template >
+<template>
   <div id="vr-date-picker" ref="datePickerWrapper" @focus="activate">
     <v-text-field
       :id="id"
       v-model="persianDate"
       v-bind="$attrs"
-      
       ref="dateInputControl"
       class="form-control is-editable"
-      :append-icon="type=='date'?'date_range':'access_time'"
-      @click:append="show=true"
+      :append-icon="type == 'date' ? 'date_range' : 'access_time'"
+      @click:append="show = true"
     ></v-text-field>
-<!-- :mask="type=='date'?'####/##/##':''" -->
+    <!-- :mask="type=='date'?'####/##/##':''" -->
     <date-picker
       v-model="persianDate"
       :type="type"
@@ -40,7 +39,7 @@
       tabindex="-1"
       :show="show"
       :editable="editable"
-      @close="show=false"
+      @close="show = false"
       :auto-submit="autoSubmit"
     ></date-picker>
   </div>
@@ -84,7 +83,7 @@ export default Vue.extend({
       }
     },
     persianDate: function(val) {
-      if (!val || val.length < 8) {               
+      if (!val || val.length < 8) {
         return
       }
 
@@ -110,8 +109,8 @@ export default Vue.extend({
   },
   methods: {
     activate() {
-      (<any>this).$refs.dateInputControl.focus()
-      (<any>this).$refs.datePickerWrapper.tabIndex = -1
+      this.$refs.dateInputControl.focus()
+      this.$refs.datePickerWrapper.tabIndex = -1
     }
   }
 })
