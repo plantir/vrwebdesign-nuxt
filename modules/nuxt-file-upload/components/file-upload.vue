@@ -36,6 +36,7 @@
         position: absolute;
         left: 8px;
         top: 8px;
+        background: rgba(0, 0, 0, 0.4);
         &.la-check-circle {
           bottom: 25px;
           top: auto;
@@ -77,8 +78,8 @@
 }
 </style>
 
-<template >
-  <section id="vr-file-upload" :class="{'has-error':errorMessage.length}">
+<template>
+  <section id="vr-file-upload" :class="{ 'has-error': errorMessage.length }">
     <file-pond
       name="file"
       ref="pond"
@@ -92,7 +93,9 @@
       <div v-for="(image, index) in images" :key="index">
         <div class="image-wrapper">
           <v-icon @click="remove_image(index)" color="#fff">la-close</v-icon>
-          <v-icon v-if="set_default && image.is_default" color="#fff">la-check-circle</v-icon>
+          <v-icon v-if="set_default && image.is_default" color="#fff"
+            >la-check-circle</v-icon
+          >
           <img v-if="is_object" :src="image[image_src]" alt />
           <img v-else :src="image" alt />
         </div>
@@ -103,11 +106,12 @@
             color="primary"
             outline
             block
-          >انتخاب به عنوان عکس اصلی</v-btn>
+            >انتخاب به عنوان عکس اصلی</v-btn
+          >
         </div>
       </div>
     </div>
-    <div class="error--text">{{errorMessage[0]}}</div>
+    <div class="error--text">{{ errorMessage[0] }}</div>
   </section>
 </template>
 <script lang="ts">
