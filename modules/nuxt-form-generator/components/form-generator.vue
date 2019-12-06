@@ -72,7 +72,7 @@
     <div sticky-container>
       <div v-sticky sticky-offset="offset" sticky-side="top" class="header">
         <div class="head-lable">
-          <h3 v-once>{{ custom_title }}</h3>
+          <h3>{{ custom_title }}</h3>
         </div>
         <div class="head-toolbar">
           <div class="btn-group">
