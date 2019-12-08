@@ -220,7 +220,7 @@ export default (ctx, inject) => {
     services[service] = instance;
   }
 
-  
+  ctx.$service = services
   inject('service', services)
   inject('axios', axios)
 }
