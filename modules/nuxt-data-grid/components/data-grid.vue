@@ -40,6 +40,7 @@
 }
 .toolbar {
   display: flex;
+  align-items: center;
   .v-btn--icon {
     margin: 0;
   }
@@ -256,6 +257,7 @@
           <h3 class="head-title">{{ title.text }}</h3>
         </div>
         <div class="toolbar">
+          <slot name="toollbar_right"></slot>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn @click="resetFilter" v-on="on" text icon>
@@ -308,6 +310,7 @@
               <span>ایجاد جدید</span>
             </v-btn>
           </slot>
+          <slot name="toollbar_left"></slot>
         </div>
       </slot>
     </div>
