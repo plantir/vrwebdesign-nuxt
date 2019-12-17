@@ -1,11 +1,11 @@
 {
   "name": "vrwebdesign-nuxt",
-  "version": "1.9.34",
+  "version": "1.9.36",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "release": "git push origin next && yarn publish"
+    "release": "git push origin next && git push origin v2 && git push origin v1 && yarn publish"
   },
   "repository": "https://github.com/vrwebdesign/vrwebdesign-nuxt.git",
   "author": "",
