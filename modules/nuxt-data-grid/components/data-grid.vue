@@ -844,7 +844,7 @@ export default {
         return
       }
       if (this.editUrl) {
-        let url = this.editUrl.replace(/:[a-z]+/g, p => {
+        let url = this.editUrl.replace(/:[a-zA-Z_]+/g, p => {
           let param = p.replace(':', '')
           return item[param]
         })
