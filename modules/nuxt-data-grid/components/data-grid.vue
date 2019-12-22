@@ -125,13 +125,11 @@
   }
 }
 .v-pagination {
-  justify-content: flex-end;
   white-space: nowrap;
   width: auto !important;
-  direction: ltr;
 
   button {
-    border-radius: 4px;
+    border-radius: 50%;
   }
 }
 .v-pagination__navigation .v-icon {
