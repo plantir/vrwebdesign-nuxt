@@ -568,6 +568,9 @@ export default {
     defaultFilters: {
       default: () => []
     },
+    watchFilters: {
+      default: true
+    },
     defaultSort: {},
     headers: {
       required: true,
