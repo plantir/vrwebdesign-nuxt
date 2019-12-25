@@ -47,6 +47,10 @@ const Plugin = {
         Plugin.dialog.component = component
         return this
       },
+      model(model) {
+        Plugin.dialog.prompt = model
+        return this
+      },
       warning() {
         Plugin.dialog.type = 'warning'
         return this

@@ -18,6 +18,7 @@ interface NuxtDialogInstance {
   cancel(cancel_txt: string): NuxtDialogInstance
   message(message: string): NuxtDialogInstance
   title(title: string): NuxtDialogInstance
+  model(model: string): NuxtDialogInstance
   warning(): NuxtDialogInstance
   info(): NuxtDialogInstance
   question(): NuxtDialogInstance
@@ -26,6 +27,7 @@ interface NuxtDialogInstance {
   show(params?: DialogParams): Promise<any>
   alert(params?: DialogParams): Promise<any>
   confirm(params?: DialogParams): Promise<any>
+  prompt(params?: DialogParams): Promise<any>
   destroy(): void
 }
 
