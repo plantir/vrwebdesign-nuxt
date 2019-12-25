@@ -282,7 +282,7 @@
           </v-tooltip>
           <v-tooltip bottom v-if="withRecycle">
             <template v-slot:activator="{ on }">
-              <v-btn @click="recycle" v-on="on" flat icon>
+              <v-btn @click="recycle" v-on="on" text icon>
                 <v-icon
                   :color="
                     filter.some(item => item.includes('is_deleted'))
