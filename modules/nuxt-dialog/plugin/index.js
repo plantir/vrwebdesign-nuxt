@@ -2,6 +2,7 @@ import DialogComponent from './components/dialog.vue'
 import DefaultView from './components/views/default.vue'
 import AlertView from './components/views/alert.vue'
 import ConfirmView from './components/views/confirm.vue'
+import PromptView from './components/views/prompt.vue'
 const DEFAULT_OPTION = {}
 export const mountIfNotMounted = (Vue, options, root) => {
   if (!root._dynamicContainer) {
@@ -66,6 +67,13 @@ const Plugin = {
         dialog = Object.assign(Plugin.dialog, dialog)
         dialog.component = AlertView
         dialog.ok_txt = dialog.ok_txt || 'باشه'
+        return this.show(dialog)
+      },
+      prompt(dialog = {}) {
+        dialog = Object.assign(Plugin.dialog, dialog)
+        dialog.component = PromptView
+        dialog.ok_txt = dialog.ok_txt || 'تمام'
+        dialog.cancel_txt = dialog.cancel_txt || 'منصرف شدم'
         return this.show(dialog)
       },
       confirm(dialog = {}) {

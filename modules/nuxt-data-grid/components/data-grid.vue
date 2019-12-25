@@ -974,7 +974,7 @@ export default {
       })
       let action_exist = headers.some(item => item.name == 'action')
       if (!action_exist && !this.withoutAction) {
-        this.headers.push({
+        headers.push({
           text: '',
           name: 'action',
           align: 'center',
