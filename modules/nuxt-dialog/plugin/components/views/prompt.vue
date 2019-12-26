@@ -63,7 +63,7 @@ export default {
   props: ['dialog'],
   data() {
     return {
-      prompt: dialog.prompt
+      prompt: this.dialog.prompt
     }
   }
 }
