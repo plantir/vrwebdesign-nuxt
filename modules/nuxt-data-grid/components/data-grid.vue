@@ -438,6 +438,7 @@
 
           <td v-if="!withoutAction" class="text-xs-center">
             <div class="action">
+              <slot name="actions_right" :item="props.item"></slot>
               <slot
                 name="actions"
                 :_recycle="_recycle"
@@ -505,6 +506,7 @@
                   </v-btn>
                 </span>
               </slot>
+              <slot name="actions_left" :item="props.item"></slot>
             </div>
           </td>
         </tr>
