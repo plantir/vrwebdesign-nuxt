@@ -10,6 +10,7 @@ interface DialogParams {
   cancel_txt?: string
   scope?: any
   props?: any
+  prompt?: any
   persistent?: boolean
   icon?: string
   dialog_wrapper_custom_class?: string
@@ -21,6 +22,7 @@ interface NuxtDialogInstance {
   message(message: string): NuxtDialogInstance
   icon(icon: string): NuxtDialogInstance
   title(title: string): NuxtDialogInstance
+  model(model: string): NuxtDialogInstance
   warning(): NuxtDialogInstance
   wrapper(
     element: Vue | Element | Vue[] | Element[] | String
@@ -33,6 +35,7 @@ interface NuxtDialogInstance {
   show(params?: DialogParams): Promise<any>
   alert(params?: DialogParams): Promise<any>
   confirm(params?: DialogParams): Promise<any>
+  prompt(params?: DialogParams): Promise<any>
   destroy(): void
 }
 
