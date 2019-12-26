@@ -59,7 +59,7 @@ interface NuxtAxiosInstance extends AxiosInstance {
   onResponseError(callback: (error: AxiosError) => void): void
 }
 interface NuxtServiceInstance {}
-declare module '@nuxt/vue-app' {
+declare module '@nuxt/types' {
   interface Context {
     $axios: NuxtAxiosInstance
     $service: NuxtServiceInstance
@@ -67,13 +67,18 @@ declare module '@nuxt/vue-app' {
 }
 
 // since nuxt 2.7.1 there is "NuxtAppOptions" for app context - see https://github.com/nuxt/nuxt.js/pull/5701
-declare module '@nuxt/vue-app' {
+declare module '@nuxt/types' {
   interface NuxtAppOptions {
     $axios: NuxtAxiosInstance
     $service: NuxtServiceInstance
   }
 }
-
+declare module 'vuex/types/index' {
+  interface Store<S> {
+    $axios: NuxtAxiosInstance
+    $service: NuxtServiceInstance
+  }
+}
 declare module 'vue/types/vue' {
   interface Vue {
     $axios: NuxtAxiosInstance

@@ -18,7 +18,6 @@ module.exports = function nuxtValidate(moduleOptions) {
 
   // Register plugin
   this.addPlugin({
-    ssr: false,
     src: resolve(__dirname, 'plugin.js'),
     // fileName: 'vee-validate.js',
     options: {

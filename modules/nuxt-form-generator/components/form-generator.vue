@@ -25,9 +25,9 @@
       .v-menu__content {
         box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
         padding: 10px 0;
-        .v-list__tile {
+        .v-list__item {
           height: 34px;
-          font-size: 14px;
+          font-size: 0.875rem;
           .v-icon {
             font-size: 22px;
           }
@@ -55,7 +55,7 @@
         min-width: auto;
         border-right: 1px solid #fff;
         .v-icon {
-          font-size: 14px;
+          font-size: 0.875rem;
         }
       }
     }
@@ -77,30 +77,27 @@
         <div class="head-toolbar">
           <div class="btn-group">
             <v-menu offset-y attach bottom left min-width="180">
-              <v-btn
-                class="btn-dropdown"
-                depressed
-                color="info"
-                slot="activator"
-              >
-                <v-icon>la-angle-down</v-icon>
-              </v-btn>
+              <template v-slot:activator="{ on }">
+                <v-btn class="btn-dropdown" depressed color="info" v-on="on">
+                  <v-icon>la-angle-down</v-icon>
+                </v-btn>
+              </template>
               <v-list>
-                <v-list-tile
+                <v-list-item
                   v-for="(item, index) in action_list"
                   @click="action(item.action)"
                   :key="index"
                 >
                   <v-icon class="pl-2">{{ item.icon }}</v-icon>
-                  <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                </v-list-tile>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
               </v-list>
             </v-menu>
             <v-btn @click="save" class="action-btn" depressed color="info"
               >ذخیره</v-btn
             >
           </div>
-          <v-btn flat color="accent" @click="goBack">
+          <v-btn text color="accent" @click="goBack">
             <span>بازگشت</span>
             <v-icon class="pr-2">la-arrow-left</v-icon>
           </v-btn>
@@ -126,17 +123,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import vFormGenerator from './v-form-generator'
+import vFormGenerator from './v-form-generator.vue'
 import Sticky from 'vue-sticky-directive'
-import baseMixin from './base-mixin'
 import { setTimeout } from 'timers'
-import { NuxtAxiosResource } from '../../nuxt-axios/types'
-import { NuxtLoaderElement } from '../../nuxt-loader/types'
 import { AxiosResponse } from 'axios'
-interface ISaveFunction {
-  renew_after?: boolean
-  exit_after?: boolean
-}
 export default Vue.extend({
   directives: { Sticky },
   components: { vFormGenerator },
@@ -146,7 +136,7 @@ export default Vue.extend({
     },
     service: {
       required: true,
-      type: Object as () => NuxtAxiosResource
+      type: Object
     },
     item: {
       require: true,
@@ -213,7 +203,7 @@ export default Vue.extend({
       freezItem: JSON.parse(JSON.stringify(this.item)),
 
       offset: { top: 64 },
-      loader: <NuxtLoaderElement>(<unknown>null),
+      loader: null,
       action_list: action_list
     }
   },
@@ -252,10 +242,7 @@ export default Vue.extend({
       this.$loader.destroy()
       return this.$router.go(-1)
     },
-    async save({
-      renew_after = false,
-      exit_after = false
-    }: ISaveFunction = {}) {
+    async save({ renew_after = false, exit_after = false }) {
       if (this.beforeSave) {
         this.initItem = await this.beforeSave(this.initItem)
       }
@@ -270,7 +257,7 @@ export default Vue.extend({
               })
             }
             this.loader = this.$loader.show(this.$refs.loaderWrapper)
-            let result: Promise<AxiosResponse<any>>
+            let result
             if (this.initItem.id) {
               result = this.service.update(this.initItem.id, this.initItem)
             } else {
@@ -382,7 +369,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    custom_title(): any {
+    custom_title() {
       if (!this.title) {
         return null
       }

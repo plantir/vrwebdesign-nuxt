@@ -2,15 +2,12 @@ import DialogComponent from './components/dialog.vue'
 import DefaultView from './components/views/default.vue'
 import AlertView from './components/views/alert.vue'
 import ConfirmView from './components/views/confirm.vue'
+import PromptView from './components/views/prompt.vue'
 const DEFAULT_OPTION = {}
-const mountIfNotMounted = (Vue, options, root) => {
+export const mountIfNotMounted = (Vue, options, root) => {
   if (!root._dynamicContainer) {
     let node = document.createElement('div')
-    if (options.wrapper) {
-      options.wrapper.appendChild(node)
-    } else {
-      document.querySelector('#app').appendChild(node)
-    }
+    document.querySelector('#app').appendChild(node)
     new Vue({
       parent: root,
       render: h => h(DialogComponent)
@@ -50,9 +47,8 @@ const Plugin = {
         Plugin.dialog.component = component
         return this
       },
-      wrapper(wrapper) {
-        Plugin.rootInstance._dynamicContainer = null
-        options.wrapper = wrapper
+      model(model) {
+        Plugin.dialog.prompt = model
         return this
       },
       warning() {
@@ -75,6 +71,13 @@ const Plugin = {
         dialog = Object.assign(Plugin.dialog, dialog)
         dialog.component = AlertView
         dialog.ok_txt = dialog.ok_txt || 'باشه'
+        return this.show(dialog)
+      },
+      prompt(dialog = {}) {
+        dialog = Object.assign(Plugin.dialog, dialog)
+        dialog.component = PromptView
+        dialog.ok_txt = dialog.ok_txt || 'تمام'
+        dialog.cancel_txt = dialog.cancel_txt || 'منصرف شدم'
         return this.show(dialog)
       },
       confirm(dialog = {}) {
@@ -102,6 +105,7 @@ const Plugin = {
         })
       },
       destroy() {
+        console.log(Plugin)
         if (Plugin.root) {
           Plugin.root.forceCloseAll()
           let elem = Plugin.root.$el

@@ -1,5 +1,5 @@
 const path = require('path')
-function formGeneratorModule(_moduleOptions) {
+function formGenerator(_moduleOptions) {
   // Register plugin
   this.addPlugin({
     ssr: false,
@@ -8,4 +8,4 @@ function formGeneratorModule(_moduleOptions) {
   })
 }
 
-module.exports = formGeneratorModule
+module.exports = formGenerator

@@ -19,17 +19,17 @@
 }
 </style>
 
-<template >
+<template>
   <div id="vr-date-picker" ref="datePickerWrapper" @focus="activate">
     <v-text-field
       :id="id"
       v-model="persianDate"
       v-bind="$attrs"
-      :mask="type=='date'?'####/##/##':''"
+      :mask="type == 'date' ? '####/##/##' : ''"
       ref="dateInputControl"
       class="form-control is-editable"
-      :append-icon="type=='date'?'date_range':'access_time'"
-      @click:append="show=true"
+      :append-icon="type == 'date' ? 'date_range' : 'access_time'"
+      @click:append="show = true"
     ></v-text-field>
 
     <date-picker
@@ -40,7 +40,7 @@
       tabindex="-1"
       :show="show"
       :editable="editable"
-      @close="show=false"
+      @close="show = false"
       :auto-submit="autoSubmit"
     ></date-picker>
   </div>

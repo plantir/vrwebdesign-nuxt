@@ -22,14 +22,14 @@
         <span v-else>{{ data.item.text }}</span>
       </template>
       <template v-slot:item="data">
-        <v-list-tile-content>
-          <v-list-tile-title v-html="data.item.text"></v-list-tile-title>
-        </v-list-tile-content>
+        <v-list-item-content>
+          <v-list-item-title v-html="data.item.text"></v-list-item-title>
+        </v-list-item-content>
       </template>
       <template v-slot:no-data>
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile-title>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>
               نتیحه ای برای "
               <strong>{{ search }}</strong
               >" یافت نشد

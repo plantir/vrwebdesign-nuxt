@@ -27,11 +27,7 @@
           border-color: $primary-color !important;
         }
       }
-      &.v-input--is-disabled {
-        .v-input__slot {
-          border-style: dashed !important;
-        }
-      }
+
       .v-input__slot {
         min-height: 38px;
         border-width: 1px !important;
@@ -73,6 +69,9 @@
       min-width: 40px;
       border-radius: 4px 0 0 4px;
     }
+    .v-text-field--outlined fieldset {
+      border-color: #e2e5ec !important;
+    }
   }
 }
 </style>
@@ -86,18 +85,25 @@
         transition="scale-transition"
         dismissible
         outline
-      >{{err.msg}}</v-alert>
+        >{{ err.msg }}</v-alert
+      >
     </div>
-    <div class="form-section" v-for="(row, sectionIndex) in formData" :key="sectionIndex">
+    <div
+      class="form-section"
+      v-for="(row, sectionIndex) in formData"
+      :key="sectionIndex"
+    >
       <template v-if="!row.hide">
-        <h3 v-if="row.title">{{row.title}}</h3>
+        <h3 v-if="row.title">{{ row.title }}</h3>
         <template v-for="(field, fieldIndex) in row.rows">
           <template v-if="!field.hide">
             <component
               v-if="field.model.includes('.')"
               v-validate="field.validation"
-              v-model="item[field.model.split('.')[0]][field.model.split('.')[1]]"
-              :browser-autocomplete="field.browserAutocomplete || 'off'"
+              v-model="
+                item[field.model.split('.')[0]][field.model.split('.')[1]]
+              "
+              :autocomplete="field.browserAutocomplete || 'off'"
               :disabled="field.disabled"
               :readonly="field.readonly"
               :items="field.items"
@@ -105,13 +111,13 @@
               :name="field.model"
               :placeholder="field.placeholder"
               :suffix="field.suffix"
-              :label="minimal?field.label:null"
+              :label="minimal ? field.label : null"
               :append-icon="field.appendIcon"
               :prepend-icon="field.prependIcon"
               :multiple="field.multiple"
               :chips="field.chips"
               :return-object="field.returnObject"
-              :outline="!minimal"
+              :outlined="!minimal"
               :single-line="!minimal"
               :ref="field.ref"
               :key="fieldIndex"
@@ -127,7 +133,7 @@
               v-else
               v-validate="field.validation"
               v-model="item[field.model]"
-              :browser-autocomplete="field.browserAutocomplete || 'off'"
+              :autocomplete="field.browserAutocomplete || 'off'"
               :disabled="field.disabled"
               :readonly="field.readonly"
               :items="field.items"
@@ -135,13 +141,13 @@
               :name="field.model"
               :placeholder="field.placeholder"
               :suffix="field.suffix"
-              :label="minimal?field.label:null"
+              :label="minimal ? field.label : null"
               :append-icon="field.appendIcon"
               :prepend-icon="field.prependIcon"
               :multiple="field.multiple"
               :chips="field.chips"
               :return-object="field.returnObject"
-              :outline="!minimal"
+              :outlined="!minimal"
               :single-line="!minimal"
               :ref="field.ref"
               :key="fieldIndex"

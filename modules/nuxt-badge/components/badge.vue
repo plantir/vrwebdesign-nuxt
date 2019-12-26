@@ -1,6 +1,6 @@
 <style lang="scss" scoped>
 span.vr-badge {
-  border-radius: 2rem;
+  border-radius: 1rem;
   padding: 0.75rem;
   background: #fd397a;
   font-size: 0.825rem;
@@ -10,6 +10,7 @@ span.vr-badge {
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  white-space: nowrap;
   &.badge-dot {
     background: transparent !important;
     font-weight: 700;
@@ -35,9 +36,14 @@ span.vr-badge {
 }
 </style>
 
-<template >
+<template>
   <span ref="badge" class="vr-badge" :class="classList">
-    <span ref="dot" class="dot" :class="dotClassList" v-if="type == 'dot'"></span>
+    <span
+      ref="dot"
+      class="dot"
+      :class="dotClassList"
+      v-if="type == 'dot'"
+    ></span>
     <slot></slot>
   </span>
 </template>
@@ -62,7 +68,18 @@ export default {
         if (classList == '') {
           classList += ' badge-dot'
         } else {
-          classList += '--text badge-dot'
+          classList = classList
+            .split(' ')
+            .map(item => {
+              if (item.includes('darken') || item.includes('lighten')) {
+                item = item.replace(/(darken|lighten)/, 'text--$1')
+              } else {
+                item = item + '--text'
+              }
+              return item
+            })
+            .join(' ')
+          classList += ' badge-dot'
         }
       }
       return classList

@@ -12,8 +12,8 @@
     <v-checkbox
       v-bind="Object.assign($attrs,field)"
       v-model="model"
-      outline
-      :browser-autocomplete="field.browserAutocomplete || 'off'"
+      outlined
+      :autocomplete="field.browserAutocomplete || 'off'"
       :error-messages="errorMessages"
       :placeholder="placeholder"
       :suffix="field.suffix"

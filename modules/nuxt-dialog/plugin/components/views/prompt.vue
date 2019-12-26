@@ -28,12 +28,21 @@
       >
     </div>
     <div class="dialog-content">
-      <div v-if="dialog.message" class="dialog-message">
-        {{ dialog.message }}
+      <div class="form-section">
+        <div class="form-group">
+          <v-textField
+            v-model="prompt"
+            v-validate="'required'"
+            :error-messages="errors.collect('prompt')"
+            name="prompt"
+            outline
+            single-line
+          ></v-textField>
+        </div>
       </div>
     </div>
     <div class="dialog-actions">
-      <v-btn color="info" tile class="mx-1" @click="$emit('hide', true)">{{
+      <v-btn color="info" tile class="mx-1" @click="$emit('hide', prompt)">{{
         dialog.ok_txt
       }}</v-btn>
       <v-btn
@@ -53,7 +62,9 @@
 export default {
   props: ['dialog'],
   data() {
-    return {}
+    return {
+      prompt: dialog.prompt
+    }
   }
 }
 </script>
