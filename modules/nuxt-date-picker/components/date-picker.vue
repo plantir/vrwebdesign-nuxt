@@ -19,28 +19,28 @@
 }
 </style>
 
-<template >
+<template>
   <div id="vr-date-picker" ref="datePickerWrapper" @focus="activate">
     <v-text-field
       :id="id"
       v-model="persianDate"
       v-bind="$attrs"
-      :mask="type=='date'?'####/##/##':''"
+      :mask="type == 'date' ? '####/##/##' : ''"
       ref="dateInputControl"
       class="form-control is-editable"
-      :append-icon="type=='date'?'date_range':'access_time'"
-      @click:append="show=true"
+      :append-icon="type == 'date' ? 'date_range' : 'access_time'"
+      @click:append="show = true"
     ></v-text-field>
 
     <date-picker
-      v-model="persianDate"
+      v-model="georgianDate"
       :type="type"
       v-bind="$attrs"
       :element="id"
       tabindex="-1"
       :show="show"
       :editable="editable"
-      @close="show=false"
+      @close="show = false"
       :auto-submit="autoSubmit"
     ></date-picker>
   </div>
@@ -69,6 +69,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      georgianDate: this.value,
       persianDate: this.value ? moment(this.value).format(this.format) : '',
       show: false
     }
@@ -78,31 +79,35 @@ export default Vue.extend({
       if (val) {
         try {
           this.persianDate = moment(val).format(this.format)
+          this.georgianDate = val
         } catch (error) {}
       } else {
         this.persianDate = null
+        this.georgianDate = null
       }
     },
-    persianDate: function(val) {
+    georgianDate: function(val) {
       if (!val || val.length < 8) {
         if (val === '') {
           this.$emit('input', null)
         }
         return
       }
-
+      this.$emit('input', val)
+    },
+    persianDate: function(val) {
+      if (!val || val.length < 8) {
+        return
+      }
       let emitValue = null
       try {
-        const gregorianDate = moment(this.persianDate, this.format).format(
+        const gregorianDate = moment(val, this.format).format(
           'YYYY-MM-DD HH:mm:ss'
         )
         if (moment(gregorianDate).isValid()) {
-          emitValue = gregorianDate
+          this.georgianDate = gregorianDate
         }
-      } catch (error) {
-      } finally {
-        this.$emit('input', emitValue)
-      }
+      } catch (error) {}
     }
   },
   computed: {
