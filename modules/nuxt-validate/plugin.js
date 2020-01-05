@@ -36,7 +36,7 @@ Validator.extend('number', {
 })
 Validator.extend('sheba_number', {
   validate: value => {
-    let sheba = /IR[0-9]{24}/g.exec(value)
+    let sheba = /IR[0-9]{24}$/g.exec(value)
     return sheba ? true : false
   },
   getMessage: field => 'شماره شبا را به همراه IR و بدون خط فاصله وارد نمایید'
