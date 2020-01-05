@@ -34,6 +34,12 @@ Validator.extend('number', {
     return number ? true : false
   }
 })
+Validator.extend('sheba_number', {
+  validate(value) {
+    let sheba = /IR[0-9]{24}/g.exec(value)
+    return sheba ? true : false
+  }
+})
 Validator.extend('nationalCode', {
   validate(value) {
     if (!value) {
