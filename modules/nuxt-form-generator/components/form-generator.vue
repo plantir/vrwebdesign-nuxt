@@ -77,12 +77,7 @@
         <div class="head-toolbar">
           <div class="btn-group">
             <v-menu offset-y attach bottom left min-width="180">
-              <v-btn
-                class="btn-dropdown"
-                depressed
-                color="info"
-                slot="activator"
-              >
+              <v-btn class="btn-dropdown" depressed color="info" slot="activator">
                 <v-icon>la-angle-down</v-icon>
               </v-btn>
               <v-list>
@@ -96,9 +91,7 @@
                 </v-list-tile>
               </v-list>
             </v-menu>
-            <v-btn @click="save" class="action-btn" depressed color="info"
-              >ذخیره</v-btn
-            >
+            <v-btn @click="save" class="action-btn" depressed color="info">ذخیره</v-btn>
           </div>
           <v-btn flat color="accent" @click="goBack">
             <span>بازگشت</span>
@@ -386,7 +379,7 @@ export default Vue.extend({
       if (!this.title) {
         return null
       }
-      let title = this.title.replace(/{{[a-z\.0-9]+}}/g, p => {
+      let title = this.title.replace(/{{[a-z\.0-9_]+}}/g, p => {
         let param = p.replace(/{|}/g, '')
         let array_param = param.split('.')
         let title = this.initItem
