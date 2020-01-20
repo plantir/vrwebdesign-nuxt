@@ -716,7 +716,7 @@ export default {
     }
     return {
       showFilter: true,
-      showDateFilter: true,
+      showDateFilter: false,
       filterHeight: 0,
       dateFilterHeight: 0,
       sort: this.defaultSort,
