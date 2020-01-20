@@ -28,7 +28,7 @@
       :mask="type == 'date' ? '####/##/##' : ''"
       ref="dateInputControl"
       class="form-control is-editable"
-      :append-icon="type == 'date' ? 'date_range' : 'access_time'"
+      :append-icon="type == 'time' ? 'access_time' : 'date_range'"
       @click:append="show = true"
     ></v-text-field>
 
@@ -70,7 +70,6 @@ export default Vue.extend({
     }
   },
   data() {
-    debugger
     return {
       georgianDate: this.value,
       persianDate: this.value ? moment(this.value).format(this.format) : '',
@@ -79,7 +78,6 @@ export default Vue.extend({
   },
   watch: {
     value: function(val) {
-      debugger
       if (val) {
         try {
           this.persianDate = moment(val).format(this.format)
@@ -91,7 +89,6 @@ export default Vue.extend({
       }
     },
     georgianDate: function(val) {
-      debugger
       if (!val || val.length < 8) {
         if (val === '') {
           this.$emit('input', null)
@@ -101,7 +98,6 @@ export default Vue.extend({
       this.$emit('input', val)
     },
     persianDate: function(val) {
-      debugger
       if (!val || val.length < 8) {
         return
       }
