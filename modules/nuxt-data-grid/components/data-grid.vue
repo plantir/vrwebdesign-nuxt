@@ -51,8 +51,8 @@
   height: 0;
   overflow: hidden;
   transition: 0.2s;
-  display: flex;
-  flex-wrap: wrap;
+  // display: flex;
+  // flex-wrap: wrap;
   > div {
     padding: 25px;
   }
@@ -235,8 +235,17 @@
           <v-icon>{{ title.icon }}</v-icon>
           <h3 class="head-title">{{ title.text }}</h3>
         </div>
+
         <div class="toolbar">
           <slot name="toollbar_right"></slot>
+          <v-tooltip bottom v-if="withDateFilter">
+            <template v-slot:activator="{ on }">
+              <v-btn @click="showDateFilter = !showDateFilter" v-on="on" flat icon>
+                <v-icon :class="{ slash: !showDateFilter }">date_range</v-icon>
+              </v-btn>
+            </template>
+            <span>فیلتر زمان</span>
+          </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn @click="resetFilter" v-on="on" flat icon>
@@ -270,21 +279,14 @@
                       ? 'green'
                       : 'black'
                   "
-                  >restore_from_trash</v-icon
-                >
+                >restore_from_trash</v-icon>
               </v-btn>
             </template>
             <span>بازیابی رکوردها</span>
           </v-tooltip>
+
           <slot name="header_add">
-            <v-btn
-              v-if="withAdd"
-              @click="_add"
-              class="add-new"
-              color="primary"
-              round
-              outline
-            >
+            <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
               <v-icon>add</v-icon>
               <span>ایجاد جدید</span>
             </v-btn>
@@ -298,6 +300,36 @@
       class="data-table-search"
       :style="[showFilter ? { height: filterHeight } : {}]"
     >
+      <transition
+        name="bounce"
+        enter-active-class="fade-enter-active"
+        leave-active-class="fade-leave-active"
+      >
+        <v-layout v-if="showDateFilter" row wrap>
+          <slot name="dateFilters">
+            <v-flex xs3 pa-2>
+              <vr-date-picker
+                hide-details
+                single-line
+                outline
+                v-model="data_filters['created_at:>']"
+                valueFormat="YYYY-MM-DD"
+                label="تاریخ شروغ"
+              ></vr-date-picker>
+            </v-flex>
+            <v-flex xs3 pa-2>
+              <vr-date-picker
+                hide-details
+                single-line
+                outline
+                v-model="data_filters['created_at:<']"
+                valueFormat="YYYY-MM-DD"
+                label="تاریخ پایان"
+              ></vr-date-picker>
+            </v-flex>
+          </slot>
+        </v-layout>
+      </transition>
       <slot name="filters">
         <v-layout row wrap>
           <v-flex xs3 v-if="withSearch">
@@ -310,12 +342,7 @@
               label="Search"
             ></v-text-field>
           </v-flex>
-          <v-flex
-            :class="`xs${item.size || 3}`"
-            pa-2
-            v-for="(item, index) in filters"
-            :key="index"
-          >
+          <v-flex :class="`xs${item.size || 3}`" pa-2 v-for="(item, index) in filters" :key="index">
             <template v-if="item.type == 'select'">
               <v-select
                 single-line
@@ -337,6 +364,8 @@
                 outline
                 v-model="data_filters[item.model]"
                 :prepend-inner-icon="item.icon"
+                :valueFormat="item.vlueFormate"
+                :format="item.format"
                 :name="item.model"
                 :label="item.label"
               ></vr-date-picker>
@@ -370,11 +399,7 @@
       :select-all="selectAll"
       :search="search"
     >
-      <v-progress-linear
-        v-slot:progress
-        color="primary"
-        indeterminate
-      ></v-progress-linear>
+      <v-progress-linear v-slot:progress color="primary" indeterminate></v-progress-linear>
       <template v-slot:headers="props">
         <tr>
           <th width="5%" v-if="selectAll">
@@ -419,20 +444,14 @@
                   ? 'text-xs-left'
                   : 'text-xs-center'
               ]"
-            >
-              {{ header.text }}
-            </th>
+            >{{ header.text }}</th>
           </template>
         </tr>
       </template>
       <template v-slot:items="props">
         <tr :active="props.selected" @click="props.selected = !props.selected">
           <td v-if="selectAll">
-            <v-checkbox
-              :input-value="props.selected"
-              primary
-              hide-details
-            ></v-checkbox>
+            <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
           </td>
           <slot name="items" :props="props" :item="props.item"></slot>
 
@@ -467,41 +486,25 @@
                         :key="index"
                       >
                         <v-icon class="pl-2">{{ action.icon }}</v-icon>
-                        <v-list-tile-title>{{
+                        <v-list-tile-title>
+                          {{
                           action.title
-                        }}</v-list-tile-title>
+                          }}
+                        </v-list-tile-title>
                       </v-list-tile>
                     </v-list>
                   </v-menu>
                 </div>
-                <v-btn
-                  v-if="!hideActionEdit"
-                  icon
-                  depressed
-                  flat
-                  :ripple="false"
-                >
+                <v-btn v-if="!hideActionEdit" icon depressed flat :ripple="false">
                   <v-icon @click="_edit(props.item)">la-edit</v-icon>
                 </v-btn>
                 <span v-if="filter.some(item => item.includes('is_deleted'))">
-                  <v-btn
-                    v-if="!hideActionRecycle"
-                    icon
-                    depressed
-                    flat
-                    :ripple="false"
-                  >
+                  <v-btn v-if="!hideActionRecycle" icon depressed flat :ripple="false">
                     <v-icon @click="_recycle(props.item)">la-recycle</v-icon>
                   </v-btn>
                 </span>
                 <span v-else>
-                  <v-btn
-                    v-if="!hideActionDelete"
-                    icon
-                    depressed
-                    flat
-                    :ripple="false"
-                  >
+                  <v-btn v-if="!hideActionDelete" icon depressed flat :ripple="false">
                     <v-icon @click="_delete(props.item)">la-trash</v-icon>
                   </v-btn>
                 </span>
@@ -512,9 +515,11 @@
         </tr>
       </template>
       <template v-slot:no-results>
-        <v-alert :value="true" color="error" icon="warning"
-          >Your search for "{{ search }}" found no results.</v-alert
-        >
+        <v-alert
+          :value="true"
+          color="error"
+          icon="warning"
+        >Your search for "{{ search }}" found no results.</v-alert>
       </template>
       <template v-slot:no-data>
         <div class="text-xs-center">متاسفم, چیزی برای نمایش وجود ندارد :(</div>
@@ -601,6 +606,9 @@ export default {
     withoutAction: {
       default: false
     },
+    withDateFilter: {
+      default: true
+    },
     pageSize: {
       default: 10
     },
@@ -665,9 +673,14 @@ export default {
         this.filter = []
         for (const filter_name in this.data_filters) {
           if (this.data_filters[filter_name]) {
-            this.filter.push(
-              `${filter_name}:${this.data_filters[filter_name]}:like`
-            )
+            let oprand = 'like'
+            let name = filter_name
+            let value = this.data_filters[filter_name]
+            if (filter_name.includes(':')) {
+              name = filter_name.split(':')[0]
+              oprand = filter_name.split(':')[1]
+            }
+            this.filter.push(`${name}:${value}:${oprand}`)
           }
         }
         if (this.watchFilters) {
@@ -703,7 +716,9 @@ export default {
     }
     return {
       showFilter: true,
+      showDateFilter: true,
       filterHeight: 0,
+      dateFilterHeight: 0,
       sort: this.defaultSort,
       pagination: {
         page: 1,
@@ -722,6 +737,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this)
     this.initFilters()
     this._query()
     this.dataGrid.refresh = () => {
