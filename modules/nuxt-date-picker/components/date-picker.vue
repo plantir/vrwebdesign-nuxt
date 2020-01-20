@@ -92,13 +92,8 @@ export default Vue.extend({
       }
     },
     georgianDate: function(val) {
-      if (!val || val.length < 8) {
-        if (val === '') {
-          this.$emit('input', null)
-        }
-        return
-      }
       this.$emit('input', val)
+      this.$emit('change', val)
     },
     persianDate: function(val) {
       if (!val || val.length < 8) {
@@ -106,9 +101,7 @@ export default Vue.extend({
       }
       let emitValue = null
       try {
-        const gregorianDate = moment(val, this.format).format(
-          'YYYY-MM-DD HH:mm:ss'
-        )
+        const gregorianDate = moment(val, this.format).format(this.valueFormat)
         if (moment(gregorianDate).isValid()) {
           this.georgianDate = gregorianDate
         }
