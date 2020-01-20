@@ -6,6 +6,7 @@
       v-bind="Object.assign($attrs,field)"
       v-model="model"
       :auto-submit="true"
+      type="date"
     ></vr-date-picker>
   </div>
 </template>
