@@ -314,7 +314,7 @@
                 outline
                 v-model="data_filters['created_at:>']"
                 valueFormat="YYYY-MM-DD"
-                label="تاریخ شروغ"
+                label="تاریخ شروع"
               ></vr-date-picker>
             </v-flex>
             <v-flex xs3 pa-2>
