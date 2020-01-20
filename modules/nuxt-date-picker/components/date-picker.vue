@@ -35,7 +35,7 @@
     <date-picker
       v-model="georgianDate"
       :type="type"
-      format="YYYY-MM-DD HH:mm:ss"
+      :format="valueFormat"
       :display-format="format"
       v-bind="$attrs"
       :element="id"
@@ -61,6 +61,9 @@ export default Vue.extend({
     },
     format: {
       default: 'jYYYY/jMM/jDD'
+    },
+    valueFormat: {
+      default: 'YYYY-MM-DD HH:mm:ss'
     },
     editable: {
       default: true
