@@ -295,13 +295,9 @@
         </div>
       </slot>
     </div>
-    <div
-      ref="filters"
-      class="data-table-search"
-      :style="[showFilter ? { height: filterHeight } : {}]"
-    >
+    <div class="data-table-search">
       <transition
-        name="bounce"
+        name="fade"
         enter-active-class="fade-enter-active"
         leave-active-class="fade-leave-active"
       >
@@ -331,58 +327,69 @@
         </v-layout>
       </transition>
       <slot name="filters">
-        <v-layout row wrap>
-          <v-flex xs3 v-if="withSearch">
-            <v-text-field
-              hide-details
-              single-line
-              outline
-              v-model="search"
-              append-icon="search"
-              label="Search"
-            ></v-text-field>
-          </v-flex>
-          <v-flex :class="`xs${item.size || 3}`" pa-2 v-for="(item, index) in filters" :key="index">
-            <template v-if="item.type == 'select'">
-              <v-select
-                single-line
-                hide-details
-                outline
-                v-model="data_filters[item.model]"
-                :items="item.items"
-                :prepend-inner-icon="item.icon"
-                :name="item.model"
-                :label="item.label"
-                :multiple="item.multiple"
-                :chips="item.chips"
-              ></v-select>
-            </template>
-            <template v-else-if="item.type == 'date'">
-              <vr-date-picker
-                hide-details
-                single-line
-                outline
-                v-model="data_filters[item.model]"
-                :prepend-inner-icon="item.icon"
-                :valueFormat="item.vlueFormate"
-                :format="item.format"
-                :name="item.model"
-                :label="item.label"
-              ></vr-date-picker>
-            </template>
-            <template v-else>
+        <transition
+          name="fade"
+          enter-active-class="fade-enter-active"
+          leave-active-class="fade-leave-active"
+        >
+          <v-layout v-if="showFilter" row wrap>
+            <v-flex xs3 v-if="withSearch">
               <v-text-field
                 hide-details
                 single-line
                 outline
-                v-model="data_filters[item.model]"
-                :prepend-inner-icon="item.icon"
-                :name="item.model"
-                :label="item.label"
+                v-model="search"
+                append-icon="search"
+                label="Search"
               ></v-text-field>
-            </template>
-          </v-flex>
-        </v-layout>
+            </v-flex>
+            <v-flex
+              :class="`xs${item.size || 3}`"
+              pa-2
+              v-for="(item, index) in filters"
+              :key="index"
+            >
+              <template v-if="item.type == 'select'">
+                <v-select
+                  single-line
+                  hide-details
+                  outline
+                  v-model="data_filters[item.model]"
+                  :items="item.items"
+                  :prepend-inner-icon="item.icon"
+                  :name="item.model"
+                  :label="item.label"
+                  :multiple="item.multiple"
+                  :chips="item.chips"
+                ></v-select>
+              </template>
+              <template v-else-if="item.type == 'date'">
+                <vr-date-picker
+                  hide-details
+                  single-line
+                  outline
+                  v-model="data_filters[item.model]"
+                  :prepend-inner-icon="item.icon"
+                  :valueFormat="item.vlueFormate"
+                  :format="item.format"
+                  :name="item.model"
+                  :label="item.label"
+                ></vr-date-picker>
+              </template>
+              <template v-else>
+                <v-text-field
+                  hide-details
+                  single-line
+                  outline
+                  v-model="data_filters[item.model]"
+                  :prepend-inner-icon="item.icon"
+                  :name="item.model"
+                  :label="item.label"
+                ></v-text-field>
+              </template>
+            </v-flex>
+          </v-layout>
+        </transition>
       </slot>
     </div>
     <div>
@@ -717,7 +724,6 @@ export default {
     return {
       showFilter: true,
       showDateFilter: false,
-      filterHeight: 0,
       dateFilterHeight: 0,
       sort: this.defaultSort,
       pagination: {
@@ -737,26 +743,12 @@ export default {
     }
   },
   mounted() {
-    console.log(this)
-    this.initFilters()
     this._query()
     this.dataGrid.refresh = () => {
       this.refresh()
     }
   },
   methods: {
-    initFilters: function() {
-      this.$refs['filters'].style.height = 'auto'
-      this.$refs['filters'].style.position = 'absolute'
-      this.$refs['filters'].style.visibility = 'hidden'
-      this.$refs['filters'].style.display = 'block'
-      const height = getComputedStyle(this.$refs['filters']).height
-      this.filterHeight = height
-      this.$refs['filters'].style.position = null
-      this.$refs['filters'].style.visibility = null
-      this.$refs['filters'].style.display = null
-      this.$refs['filters'].style.height = 0
-    },
     toggleAll() {
       if (this.selected.length) this.selected = []
       else this.selected = this.rows.slice()
