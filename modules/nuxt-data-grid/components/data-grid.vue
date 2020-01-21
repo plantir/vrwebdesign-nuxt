@@ -48,7 +48,6 @@
 }
 
 .data-table-search {
-  height: 0;
   overflow: hidden;
   transition: 0.2s;
   // display: flex;
