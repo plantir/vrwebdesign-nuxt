@@ -799,7 +799,10 @@ export default {
           title: 'حذف آیتم',
           message: 'آیا از حذف این آیتم اطمینان دارد؟'
         })
-        .then(() => {
+        .then(confirm => {
+          if (!confirm) {
+            return
+          }
           let service = this.deleteService
             ? this.deleteService(item.id)
             : this.service.$delete(item.id)
@@ -819,7 +822,10 @@ export default {
           title: 'بازیابی آیتم',
           message: 'آیا از بازیابی این آیتم اطمینان دارد؟'
         })
-        .then(() => {
+        .then(confirm => {
+          if (!confirm) {
+            return
+          }
           let service = this.recycleService
             ? this.recycleService(item.id)
             : this.service.$recycle(item.id)
@@ -841,6 +847,9 @@ export default {
             scope: { item: { ...item } }
           })
           .then(newItem => {
+            if (!newItem) {
+              return
+            }
             this.service
               .update(item.id, newItem)
               .then(res => {
@@ -870,6 +879,9 @@ export default {
             scope: { item: {} }
           })
           .then(newItem => {
+            if (!newItem) {
+              return
+            }
             this.service
               .save(newItem)
               .then(res => {
