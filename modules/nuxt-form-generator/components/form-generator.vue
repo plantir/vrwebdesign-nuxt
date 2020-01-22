@@ -1,5 +1,11 @@
 <style lang="scss">
 #editItem {
+  .sticky {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 64px !important;
+    z-index: 9;
+  }
   .header {
     height: 80px;
     display: flex;
@@ -69,8 +75,8 @@
 
 <template>
   <v-card ref="editItem" id="editItem">
-    <div sticky-container>
-      <div v-sticky sticky-offset="offset" sticky-side="top" class="header">
+    <div>
+      <div class="header sticky">
         <div class="head-lable">
           <h3>{{ custom_title }}</h3>
         </div>
@@ -120,7 +126,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import vFormGenerator from './v-form-generator'
-import Sticky from 'vue-sticky-directive'
 import baseMixin from './base-mixin'
 import { setTimeout } from 'timers'
 import { NuxtAxiosResource } from '../../nuxt-axios/types'
@@ -131,7 +136,6 @@ interface ISaveFunction {
   exit_after?: boolean
 }
 export default Vue.extend({
-  directives: { Sticky },
   components: { vFormGenerator },
   props: {
     title: {
