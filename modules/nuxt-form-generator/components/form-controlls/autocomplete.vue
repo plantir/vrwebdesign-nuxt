@@ -2,7 +2,6 @@
   <div class="form-group">
     <label :class="{ required }" v-if="!minimal">{{ field.label }}</label>
     <v-autocomplete
-      cache-items
       :items="items"
       v-model="model"
       v-bind="Object.assign($attrs, field)"
@@ -17,8 +16,7 @@
           :selected="data.selected"
           class="chip--select-multi"
           @input="remove(data.item)"
-          >{{ data.item.text }}</v-chip
-        >
+        >{{ data.item.text }}</v-chip>
         <span v-else>{{ data.item.text }}</span>
       </template>
       <template v-slot:item="data">
@@ -31,8 +29,7 @@
           <v-list-tile-content>
             <v-list-tile-title>
               نتیحه ای برای "
-              <strong>{{ search }}</strong
-              >" یافت نشد
+              <strong>{{ search }}</strong>" یافت نشد
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
