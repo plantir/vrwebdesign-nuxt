@@ -75,7 +75,9 @@ export default Vue.extend({
   data() {
     return {
       georgianDate: this.value,
-      persianDate: this.value ? moment(this.value).format(this.format) : '',
+      persianDate: this.value
+        ? moment(this.value, [this.valueFormat]).format(this.format)
+        : '',
       show: false
     }
   },
@@ -83,7 +85,7 @@ export default Vue.extend({
     value: function(val) {
       if (val) {
         try {
-          this.persianDate = moment(val).format(this.format)
+          this.persianDate = moment(val, [this.valueFormat]).format(this.format)
           this.georgianDate = val
         } catch (error) {}
       } else {
