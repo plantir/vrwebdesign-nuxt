@@ -1,6 +1,6 @@
 <style lang="scss" scoped>
 span.vr-badge {
-  border-radius: 2rem;
+  border-radius: 1rem;
   padding: 0.75rem;
   background: #fd397a;
   font-size: 0.825rem;
@@ -10,6 +10,7 @@ span.vr-badge {
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  white-space: nowrap;
   &.badge-dot {
     background: transparent !important;
     font-weight: 700;

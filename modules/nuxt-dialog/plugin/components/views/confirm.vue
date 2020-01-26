@@ -2,7 +2,12 @@
 .alert-dialog {
   padding: 40px;
   width: 420px;
-  max-width: 100%;
+}
+.confirm-btn {
+  color: $primary-color;
+}
+.cancel-btn {
+  color: $accent-color;
 }
 </style>
 <template>
@@ -24,8 +29,8 @@
       <div v-if="dialog.message" class="dialog-message">{{dialog.message}}</div>
     </div>
     <div class="dialog-actions">
-      <v-btn color="info" @click="$emit('hide',true)">{{dialog.ok_txt}}</v-btn>
-      <v-btn color="accent" @click="$emit('close','close dialog')">{{dialog.cancel_txt}}</v-btn>
+      <v-btn  class="cancel-btn" @click="$emit('close','close dialog')">{{dialog.cancel_txt}}</v-btn>
+      <v-btn class="confirm-btn" @click="$emit('hide',true)">{{dialog.ok_txt}}</v-btn>
     </div>
     <div class="dialog-footer"></div>
   </div>

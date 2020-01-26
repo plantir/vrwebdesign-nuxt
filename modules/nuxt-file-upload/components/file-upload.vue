@@ -101,7 +101,7 @@
             class="set-default"
             @click="set_default_image(image)"
             color="primary"
-            outline
+            outlined
             block
           >انتخاب به عنوان عکس اصلی</v-btn>
         </div>
@@ -143,35 +143,35 @@ export default Vue.extend({
   },
   methods: {
     handleFilePondInit(err, file) {
-      if (this.multiple) {
-        if (this.is_object) {
-          this.images.push({ [this.image_src]: file.serverId })
+      if ((<any>this).multiple) {
+        if ((<any>this).is_object) {
+          (<any>this).images.push({ [(<any>this).image_src]: file.serverId })
         } else {
-          this.images.push(file.serverId)
+          (<any>this).images.push(file.serverId)
         }
-        this.$emit('input', this.images)
+        this.$emit('input', (<any>this).images)
       } else {
-        if (this.is_object) {
-          this.images.splice(0, 1, { [this.imgae_src]: file.serverId })
+        if ((<any>this).is_object) {
+          (<any>this).images.splice(0, 1, { [(<any>this).imgae_src]: file.serverId })
         } else {
-          this.images.splice(0, 1, file.serverId)
+          (<any>this).images.splice(0, 1, file.serverId)
         }
-        this.$emit('input', this.images[0])
+        this.$emit('input', (<any>this).images[0])
       }
     },
     remove_image(index) {
-      if (this.multiple) {
-        this.images.splice(index, 1)
-        this.$emit('input', this.images || [])
+      if ((<any>this).multiple) {
+        (<any>this).images.splice(index, 1)
+        this.$emit('input', (<any>this).images || [])
       } else {
-        this.images = []
+        (<any>this).images = []
         this.$emit('input', null)
       }
       let pond = this.$refs.pond as Vue & { removeFile(index: number): void }
       pond.removeFile(index)
     },
     set_default_image(image) {
-      this.images.map(item => {
+      (<any>this).images.map(item => {
         item.is_default = false
       })
       image.is_default = true
@@ -180,10 +180,10 @@ export default Vue.extend({
   computed: {
     images: {
       get() {
-        if (this.multiple) {
-          return this.value || []
+        if ((<any>this).multiple) {
+          return (<any>this).value || []
         } else {
-          return [this.value]
+          return [(<any>this).value]
         }
       },
       set(value) {

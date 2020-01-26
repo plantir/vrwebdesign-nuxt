@@ -27,11 +27,7 @@
           border-color: $primary-color !important;
         }
       }
-      &.v-input--is-disabled {
-        .v-input__slot {
-          border-style: dashed !important;
-        }
-      }
+
       .v-input__slot {
         min-height: 38px;
         border-width: 1px !important;
@@ -73,6 +69,9 @@
       min-width: 40px;
       border-radius: 4px 0 0 4px;
     }
+    .v-text-field--outlined fieldset{
+      border-color: #e2e5ec !important;
+    }
   }
 }
 </style>
@@ -88,7 +87,7 @@
               v-if="field.model.includes('.')"
               v-validate="field.validation"
               v-model="item[field.model.split('.')[0]][field.model.split('.')[1]]"
-              :browser-autocomplete="field.browserAutocomplete || 'off'"
+              :autocomplete="field.browserAutocomplete || 'off'"
               :disabled="field.disabled"
               :readonly="field.readonly"
               :items="field.items"
@@ -102,7 +101,7 @@
               :multiple="field.multiple"
               :chips="field.chips"
               :return-object="field.returnObject"
-              :outline="!minimal"
+              :outlined="!minimal"
               :single-line="!minimal"
               :ref="field.ref"
               :key="fieldIndex"
@@ -118,7 +117,7 @@
               v-else
               v-validate="field.validation"
               v-model="item[field.model]"
-              :browser-autocomplete="field.browserAutocomplete || 'off'"
+              :autocomplete="field.browserAutocomplete || 'off'"
               :disabled="field.disabled"
               :readonly="field.readonly"
               :items="field.items"
@@ -132,7 +131,7 @@
               :multiple="field.multiple"
               :chips="field.chips"
               :return-object="field.returnObject"
-              :outline="!minimal"
+              :outlined="!minimal"
               :single-line="!minimal"
               :ref="field.ref"
               :key="fieldIndex"

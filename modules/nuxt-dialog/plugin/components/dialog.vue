@@ -101,7 +101,7 @@
   position: absolute;
   top: 8px;
   left: 8px;
-  font-size: 24px;
+
   &:hover {
     color: #4b1897;
   }

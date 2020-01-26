@@ -1,12 +1,13 @@
 {
-  "name": "nuxt-chart",
+  "name": "nuxt-scroll-bar",
   "version": "1.0.0",
-  "description": "chart module for nuxtjs",
+  "description": "toast module for nuxtjs",
   "license": "MIT",
   "contributors": [
     "armin kheirkhahan <mail@armin.pro>"
   ],
-  "main": "module.js",
+  "main": "lib/module.js",
+  "types": "types/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -16,11 +17,11 @@
     "test": "yarn lint && jest",
     "release": "yarn test && standard-version && git push --follow-tags && npm publish"
   },
-  "dependencies": {
-    "moment": "^2.24.0",
-    "moment-jalaali": "^0.8.3",
-    "vue-persian-datetime-picker": "2.0.1"
-  },
+  "files": [
+    "lib",
+    "types/*.d.ts"
+  ],
+  "dependencies": {},
   "devDependencies": {
     "standard-version": "latest"
   }
