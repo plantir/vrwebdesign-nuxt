@@ -18,7 +18,7 @@ class Toast {
     this.$root = (() => {
       let ToastConstructor = this.Vue.extend(ToastComponent)
       let node = document.createElement('div')
-      document.querySelector('.v-application').appendChild(node)
+      document.querySelector('body').appendChild(node)
       let Vm = new ToastConstructor()
       return Vm.$mount(node)
     })()
@@ -59,14 +59,17 @@ class Toast {
   }
   warning() {
     this.toast.color = 'warning'
+
     return this
   }
   info() {
     this.toast.color = 'info'
+
     return this
   }
   error() {
     this.toast.color = 'error'
+
     return this
   }
   showSimple(message) {

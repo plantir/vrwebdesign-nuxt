@@ -10,6 +10,7 @@ interface ToastParams {
   color?: string
   timeout?: number
   message?: string
+  customClass?:string
 }
 interface NuxtToastInstance {
   success(): NuxtToastInstance
