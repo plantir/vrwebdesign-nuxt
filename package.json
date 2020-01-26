@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "release": "git push origin next && yarn publish"
+    "release": "git push origin v2 && yarn publish"
   },
   "repository": "https://github.com/vrwebdesign/vrwebdesign-nuxt.git",
   "author": "",
