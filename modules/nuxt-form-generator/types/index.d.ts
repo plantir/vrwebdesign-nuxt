@@ -40,6 +40,13 @@ export interface VRFormInput {
   select_value?: string | number
   upload_url?: string
   clearable?: boolean
+  datePickerType?:
+    | 'date'
+    | 'datetime'
+    | 'time'
+    | 'year-month'
+    | 'year'
+    | 'month'
   [key: string]: any
 }
 export type VRFormData = {
