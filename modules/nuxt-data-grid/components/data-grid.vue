@@ -240,7 +240,7 @@
           <v-tooltip bottom v-if="withDateFilter">
             <template v-slot:activator="{ on }">
               <v-btn @click="showDateFilter = !showDateFilter" v-on="on" flat icon>
-                <v-icon :class="{ slash: !showDateFilter }">date_range</v-icon>
+                <v-icon :class="{ slash: !showDateFilter }">la-calendar</v-icon>
               </v-btn>
             </template>
             <span>فیلتر زمان</span>
