@@ -318,6 +318,7 @@
                 single-line
                 outline
                 v-model="data_filters['created_at:<']"
+                :min="data_filters['created_at:>']||null"
                 valueFormat="YYYY-MM-DD"
                 label="تاریخ پایان"
               ></vr-date-picker>
