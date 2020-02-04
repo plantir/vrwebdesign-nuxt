@@ -98,7 +98,12 @@ export default Vue.extend({
       this.$emit('change', val)
     },
     persianDate: function(val) {
-      if (!val || val.length < 8) {
+      if (!val) {
+        this.$emit('input', val)
+        this.$emit('change', val)
+        return
+      }
+      if (val.length < 8) {
         return
       }
       let emitValue = null
