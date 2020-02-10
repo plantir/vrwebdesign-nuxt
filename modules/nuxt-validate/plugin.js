@@ -1,11 +1,12 @@
 import Vue from 'vue'
-import VeeValidate, { Validator } from 'vee-validate'
+import VeeValidate, {
+  Validator
+} from 'vee-validate'
 import validationMessages from 'vee-validate/dist/locale/fa'
 import VueI18n from 'vue-i18n'
 import moment from 'moment'
 Validator.extend(
-  'custom_after',
-  {
+  'custom_after', {
     getMessage: (field, [target]) =>
       `The ${field} must be bigger than the ${target} field.`,
     validate: (value, ref) => {
@@ -19,12 +20,13 @@ Validator.extend(
         return false
       }
     }
-  },
-  { hasTarget: true }
+  }, {
+    hasTarget: true
+  }
 )
 Validator.extend('mobile', {
   validate(value) {
-    let mobile = /^[0][9][0-3][0-9]{8,8}$/g.exec(value)
+    let mobile = /^[0][9][0-3 9][0-9]{8,8}$/g.exec(value)
     return mobile ? true : false
   }
 })
