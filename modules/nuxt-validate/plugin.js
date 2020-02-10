@@ -24,7 +24,7 @@ Validator.extend(
 )
 Validator.extend('mobile', {
   validate(value) {
-    let mobile = /^[0][9][0-3][0-9]{8,8}$/g.exec(value)
+    let mobile = /^[0][9][0-3|9][0-9]{8,8}$/g.exec(value)
     return mobile ? true : false
   }
 })
