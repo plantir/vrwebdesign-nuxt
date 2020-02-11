@@ -49,6 +49,8 @@ const XAXIS_OBJ = {
   }
 }
 import Highcharts from 'highcharts'
+import More from 'highcharts/highcharts-more'
+More(Highcharts)
 export default {
   props: {
     type: {},
@@ -62,9 +64,15 @@ export default {
       default: () => {
         return {}
       }
+    },
+    fullOption: {
+      default: false
     }
   },
   async mounted() {
+    if (this.fullOption) {
+      return Highcharts.chart(this.$refs.chart, this.fullOption)
+    }
     let options
     if (this.service) {
       options = await this.service()
