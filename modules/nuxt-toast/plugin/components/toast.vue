@@ -5,7 +5,7 @@
   <section>
     <v-snackbar
       v-model="toast.show"
-      :color="toast.customClass?toast.color:''"
+      :color="toast.color"
       :bottom="toast.bottom"
       :left="toast.left"
       :multi-line="toast.multiLine"
