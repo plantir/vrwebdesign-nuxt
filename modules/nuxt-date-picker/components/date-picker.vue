@@ -28,13 +28,15 @@
       :mask="type == 'date' ? '####/##/##' : ''"
       ref="dateInputControl"
       class="form-control is-editable"
-      :append-icon="type == 'date' ? 'date_range' : 'access_time'"
+      :append-icon="type == 'time' ? 'access_time' : 'date_range'"
       @click:append="show = true"
     ></v-text-field>
 
     <date-picker
-      v-model="persianDate"
+      v-model="georgianDate"
       :type="type"
+      :format="valueFormat"
+      :display-format="format"
       v-bind="$attrs"
       :element="id"
       tabindex="-1"
@@ -60,6 +62,9 @@ export default Vue.extend({
     format: {
       default: 'jYYYY/jMM/jDD'
     },
+    valueFormat: {
+      default: 'YYYY-MM-DD HH:mm:ss'
+    },
     editable: {
       default: true
     },
@@ -69,7 +74,10 @@ export default Vue.extend({
   },
   data() {
     return {
-      persianDate: this.value ? moment(this.value).format(this.format) : '',
+      georgianDate: this.value,
+      persianDate: this.value
+        ? moment(this.value, [this.valueFormat]).format(this.format)
+        : '',
       show: false
     }
   },
@@ -77,38 +85,43 @@ export default Vue.extend({
     value: function(val) {
       if (val) {
         try {
-          this.persianDate = moment(val).format(this.format)
+          this.persianDate = moment(val, [this.valueFormat]).format(this.format)
+          this.georgianDate = val
         } catch (error) {}
       } else {
         this.persianDate = null
+        this.georgianDate = null
       }
     },
+    georgianDate: function(val) {
+      this.$emit('input', val)
+      this.$emit('change', val)
+    },
     persianDate: function(val) {
-      if (!val || val.length < 8) {
-        if (val === '') {
-          this.$emit('input', null)
-        }
+      if (!val) {
+        this.$emit('input', val)
+        this.$emit('change', val)
         return
       }
-
+      if (val.length < 8) {
+        return
+      }
       let emitValue = null
       try {
-        const gregorianDate = moment(this.persianDate, this.format).format(
-          'YYYY-MM-DD HH:mm:ss'
-        )
+        const gregorianDate = moment(val, this.format).format(this.valueFormat)
         if (moment(gregorianDate).isValid()) {
-          emitValue = gregorianDate
+          this.georgianDate = gregorianDate
         }
-      } catch (error) {
-      } finally {
-        this.$emit('input', emitValue)
-      }
+      } catch (error) {}
     }
   },
   computed: {
     id() {
       return `datepicker_${new Date().getMilliseconds()}`
     }
+  },
+  mounted() {
+    console.log(this)
   },
   methods: {
     activate() {
