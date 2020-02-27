@@ -17,7 +17,7 @@
       :class="toast.customClass||''"
     >
       <div v-html="toast.message"></div>
-      <v-icon @click="close" :color="toast.customClass || '#fff'">la-close</v-icon>
+      <v-icon @click="close" :color="toast.customClass || '#fff'">la-times</v-icon>
     </v-snackbar>
   </section>
 </template>

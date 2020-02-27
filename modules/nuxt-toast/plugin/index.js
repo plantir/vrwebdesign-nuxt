@@ -18,7 +18,7 @@ class Toast {
     this.$root = (() => {
       let ToastConstructor = this.Vue.extend(ToastComponent)
       let node = document.createElement('div')
-      document.querySelector('body').appendChild(node)
+      document.querySelector('#app').appendChild(node)
       let Vm = new ToastConstructor()
       return Vm.$mount(node)
     })()
