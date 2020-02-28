@@ -76,6 +76,10 @@ const Plugin = {
         Plugin.dialog.type = 'success'
         return this
       },
+      error() {
+        Plugin.dialog.type = 'error'
+        return this
+      },
       alert(dialog = {}) {
         dialog = Object.assign(Plugin.dialog, dialog)
         dialog.component = AlertView
