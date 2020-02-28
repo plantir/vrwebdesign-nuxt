@@ -51,6 +51,10 @@ const Plugin = {
         Plugin.dialog.prompt = model
         return this
       },
+      icon(icon) {
+        Plugin.dialog.icon = icon
+        return this
+      },
       component(component) {
         Plugin.dialog.component = component
         return this
@@ -80,6 +84,7 @@ const Plugin = {
         Plugin.dialog.type = 'error'
         return this
       },
+
       alert(dialog = {}) {
         dialog = Object.assign(Plugin.dialog, dialog)
         dialog.component = AlertView
