@@ -648,6 +648,9 @@ export default {
     recycleService: {
       type: Function
     },
+    syncUrl: {
+      default: true
+    },
     dataGrid: {
       default: () => {
         return {}
@@ -743,6 +746,7 @@ export default {
     }
   },
   mounted() {
+    this._initialParams()
     this._query()
     this.dataGrid.refresh = () => {
       this.refresh()
@@ -759,6 +763,43 @@ export default {
       } else {
         this.pagination.sortBy = column
         this.pagination.descending = false
+      }
+    },
+    _initialParams() {
+      if (!this.syncUrl) {
+        return
+      }
+      let params = this.$route.query
+      if (params.page) {
+        this.pagination.page = +params.page
+      }
+      if (params.perPage) {
+        this.pagination.rowsPerPage = +params.perPage
+      }
+      if (params.sort) {
+        if (params.sort.includes('-')) {
+          this.pagination.descending = true
+          this.sort = this.pagination.sortBy = params.sort.replace('-', '')
+        } else {
+          this.sort = this.pagination.sortBy = params.sort
+        }
+      }
+      if (params.filters) {
+        let parsed_filters = JSON.parse(params.filters)
+        this.data_filters = {}
+        for (const item of parsed_filters) {
+          let [a, b, c] = item.split(':')
+          let model = `${a}:${c}`
+          if (this.filters.find(item => item.model == model)) {
+            this.data_filters[model] = b
+            continue
+          }
+          model = `${a}`
+          if (this.filters.find(item => item.model == model)) {
+            this.data_filters[model] = b
+            continue
+          }
+        }
       }
     },
     _query() {
@@ -778,6 +819,9 @@ export default {
         }
         if (this.filter && this.filter.length) {
           params.filters = JSON.stringify(this.filter)
+        }
+        if (this.syncUrl) {
+          this.$router.replace({ query: params })
         }
         let service = this.queryService
           ? this.queryService(params)
