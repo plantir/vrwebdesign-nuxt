@@ -235,7 +235,7 @@
           <h3 class="head-title">{{ title.text }}</h3>
         </div>
 
-        <div class="toolbar">
+        <div class="toolbar" v-if="!hideToolbar">
           <slot name="toollbar_right"></slot>
           <v-tooltip bottom v-if="withDateFilter">
             <template v-slot:activator="{ on }">
@@ -264,7 +264,7 @@
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn @click="refresh" v-on="on" flat icon>
-                <v-icon>la-refresh</v-icon>
+                <v-icon>la-sync</v-icon>
               </v-btn>
             </template>
             <span>تازه کردن اطلاعات</span>
@@ -576,6 +576,9 @@ export default {
       default: () => {
         return {}
       }
+    },
+    hideToolbar: {
+      default: false
     },
     filters: {
       default: () => []

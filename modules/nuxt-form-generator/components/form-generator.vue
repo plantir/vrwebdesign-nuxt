@@ -192,7 +192,7 @@ export default Vue.extend({
         title: 'ذخیره و خارج شدن'
       },
       {
-        icon: 'la-refresh',
+        icon: 'la-sync',
         action: 'save & create',
         title: 'ذخیره و ساخت جدید'
       },
