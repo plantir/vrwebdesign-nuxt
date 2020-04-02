@@ -4,5 +4,5 @@ import Loader from 'vrwebdesign-nuxt/modules/nuxt-loader/plugin/index'
 Vue.use(Loader)
 
 export default function(ctx, inject) {
-  inject('loader', Loader)
+  // inject('loader', Loader)
 }
