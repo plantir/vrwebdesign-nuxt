@@ -81,7 +81,7 @@
           <h3>{{ custom_title }}</h3>
         </div>
         <div class="head-toolbar">
-          <div class="btn-group" v-if="withAdd">
+          <div class="btn-group" v-if="withSave">
             <v-menu offset-y attach bottom left min-width="180">
               <v-btn class="btn-dropdown" depressed color="info" slot="activator">
                 <v-icon>la-angle-down</v-icon>
@@ -182,7 +182,7 @@ export default Vue.extend({
       type: Function
     },
     editUrl: {},
-    withAdd: {
+    withSave: {
       default: true
     },
     withBack: {
