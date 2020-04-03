@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import * as moment from 'moment-jalaali'
 
-Vue.filter('currency', value => {
+Vue.filter('currency', (value) => {
   if (typeof value !== 'number') {
     return value
   }
   return new Intl.NumberFormat().format(value)
 })
 
-Vue.filter('persianDigit', value => {
+Vue.filter('persianDigit', (value) => {
   if (value || value === 0) {
-    return value.toString().replace(/\d+/g, function(digit) {
+    return value.toString().replace(/\d+/g, function (digit) {
       var enDigitArr = [],
         peDigitArr = []
       for (var i = 0; i < digit.length; i++) {
@@ -41,7 +41,7 @@ Vue.filter('persianDate', (value, format, locale) => {
   return time
 })
 
-Vue.filter('characterDigit', value => {
+Vue.filter('characterDigit', (value) => {
   if (!value) {
     return
   }
@@ -60,7 +60,7 @@ Vue.filter('characterDigit', value => {
       'هفده',
       'هجده',
       'نوزده',
-      'بیست'
+      'بیست',
     ],
     ['', '', 'بیست', 'سی', 'چهل', 'پنجاه', 'شصت', 'هفتاد', 'هشتاد', 'نود'],
     [
@@ -73,7 +73,7 @@ Vue.filter('characterDigit', value => {
       'ششصد',
       'هفتصد',
       'هشتصد',
-      'نهصد'
+      'نهصد',
     ],
     [
       '',
@@ -97,8 +97,8 @@ Vue.filter('characterDigit', value => {
       ' نانیلیون ',
       ' نانیلیارد ',
       ' دسیلیون ',
-      ' دسیلیارد '
-    ]
+      ' دسیلیارد ',
+    ],
   ]
   /**
    * Clear number and split to 3th sections
@@ -182,4 +182,15 @@ Vue.filter('characterDigit', value => {
     }
   }
   return funcout.join(spliter)
+})
+
+Vue.directive('fix-digit', {
+  bind: function (el, binding, vnode) {
+    el.addEventListener('input', function (val) {
+      let digit = val.target.value.replace(/[۰-۹]/g, (w) => {
+        return ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'].indexOf(w)
+      })
+      vnode.child.$emit('input', digit)
+    })
+  },
 })
