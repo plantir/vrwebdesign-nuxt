@@ -81,7 +81,7 @@
           <h3>{{ custom_title }}</h3>
         </div>
         <div class="head-toolbar">
-          <div class="btn-group">
+          <div class="btn-group" v-if="withAdd">
             <v-menu offset-y attach bottom left min-width="180">
               <v-btn class="btn-dropdown" depressed color="info" slot="activator">
                 <v-icon>la-angle-down</v-icon>
@@ -99,7 +99,7 @@
             </v-menu>
             <v-btn @click="save" class="action-btn" depressed color="info">ذخیره</v-btn>
           </div>
-          <v-btn flat color="accent" @click="goBack">
+          <v-btn flat color="accent" @click="goBack" v-if="withBack">
             <span>بازگشت</span>
             <v-icon class="pr-2">la-arrow-left</v-icon>
           </v-btn>
@@ -181,7 +181,13 @@ export default Vue.extend({
     beforeDelete: {
       type: Function
     },
-    editUrl: {}
+    editUrl: {},
+    withAdd: {
+      default: true
+    },
+    withBack: {
+      default: true
+    }
   },
   data() {
     let action_list = [
