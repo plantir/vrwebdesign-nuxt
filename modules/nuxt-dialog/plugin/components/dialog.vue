@@ -13,7 +13,7 @@
 .dialog-wrapper {
   background: #fff;
   padding: 0;
-  max-width: 100%;
+  max-width: 90%;
   border-radius: 4px;
   position: relative;
   display: block;
