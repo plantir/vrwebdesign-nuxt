@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import * as moment from 'moment-jalaali'
 
-Vue.filter('currency', value => {
+Vue.filter('currency', (value) => {
   if (typeof value !== 'number') {
     return value
   }
   return new Intl.NumberFormat().format(value)
 })
 
-Vue.filter('persianDigit', value => {
+Vue.filter('persianDigit', (value) => {
   if (value || value === 0) {
-    return value.toString().replace(/\d+/g, function(digit) {
+    return value.toString().replace(/\d+/g, function (digit) {
       var enDigitArr = [],
         peDigitArr = []
       for (var i = 0; i < digit.length; i++) {
@@ -40,8 +40,34 @@ Vue.filter('persianDate', (value, format, locale) => {
   } catch (error) {}
   return time
 })
-
-Vue.filter('characterDigit', value => {
+Vue.filter('day', (value) => {
+  let day
+  switch (value) {
+    case 'Sa':
+      day = 'شنبه'
+      break
+    case 'Su':
+      day = 'یکشنبه'
+      break
+    case 'Mo':
+      day = 'دوشنبه'
+      break
+    case 'Tu':
+      day = 'سه‌شنبه'
+      break
+    case 'We':
+      day = 'چهارشنبه'
+      break
+    case 'Th':
+      day = 'پنجشنبه'
+      break
+    case 'Fr':
+      day = 'جمعه'
+      break
+  }
+  return day
+})
+Vue.filter('characterDigit', (value) => {
   if (!value) {
     return
   }
@@ -60,7 +86,7 @@ Vue.filter('characterDigit', value => {
       'هفده',
       'هجده',
       'نوزده',
-      'بیست'
+      'بیست',
     ],
     ['', '', 'بیست', 'سی', 'چهل', 'پنجاه', 'شصت', 'هفتاد', 'هشتاد', 'نود'],
     [
@@ -73,7 +99,7 @@ Vue.filter('characterDigit', value => {
       'ششصد',
       'هفتصد',
       'هشتصد',
-      'نهصد'
+      'نهصد',
     ],
     [
       '',
@@ -97,8 +123,8 @@ Vue.filter('characterDigit', value => {
       ' نانیلیون ',
       ' نانیلیارد ',
       ' دسیلیون ',
-      ' دسیلیارد '
-    ]
+      ' دسیلیارد ',
+    ],
   ]
   /**
    * Clear number and split to 3th sections
