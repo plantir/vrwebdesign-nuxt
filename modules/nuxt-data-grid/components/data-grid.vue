@@ -235,7 +235,7 @@
           <h3 class="head-title">{{ title.text }}</h3>
         </div>
 
-        <div class="toolbar" v-if="!hideToolbar">
+        <div class="toolbar" v-if="$device.isDesktop">
           <slot name="toollbar_right"></slot>
           <v-tooltip bottom v-if="withDateFilter">
             <template v-slot:activator="{ on }">
@@ -292,6 +292,43 @@
           </slot>
           <slot name="toollbar_left"></slot>
         </div>
+        <div class="toolbar" v-else>
+          <slot name="toollbar_right"></slot>
+
+          <v-speed-dial v-model="fab" direction="bottom" transition="slide-y-reverse-transition">
+            <template v-slot:activator>
+              <v-btn v-model="fab" color="purple darken-2" dark fab small >
+                <v-icon>la-sort</v-icon>
+                <v-icon>la-times</v-icon>
+              </v-btn>
+            </template>
+            <v-btn v-if="withDateFilter" @click="showDateFilter = !showDateFilter" v-on="on" color="blue-grey darken-3" fab dark small>
+              <v-icon :class="{ slash: !showDateFilter }">la-calendar</v-icon>
+            </v-btn>
+            <v-btn @click="resetFilter" v-on="on" color="blue-grey darken-3" fab dark small>
+              <v-icon>la-recycle</v-icon>
+            </v-btn>
+            <v-btn @click="showFilter = !showFilter" v-on="on" color="blue-grey darken-3" fab dark small>
+              <v-icon :class="{ slash: !showFilter }">la-filter</v-icon>
+            </v-btn>
+            <v-btn @click="refresh" v-on="on" color="blue-grey darken-3" fab dark small>
+              <v-icon>la-sync</v-icon>
+            </v-btn>
+            <v-btn @click="recycle" v-if="withRecycle" v-on="on" color="blue-grey darken-3" fab dark small>
+              <v-icon
+                :color="
+                    filter.some(item => item.includes('is_deleted'))
+                      ? 'green'
+                      : 'white'
+                  "
+              >restore_from_trash</v-icon>
+            </v-btn>
+          </v-speed-dial>
+          <slot name="header_add">
+            <v-icon v-if="withAdd" @click="_add" large color="purple darken-2">add</v-icon>
+          </slot>
+          <slot name="toollbar_left"></slot>
+        </div>
       </slot>
     </div>
     <div class="data-table-search">
@@ -302,7 +339,7 @@
       >
         <v-layout v-if="showDateFilter" row wrap>
           <slot name="dateFilters">
-            <v-flex xs3 pa-2>
+            <v-flex xs12 lg3 pa-2>
               <vr-date-picker
                 hide-details
                 single-line
@@ -312,7 +349,7 @@
                 label="تاریخ شروع"
               ></vr-date-picker>
             </v-flex>
-            <v-flex xs3 pa-2>
+            <v-flex xs12 lg3 pa-2>
               <vr-date-picker
                 hide-details
                 single-line
@@ -333,7 +370,7 @@
           leave-active-class="fade-leave-active"
         >
           <v-layout v-if="showFilter" row wrap>
-            <v-flex xs3 v-if="withSearch">
+            <v-flex xs12 lg3 v-if="withSearch">
               <v-text-field
                 hide-details
                 single-line
@@ -344,7 +381,7 @@
               ></v-text-field>
             </v-flex>
             <v-flex
-              :class="`xs${item.size || 3}`"
+              :class="`xs${item.size || 12} lg${item.size || 3}`"
               pa-2
               v-for="(item, index) in filters"
               :key="index"
@@ -541,7 +578,7 @@
         color="info"
       ></v-pagination>
       <div class="page-size-wrapper">
-        <div class="item-size">
+        <div class="item-size" v-if="$device.isDesktop">
           نمایش {{ start_item | persianDigit }} تا
           {{ end_item | persianDigit }} از {{ total_items | persianDigit }}
         </div>
@@ -576,9 +613,6 @@ export default {
       default: () => {
         return {}
       }
-    },
-    hideToolbar: {
-      default: false
     },
     filters: {
       default: () => []
