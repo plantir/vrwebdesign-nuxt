@@ -18,7 +18,6 @@ export default Vue.extend({
   mixins: [mixins],
   computed: {
     format() {
-      debugger
       switch (this.field.datePickerType) {
         case 'datetime':
           return 'jYYYY/jMM/jDD HH:mm'
