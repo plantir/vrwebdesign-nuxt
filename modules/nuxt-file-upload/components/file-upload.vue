@@ -93,11 +93,14 @@
       <div v-for="(image, index) in images" :key="index">
         <div class="image-wrapper">
           <v-icon @click="remove_image(index)" color="#fff">la-close</v-icon>
-          <v-icon v-if="set_default && image.is_default" color="#fff"
-            >la-check-circle</v-icon
-          >
-          <img v-if="is_object" :src="image[image_src]" alt />
-          <img v-else :src="image" alt />
+          <v-icon v-if="set_default && image.is_default" color="#fff">la-check-circle</v-icon>
+          <template v-if="!error">
+            <img v-if="is_object" :src="image[image_src]" alt />
+            <img v-else :src="image" @error="error = true" />
+          </template>
+          <template v-else>
+            <div>{{image}}</div>
+          </template>
         </div>
         <div v-if="set_default" class="button-wrapper">
           <v-btn
@@ -106,8 +109,7 @@
             color="primary"
             outline
             block
-            >انتخاب به عنوان عکس اصلی</v-btn
-          >
+          >انتخاب به عنوان عکس اصلی</v-btn>
         </div>
       </div>
     </div>
@@ -122,6 +124,9 @@ export default Vue.extend({
     value: {},
     multiple: {
       default: false
+    },
+    label: {
+      default: 'عکس خود را بکشید و رها کنید'
     },
     upload_url: {
       default: process.env.UPLOAD_URL || '/api/upload'
@@ -142,7 +147,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      label: 'عکس خود را بکشید و رها کنید'
+      error: false
     }
   },
   methods: {
