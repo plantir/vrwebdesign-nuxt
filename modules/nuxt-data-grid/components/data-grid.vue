@@ -83,6 +83,9 @@
     }
   }
 }
+.v-dialog {
+  @extend .data-table-search;
+}
 .search-field {
   > div {
     padding: 25px;
@@ -235,86 +238,111 @@
           <h3 class="head-title">{{ title.text }}</h3>
         </div>
 
-        <div class="toolbar" v-if="$device.isDesktop">
-          <slot name="toollbar_right"></slot>
-          <v-tooltip bottom v-if="withDateFilter">
-            <template v-slot:activator="{ on }">
-              <v-btn @click="showDateFilter = !showDateFilter" v-on="on" flat icon>
-                <v-icon :class="{ slash: !showDateFilter }">la-calendar</v-icon>
-              </v-btn>
-            </template>
-            <span>فیلتر زمان</span>
-          </v-tooltip>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn @click="resetFilter" v-on="on" flat icon>
-                <v-icon>la-recycle</v-icon>
-              </v-btn>
-            </template>
-            <span>حذف فیلتر ها</span>
-          </v-tooltip>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn @click="showFilter = !showFilter" v-on="on" flat icon>
-                <v-icon :class="{ slash: !showFilter }">la-filter</v-icon>
-              </v-btn>
-            </template>
-            <span>مخفی کردن فیلتر ها</span>
-          </v-tooltip>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn @click="refresh" v-on="on" flat icon>
-                <v-icon>la-sync</v-icon>
-              </v-btn>
-            </template>
-            <span>تازه کردن اطلاعات</span>
-          </v-tooltip>
-          <v-tooltip bottom v-if="withRecycle">
-            <template v-slot:activator="{ on }">
-              <v-btn @click="recycle" v-on="on" flat icon>
-                <v-icon
-                  :color="
+        <div class="toolbar" v-if="$device.isDesktopOrTablet">
+          <div v-if="!hideToolbar">
+            <slot name="toollbar_right"></slot>
+            <v-tooltip bottom v-if="withDateFilter">
+              <template v-slot:activator="{ on }">
+                <v-btn @click="showDateFilter = !showDateFilter" v-on="on" flat icon>
+                  <v-icon :class="{ slash: !showDateFilter }">la-calendar</v-icon>
+                </v-btn>
+              </template>
+              <span>فیلتر زمان</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-btn @click="resetFilter" v-on="on" flat icon>
+                  <v-icon>la-recycle</v-icon>
+                </v-btn>
+              </template>
+              <span>حذف فیلتر ها</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-btn @click="showFilter = !showFilter" v-on="on" flat icon>
+                  <v-icon :class="{ slash: !showFilter }">la-filter</v-icon>
+                </v-btn>
+              </template>
+              <span>مخفی کردن فیلتر ها</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-btn @click="refresh" v-on="on" flat icon>
+                  <v-icon>la-sync</v-icon>
+                </v-btn>
+              </template>
+              <span>تازه کردن اطلاعات</span>
+            </v-tooltip>
+            <v-tooltip bottom v-if="withRecycle">
+              <template v-slot:activator="{ on }">
+                <v-btn @click="recycle" v-on="on" flat icon>
+                  <v-icon
+                    :color="
                     filter.some(item => item.includes('is_deleted'))
                       ? 'green'
                       : 'black'
                   "
-                >restore_from_trash</v-icon>
-              </v-btn>
-            </template>
-            <span>بازیابی رکوردها</span>
-          </v-tooltip>
+                  >restore_from_trash</v-icon>
+                </v-btn>
+              </template>
+              <span>بازیابی رکوردها</span>
+            </v-tooltip>
 
-          <slot name="header_add">
-            <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
-              <v-icon>add</v-icon>
-              <span>ایجاد جدید</span>
-            </v-btn>
-          </slot>
-          <slot name="toollbar_left"></slot>
+            <slot name="header_add">
+              <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
+                <v-icon>add</v-icon>
+                <span>ایجاد جدید</span>
+              </v-btn>
+            </slot>
+            <slot name="toollbar_left"></slot>
+          </div>
         </div>
         <div class="toolbar" v-else>
           <slot name="toollbar_right"></slot>
 
           <v-speed-dial v-model="fab" direction="bottom" transition="slide-y-reverse-transition">
             <template v-slot:activator>
-              <v-btn v-model="fab" color="purple darken-2" dark fab small >
+              <v-btn v-model="fab" color="purple darken-2" dark fab small>
                 <v-icon>la-sort</v-icon>
                 <v-icon>la-times</v-icon>
               </v-btn>
             </template>
-            <v-btn v-if="withDateFilter" @click="showDateFilter = !showDateFilter" v-on="on" color="blue-grey darken-3" fab dark small>
+            <v-btn
+              v-if="withDateFilter"
+              @click="showDateFilter = !showDateFilter"
+              v-on="on"
+              color="blue-grey darken-3"
+              fab
+              dark
+              small
+            >
               <v-icon :class="{ slash: !showDateFilter }">la-calendar</v-icon>
             </v-btn>
             <v-btn @click="resetFilter" v-on="on" color="blue-grey darken-3" fab dark small>
               <v-icon>la-recycle</v-icon>
             </v-btn>
-            <v-btn @click="showFilter = !showFilter" v-on="on" color="blue-grey darken-3" fab dark small>
+            <v-btn
+              @click="showFilter = !showFilter"
+              v-on="on"
+              color="blue-grey darken-3"
+              fab
+              dark
+              small
+            >
               <v-icon :class="{ slash: !showFilter }">la-filter</v-icon>
             </v-btn>
             <v-btn @click="refresh" v-on="on" color="blue-grey darken-3" fab dark small>
               <v-icon>la-sync</v-icon>
             </v-btn>
-            <v-btn @click="recycle" v-if="withRecycle" v-on="on" color="blue-grey darken-3" fab dark small>
+            <v-btn
+              @click="recycle"
+              v-if="withRecycle"
+              v-on="on"
+              color="blue-grey darken-3"
+              fab
+              dark
+              small
+            >
               <v-icon
                 :color="
                     filter.some(item => item.includes('is_deleted'))
@@ -368,9 +396,10 @@
           name="fade"
           enter-active-class="fade-enter-active"
           leave-active-class="fade-leave-active"
+          v-if="$device.isDesktopOrTablet"
         >
           <v-layout v-if="showFilter" row wrap>
-            <v-flex xs12 lg3 v-if="withSearch">
+            <v-flex sm3 v-if="withSearch">
               <v-text-field
                 hide-details
                 single-line
@@ -381,7 +410,7 @@
               ></v-text-field>
             </v-flex>
             <v-flex
-              :class="`xs${item.size || 12} lg${item.size || 3}`"
+              :class="`xs${item.size || 3}`"
               pa-2
               v-for="(item, index) in filters"
               :key="index"
@@ -427,6 +456,78 @@
             </v-flex>
           </v-layout>
         </transition>
+        <v-dialog v-model="dialog" v-if="$device.isMobile && filters.length" fullscreen>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" color="primary" class="my-4" dark round outline>
+              <v-icon class="pl-2">la-filter</v-icon>
+              <span>اعمال فیلتر</span>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-text>
+              <v-layout v-if="showFilter" row wrap>
+                <v-flex xs12 v-if="withSearch">
+                  <v-text-field
+                    hide-details
+                    single-line
+                    outline
+                    v-model="search"
+                    append-icon="search"
+                    label="Search"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex
+                  :class="`xs${item.size || 12}`"
+                  pa-2
+                  v-for="(item, index) in filters"
+                  :key="index"
+                >
+                  <template v-if="item.type == 'select'">
+                    <v-select
+                      single-line
+                      hide-details
+                      outline
+                      v-model="data_filters[item.model]"
+                      :items="item.items"
+                      :prepend-inner-icon="item.icon"
+                      :name="item.model"
+                      :label="item.label"
+                      :multiple="item.multiple"
+                      :chips="item.chips"
+                    ></v-select>
+                  </template>
+                  <template v-else-if="item.type == 'date'">
+                    <vr-date-picker
+                      hide-details
+                      single-line
+                      outline
+                      v-model="data_filters[item.model]"
+                      :prepend-inner-icon="item.icon"
+                      :valueFormat="item.vlueFormate"
+                      :format="item.format"
+                      :name="item.model"
+                      :label="item.label"
+                    ></vr-date-picker>
+                  </template>
+                  <template v-else>
+                    <v-text-field
+                      hide-details
+                      single-line
+                      outline
+                      v-model="data_filters[item.model]"
+                      :prepend-inner-icon="item.icon"
+                      :name="item.model"
+                      :label="item.label"
+                    ></v-text-field>
+                  </template>
+                </v-flex>
+              </v-layout>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="primary" @click="dialog = !dialog" absolute left>مشاهده</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </slot>
     </div>
     <div>
@@ -573,7 +674,7 @@
       <v-pagination
         v-model="pagination.page"
         :length="lastPage"
-        :total-visible="7"
+        :total-visible="$device.isDesktop ? 7 : 3"
         circle
         color="info"
       ></v-pagination>
@@ -613,6 +714,9 @@ export default {
       default: () => {
         return {}
       }
+    },
+    hideToolbar: {
+      default: false
     },
     filters: {
       default: () => []
@@ -779,7 +883,8 @@ export default {
       rows: [...this.items],
       selected: [...this.value],
       filter: filter,
-      search: null
+      search: null,
+      dialog: false
     }
   },
   mounted() {

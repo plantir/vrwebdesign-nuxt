@@ -1,0 +1,28 @@
+$small-screen: 600px !default;
+$medium-screen: 960px !default;
+$large-screen: 1264px !default;
+$xlarge-screen: 1904px !default;
+
+@mixin respond-to($media) {
+  @if $media==sm {
+    @media only screen and (min-width: $small-screen) {
+      @content;
+    }
+  } @else if $media==md {
+    @media only screen and (min-width: $medium-screen) {
+      @content;
+    }
+  } @else if $media==lg {
+    @media only screen and (min-width: $large-screen) {
+      @content;
+    }
+  } @else if $media==xl {
+    @media only screen and (min-width: $xlarge-screen) {
+      @content;
+    }
+  } @else {
+    @media only screen and (min-width: $media+'px') {
+      @content;
+    }
+  }
+}
