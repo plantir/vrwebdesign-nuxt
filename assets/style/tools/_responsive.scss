@@ -1,0 +1,64 @@
+$mobilefirst: true !default;
+$grid-breakpoints: (
+    xs: 0,
+    sm: 600px,
+    md: 960px,
+    lg: 1280px - 16px,
+    xl: 1920px - 16px,
+) !default;
+/* prettier-ignore */
+$display-breakpoints-common:(
+  print-only: 'only print',
+  screen-only: 'only screen',
+  xs-only: 'only screen and (max-width: #{map-get($grid-breakpoints, 'sm') - 1})',
+  sm-only: 'only screen and (min-width: #{map-get($grid-breakpoints, 'sm')}) and (max-width: #{map-get($grid-breakpoints, 'md') - 1})',
+  md-only: 'only screen and (min-width: #{map-get($grid-breakpoints, 'md')}) and (max-width: #{map-get($grid-breakpoints, 'lg') - 1})',
+  lg-only: 'only screen and (min-width: #{map-get($grid-breakpoints, 'lg')}) and (max-width: #{map-get($grid-breakpoints, 'xl') - 1})',
+  xl-only: 'only screen and (min-width: #{map-get($grid-breakpoints, 'xl')})'
+) !default;
+/* prettier-ignore */
+$display-breakpoints-desktop-first: (
+  xs: 'only screen and (max-width: #{(map-get($grid-breakpoints, sm) - 1)})',
+  sm: 'only screen and (max-width: #{(map-get($grid-breakpoints, md) - 1)})',
+  md: 'only screen and (max-width: #{(map-get($grid-breakpoints, lg) - 1)})',
+  lg: 'only screen and (max-width: #{(map-get($grid-breakpoints, xl) - 1)})',
+ 
+) !default;
+/* prettier-ignore */
+$display-breakpoints-mobile-first: (
+  sm: 'only screen and (min-width: #{map-get($grid-breakpoints, sm)})',
+  md: 'only screen and (min-width: #{map-get($grid-breakpoints, md)})',
+  lg: 'only screen and (min-width: #{map-get($grid-breakpoints, lg)})',
+  xl: 'only screen and (min-width: #{map-get($grid-breakpoints, xl)})',
+) !default;
+
+@function breakpoint($value) {
+    $str: '';
+    $display-breakpoints: map-merge($display-breakpoints-desktop-first, $display-breakpoints-common);
+    @if $mobilefirst == true {
+        $display-breakpoints: map-merge($display-breakpoints-mobile-first, $display-breakpoints-common);
+    }
+    @if map-has-key($display-breakpoints, $value) {
+        $str: map-get($display-breakpoints, $value);
+    } @else {
+        @if $mobilefirst == true {
+            $str: 'only screen and (min-width: #{$value}px)';
+        } @else {
+            $str: 'only screen and (max-width: #{$value}px)';
+        }
+    }
+
+    @return $str;
+}
+
+@mixin media($value) {
+    $str: breakpoint($value);
+
+    @if not $value or $value == '' {
+        @content;
+    } @else {
+        @media #{$str} {
+            @content;
+        }
+    }
+}
