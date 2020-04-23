@@ -24,7 +24,11 @@
       font-size: 13px;
       &.v-input--is-focused {
         .v-input__slot {
-          border-color: $primary-color !important;
+          @if variable-exists(primary-color) {
+            border-color: $primary-color !important;
+          } @else {
+            border-color: var(--v-primary-base) !important;
+          }
         }
       }
 
@@ -85,14 +89,9 @@
         transition="scale-transition"
         dismissible
         outline
-        >{{ err.msg }}</v-alert
-      >
+      >{{ err.msg }}</v-alert>
     </div>
-    <div
-      class="form-section"
-      v-for="(row, sectionIndex) in formData"
-      :key="sectionIndex"
-    >
+    <div class="form-section" v-for="(row, sectionIndex) in formData" :key="sectionIndex">
       <template v-if="!row.hide">
         <h3 v-if="row.title">{{ row.title }}</h3>
         <template v-for="(field, fieldIndex) in row.rows">

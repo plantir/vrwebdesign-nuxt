@@ -36,10 +36,18 @@
       }
       &:hover,
       &.nuxt-link-active {
-        color: $primary-color;
-        border-bottom: 3px solid $primary-color;
-        .v-icon {
+        @if variable-exists(primary-color) {
           color: $primary-color;
+          border-bottom: 3px solid $primary-color;
+          .v-icon {
+            color: $primary-color;
+          }
+        } @else {
+          color: var(--v-primary-base);
+          border-bottom: 3px solid var(--v-primary-base);
+          .v-icon {
+            color: var(--v-primary-base);
+          }
         }
       }
     }

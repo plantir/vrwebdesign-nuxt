@@ -62,7 +62,11 @@
     font-size: 13px;
     &.v-input--is-focused {
       .v-input__slot {
-        border-color: $primary-color !important;
+        @if variable-exists(primary-color) {
+          border-color: $primary-color !important;
+        } @else {
+          border-color: var(--v-primary-base) !important;
+        }
       }
     }
     .v-input__slot {
@@ -94,7 +98,11 @@
     font-size: 13px;
     &.v-input--is-focused {
       .v-input__slot {
-        border-color: $primary-color !important;
+        @if variable-exists(primary-color) {
+          border-color: $primary-color !important;
+        } @else {
+          border-color: var(--v-primary-base) !important;
+        }
       }
     }
     .v-input__slot {
@@ -148,9 +156,16 @@
     padding: 0 16px;
   }
   &.active {
-    color: $primary-color !important;
-    i {
+    @if variable-exists(primary-color) {
       color: $primary-color !important;
+      i {
+        color: $primary-color !important;
+      }
+    } @else {
+      color: var(--v-primary-base) !important;
+      i {
+        color: var(--v-primary-base) !important;
+      }
     }
   }
   i {
@@ -289,21 +304,13 @@
                       ? 'green'
                       : 'black'
                   "
-                  >restore_from_trash</v-icon
-                >
+                >restore_from_trash</v-icon>
               </v-btn>
             </template>
             <span>بازیابی رکوردها</span>
           </v-tooltip>
           <slot name="header_add">
-            <v-btn
-              v-if="withAdd"
-              @click="_add"
-              class="add-new"
-              rounded
-              outlined
-              color="primary"
-            >
+            <v-btn v-if="withAdd" @click="_add" class="add-new" rounded outlined color="primary">
               <v-icon>add</v-icon>
               <span>ایجاد جدید</span>
             </v-btn>
@@ -329,12 +336,7 @@
               label="Search"
             ></v-text-field>
           </v-flex>
-          <v-flex
-            :class="`xs${item.size || 3}`"
-            pa-2
-            v-for="(item, index) in filters"
-            :key="index"
-          >
+          <v-flex :class="`xs${item.size || 3}`" pa-2 v-for="(item, index) in filters" :key="index">
             <template v-if="item.type == 'select'">
               <v-select
                 single-line
@@ -395,11 +397,7 @@
         :search="search"
         :server-items-length="serverPagination ? total_items : -1"
       >
-        <v-progress-linear
-          v-slot:progress
-          color="primary"
-          indeterminate
-        ></v-progress-linear>
+        <v-progress-linear v-slot:progress color="primary" indeterminate></v-progress-linear>
         <template v-slot:item="props">
           <tr
             :active="props.selected"
@@ -409,22 +407,13 @@
             :class="props.index == contextMenuRowIndex ? 'tr-contextmenu' : ''"
           >
             <td v-if="selectAll">
-              <v-checkbox
-                :input-value="props.selected"
-                primary
-                hide-details
-              ></v-checkbox>
+              <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
             </td>
             <slot name="items" :props="props" :item="props.item"></slot>
 
             <td v-if="!withoutAction" class="text-xs-center">
               <div class="action">
-                <slot
-                  name="actions"
-                  :_edit="_edit"
-                  :_delete="_delete"
-                  :item="props.item"
-                >
+                <slot name="actions" :_edit="_edit" :_delete="_delete" :item="props.item">
                   <div v-if="actions" class="more-action">
                     <v-menu
                       class="data-grid-action"
@@ -446,29 +435,19 @@
                           :key="index"
                         >
                           <v-icon class="pl-2">{{ action.icon }}</v-icon>
-                          <v-list-item-title>{{
+                          <v-list-item-title>
+                            {{
                             action.title
-                          }}</v-list-item-title>
+                            }}
+                          </v-list-item-title>
                         </v-list-item>
                       </v-list>
                     </v-menu>
                   </div>
-                  <v-btn
-                    v-if="!hideActionEdit"
-                    icon
-                    depressed
-                    text
-                    :ripple="false"
-                  >
+                  <v-btn v-if="!hideActionEdit" icon depressed text :ripple="false">
                     <v-icon @click="_edit(props.item)">la-edit</v-icon>
                   </v-btn>
-                  <v-btn
-                    v-if="!hideActionDelete"
-                    icon
-                    depressed
-                    text
-                    :ripple="false"
-                  >
+                  <v-btn v-if="!hideActionDelete" icon depressed text :ripple="false">
                     <v-icon @click="_delete(props.item)">la-trash</v-icon>
                   </v-btn>
                 </slot>
@@ -477,14 +456,10 @@
           </tr>
         </template>
         <template v-slot:no-results-text>
-          <v-alert color="error" icon="warning"
-            >Your search for "{{ search }}" found no results.</v-alert
-          >
+          <v-alert color="error" icon="warning">Your search for "{{ search }}" found no results.</v-alert>
         </template>
         <template v-slot:no-data>
-          <div class="text-xs-center">
-            متاسفم، چیزی برای نمایش وجود ندارد :(
-          </div>
+          <div class="text-xs-center">متاسفم، چیزی برای نمایش وجود ندارد :(</div>
         </template>
       </v-data-table>
 
@@ -500,11 +475,7 @@
         :position-y="contextMenu_y"
       >
         <v-list class="more-action-list">
-          <v-list-item
-            @click="call_action(action)"
-            v-for="(action, index) in actions"
-            :key="index"
-          >
+          <v-list-item @click="call_action(action)" v-for="(action, index) in actions" :key="index">
             <v-icon class="pl-2">{{ action.icon }}</v-icon>
             <v-list-item-title>{{ action.title }}</v-list-item-title>
           </v-list-item>
