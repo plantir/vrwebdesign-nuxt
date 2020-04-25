@@ -10,17 +10,17 @@ function axiosModule(_moduleOptions) {
   var enum_path = path.join(this.options.rootDir, 'enums')
   if (fs.existsSync(enum_path)) {
     // Do something
-    fs.readdirSync(enum_path).forEach(function(file) {
+    fs.readdirSync(enum_path).forEach(function (file) {
       if (file.includes('.ts') || file.includes('.js')) {
         var file_path = path.join(enum_path, file)
         delete require.cache[require.resolve(file_path)]
         //  to have this service in enums
         const file_name = file.replace(/\.(js|ts)/, '')
         enums[file_name] = _interopDefault(require(file_path))
-        let convertToSelect = Object.keys(enums[file_name]).map(key => {
+        let convertToSelect = Object.keys(enums[file_name]).map((key) => {
           return {
             text: enums[file_name][key],
-            value: isNaN(key) ? key : parseInt(key)
+            value: isNaN(key) ? key : parseInt(key),
           }
         })
         enums[file_name]['toSelect'] = convertToSelect
@@ -30,10 +30,10 @@ function axiosModule(_moduleOptions) {
   this.options.enums = enums
 
   this.addPlugin({
-    ssr: false,
+    ssr: true,
     src: path.resolve(__dirname, 'plugin.js'),
     fileName: 'enums.js',
-    options: this.options
+    options: this.options,
   })
 }
 
