@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import validationMessages_fa from 'vee-validate/dist/locale/fa'
 import validationMessages_en from 'vee-validate/dist/locale/en'
 import VeeValidate, { Validator } from 'vee-validate'
@@ -76,7 +77,7 @@ Validator.extend('postalCode', {
   },
 })
 
-export function buildValidator(i18n) {
+export default function buildValidator(i18n) {
   Vue.use(VeeValidate, {
     i18nRootKey: 'validations', // customize the root path for validation messages.
     i18n: i18n,
