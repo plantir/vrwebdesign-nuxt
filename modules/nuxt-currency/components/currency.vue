@@ -19,8 +19,8 @@ export default {
     return {
       displayValue:
         this.value &&
-        Number.parseInt(this.value)
-          .toFixed(0)
+        Number.parseFloat(this.value)
+          .toFixed(this.value.toString().includes('.') ? 2 : 0)
           .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,')
     }
   },
@@ -29,15 +29,17 @@ export default {
       if (isNaN(val)) {
         return
       }
+
       this.displayValue =
         val &&
-        Number.parseInt(val)
-          .toFixed(0)
+        Number.parseFloat(val)
+          .toFixed(val.toString().includes('.') ? 2 : 0)
           .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,')
     }
   },
   methods: {
     onKeyPress(event) {
+      debugger
       let numberArray = [
         0,
         1,
@@ -49,6 +51,7 @@ export default {
         7,
         8,
         9,
+        '.',
         '۰',
         '۱',
         '۲',
