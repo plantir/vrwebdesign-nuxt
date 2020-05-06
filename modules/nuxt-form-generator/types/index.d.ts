@@ -11,6 +11,7 @@ export interface VRFormInput {
     | 'select'
     | 'textArea'
     | 'textField'
+    | 'ckeditor'
   model: string
   validation?: string | any
   ref?: string
