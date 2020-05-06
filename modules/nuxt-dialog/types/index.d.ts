@@ -23,6 +23,7 @@ interface NuxtDialogInstance {
   info(): NuxtDialogInstance
   question(): NuxtDialogInstance
   success(): NuxtDialogInstance
+  error(): NuxtDialogInstance
   component(component: any): NuxtDialogInstance
   show(params?: DialogParams): Promise<any>
   alert(params?: DialogParams): Promise<any>

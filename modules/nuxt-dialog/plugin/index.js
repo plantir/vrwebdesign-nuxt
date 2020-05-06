@@ -10,7 +10,7 @@ export const mountIfNotMounted = (Vue, options, root) => {
     document.querySelector('#app').appendChild(node)
     new Vue({
       parent: root,
-      render: h => h(DialogComponent)
+      render: (h) => h(DialogComponent),
     }).$mount(node)
   }
 
@@ -67,6 +67,10 @@ const Plugin = {
         Plugin.dialog.type = 'success'
         return this
       },
+      error() {
+        Plugin.dialog.type = 'error'
+        return this
+      },
       alert(dialog = {}) {
         dialog = Object.assign(Plugin.dialog, dialog)
         dialog.component = AlertView
@@ -114,16 +118,16 @@ const Plugin = {
           elem.remove()
           Plugin.rootInstance._dynamicContainer = null
         }
-      }
+      },
     }
     Vue.mixin({
       beforeMount() {
         if (Plugin.rootInstance === null) {
           Plugin.rootInstance = this.$root
         }
-      }
+      },
     })
-  }
+  },
 }
 
 export default Plugin
