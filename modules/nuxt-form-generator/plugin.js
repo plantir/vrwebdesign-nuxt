@@ -11,6 +11,7 @@ import radio from 'vrwebdesign-nuxt/modules/nuxt-form-generator/components/form-
 import select from 'vrwebdesign-nuxt/modules/nuxt-form-generator/components/form-controlls/select.vue'
 import textArea from 'vrwebdesign-nuxt/modules/nuxt-form-generator/components/form-controlls/textArea.vue'
 import textField from 'vrwebdesign-nuxt/modules/nuxt-form-generator/components/form-controlls/textField.vue'
+import ckeditor from 'vrwebdesign-nuxt/modules/nuxt-form-generator/components/form-controlls/ckeditor.vue'
 
 Vue.component('vr-autocomplete', autocomplete)
 Vue.component('vr-comboBox', comboBox)
@@ -22,6 +23,7 @@ Vue.component('vr-radio', radio)
 Vue.component('vr-select', select)
 Vue.component('vr-textArea', textArea)
 Vue.component('vr-textField', textField)
+Vue.component('vr-ckEditor', ckeditor)
 
 Vue.component('vr-form-generator', FormGenerator)
 Vue.component('v-form-generator', VFormGenerator)

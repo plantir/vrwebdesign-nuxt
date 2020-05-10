@@ -7,7 +7,10 @@
     z-index: 9;
   }
   .header {
-    height: 80px;
+    height: 120px;
+    @include respond-to(sm) {
+      height: 80px;
+    }
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -22,8 +25,11 @@
       color: #464457;
     }
     .head-toolbar {
-      display: flex;
+      display: block;
       align-items: center;
+      @include respond-to(sm) {
+        display: flex;
+      }
     }
     .btn-group {
       display: flex;
@@ -82,7 +88,14 @@
         </div>
         <div class="head-toolbar">
           <div class="btn-group" v-if="withSave">
-            <v-menu offset-y attach bottom left min-width="180">
+            <v-menu
+              offset-y
+              attach
+              bottom
+              :left="$device.isDesktopOrTablet"
+              :right="$device.isMobile"
+              min-width="180"
+            >
               <v-btn class="btn-dropdown" depressed color="info" slot="activator">
                 <v-icon>la-angle-down</v-icon>
               </v-btn>
