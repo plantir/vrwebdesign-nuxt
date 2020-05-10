@@ -1,6 +1,6 @@
 import ToastComponent from './components/toast.vue'
 const CONFIG = {
-  timeout: 4000
+  timeout: 4000,
 }
 class Toast {
   constructor(Vue, globalOptions = {}) {
@@ -89,10 +89,12 @@ class Toast {
       this.toast.resolve = resolve
       this.toast.reject = reject
       this.$root.commit(this.toast)
+    }).then(() => {
+      this.close()
     })
   }
 
-  close(reason) {
+  close() {
     if (this.mounted === true) {
       this.$root.close()
       let elem = this.$root.$el
@@ -114,8 +116,8 @@ class ToastPlugin {
       $toast: {
         get() {
           return Vue.toast
-        }
-      }
+        },
+      },
     })
   }
 }
