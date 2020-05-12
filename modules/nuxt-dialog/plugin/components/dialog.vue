@@ -158,7 +158,7 @@ export default {
       if (dialogIndex !== -1) {
         this.$delete(this.dialogs, dialogIndex)
       }
-      dialog.reject(data)
+      dialog.resolve(false)
     }
   }
 }
