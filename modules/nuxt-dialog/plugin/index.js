@@ -106,6 +106,8 @@ const Plugin = {
           dialog_options.resolve = resolve
           dialog_options.reject = reject
           Plugin.root.commit(dialog_options)
+        }).then(() => {
+          this.destroy()
         })
       },
       destroy() {
