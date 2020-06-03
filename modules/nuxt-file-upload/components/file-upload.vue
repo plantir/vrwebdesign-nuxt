@@ -134,16 +134,15 @@ export default Vue.extend({
     set_default: {
       default: false
     },
+    label:{
+      default:'عکس خود را بکشید و رها کنید'
+    },
     errorMessage: {},
     imageCropAspectRatio: {
       default: '1:1'
     }
   },
-  data() {
-    return {
-      label: 'عکس خود را بکشید و رها کنید'
-    }
-  },
+
   methods: {
     handleFilePondInit(err, file) {
       if (this.multiple) {
