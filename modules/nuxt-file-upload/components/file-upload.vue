@@ -91,10 +91,8 @@
     <div class="images">
       <div v-for="(image, index) in images" :key="index">
         <div class="image-wrapper">
-          <v-icon @click="remove_image(index)" color="#fff">la-close</v-icon>
-          <v-icon v-if="set_default && image.is_default" color="#fff"
-            >la-check-circle</v-icon
-          >
+          <v-icon @click="remove_image(index)" color="#fff">la-times</v-icon>
+          <v-icon v-if="set_default && image.is_default" color="#fff">la-check-circle</v-icon>
           <img v-if="is_object" :src="image[image_src]" alt />
           <img v-else :src="image" alt />
         </div>
@@ -105,8 +103,7 @@
             color="primary"
             outlined
             block
-            >انتخاب به عنوان عکس اصلی</v-btn
-          >
+          >انتخاب به عنوان عکس اصلی</v-btn>
         </div>
       </div>
     </div>
@@ -134,8 +131,8 @@ export default Vue.extend({
     set_default: {
       default: false
     },
-    label:{
-      default:'عکس خود را بکشید و رها کنید'
+    label: {
+      default: 'عکس خود را بکشید و رها کنید'
     },
     errorMessage: {},
     imageCropAspectRatio: {
