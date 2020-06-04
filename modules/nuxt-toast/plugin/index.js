@@ -89,8 +89,9 @@ class Toast {
       this.toast.resolve = resolve
       this.toast.reject = reject
       this.$root.commit(this.toast)
-    }).then(() => {
+    }).then((data) => {
       this.close()
+      return data
     })
   }
 
