@@ -5,7 +5,8 @@ import ConfirmView from './components/views/confirm.vue'
 import PromptView from './components/views/prompt.vue'
 const DEFAULT_OPTION = {}
 export const mountIfNotMounted = (Vue, options, root) => {
-  if (!root._dynamicContainer) {
+  let mountSection = document.querySelector('.dialog-mount-section')
+  if (!mountSection) {
     let node = document.createElement('div')
     document.querySelector('#app').appendChild(node)
     new Vue({
@@ -105,14 +106,11 @@ const Plugin = {
           dialog_options.id = 'dialog.' + Date.now()
           dialog_options.resolve = resolve
           dialog_options.reject = reject
+          dialog_options.destroy = this.destroy
           Plugin.root.commit(dialog_options)
-        }).then((data) => {
-          this.destroy()
-          return data
         })
       },
       destroy() {
-        console.log(Plugin)
         if (Plugin.root) {
           Plugin.root.forceCloseAll()
           let elem = Plugin.root.$el
