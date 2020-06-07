@@ -87,6 +87,7 @@
       :labelIdle="label"
       :imageCropAspectRatio="imageCropAspectRatio"
       @processfile="handleFilePondInit"
+      @removefile="removeFile"
     ></file-pond>
     <div class="images">
       <div v-for="(image, index) in images" :key="index">
@@ -120,7 +121,9 @@ export default Vue.extend({
       default: false
     },
     upload_url: {
-      default: process.env.UPLOAD_URL || '/api/upload'
+      default: () => ({
+        url: process.env.UPLOAD_URL || '/api/upload'
+      })
     },
     is_object: {
       default: false
@@ -159,6 +162,7 @@ export default Vue.extend({
       }
     },
     remove_image(index) {
+      if (index == -1) return
       if (this.multiple) {
         this.images.splice(index, 1)
         this.$emit('input', this.images || [])
@@ -166,7 +170,11 @@ export default Vue.extend({
         this.images = []
         this.$emit('input', null)
       }
-      this.$refs.pond.removeFile(index)
+      // this.$refs.pond.removeFile(index)
+    },
+    removeFile(err, file) {
+      let index = this.images.findIndex(item => item == file.serverId)
+      this.remove_image(index)
     },
     set_default_image(image) {
       this.images.map(item => {
