@@ -652,7 +652,7 @@ export default {
       type: Function
     },
     syncUrl: {
-      default: true
+      default: false
     },
     dataGrid: {
       default: () => {
