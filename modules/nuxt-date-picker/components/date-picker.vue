@@ -30,6 +30,7 @@
       class="form-control is-editable"
       :append-icon="type == 'time' ? 'access_time' : 'date_range'"
       @click:append="show = true"
+      @focus="showOnFocus?show=true:null"
     ></v-text-field>
 
     <date-picker
@@ -42,6 +43,7 @@
       tabindex="-1"
       :show="show"
       :editable="editable"
+      :locale="locale"
       @close="show = false"
       :auto-submit="autoSubmit"
     ></date-picker>
@@ -70,6 +72,12 @@ export default Vue.extend({
     },
     autoSubmit: {
       default: true
+    },
+    locale: {
+      default: 'fa'
+    },
+    showOnFocus: {
+      default: false
     }
   },
   data() {
