@@ -85,7 +85,7 @@
       ref="pond"
       :server="upload_url"
       :allow-multiple="multiple"
-      :labelIdle="label"
+      :labelIdle="placeholder"
       :imageCropAspectRatio="imageCropAspectRatio"
       @processfile="handleFilePondInit"
     ></file-pond>
@@ -125,7 +125,7 @@ export default Vue.extend({
     multiple: {
       default: false
     },
-    label: {
+    placeholder: {
       default: 'عکس خود را بکشید و رها کنید'
     },
     upload_url: {
