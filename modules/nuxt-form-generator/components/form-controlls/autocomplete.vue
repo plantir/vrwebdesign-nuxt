@@ -12,7 +12,7 @@
       <template v-slot:selection="data">
         <v-chip
           v-if="field.chips"
-          close
+          :close="!field.readonly"
           :selected="data.selected"
           class="chip--select-multi"
           @input="remove(data.item)"
