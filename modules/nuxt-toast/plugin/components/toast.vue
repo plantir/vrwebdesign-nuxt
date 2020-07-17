@@ -128,7 +128,7 @@
       @change="change"
     >
       <div v-html="toast.message"></div>
-      <v-icon @click="close" color="#fff">la-close</v-icon>
+      <v-icon @click="close" color="#fff">la-times</v-icon>
     </v-snackbar>
   </section>
 </template>
