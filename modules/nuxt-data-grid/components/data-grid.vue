@@ -504,9 +504,21 @@
                     </v-list>
                   </v-menu>
                 </div>
-                <v-btn v-if="!hideActionEdit" icon depressed flat :ripple="false">
-                  <v-icon @click="_edit(props.item)">la-edit</v-icon>
-                </v-btn>
+                <tamplate v-if="!hideActionEdit">
+                  <v-btn
+                    v-if="editMode == 'dialog'"
+                    icon
+                    depressed
+                    flat
+                    :ripple="false"
+                    @click="_showEditDialog(props.item)"
+                  >
+                    <v-icon>la-edit</v-icon>
+                  </v-btn>
+                  <v-btn v-else icon depressed flat :ripple="false" :href="_edit(props.item)">
+                    <v-icon>la-edit</v-icon>
+                  </v-btn>
+                </tamplate>
                 <span v-if="filter.some(item => item.includes('is_deleted'))">
                   <v-btn v-if="!hideActionRecycle" icon depressed flat :ripple="false">
                     <v-icon @click="_recycle(props.item)">la-recycle</v-icon>
@@ -889,7 +901,7 @@ export default {
             })
         })
     },
-    _edit(item) {
+    _showEditDialog(item) {
       if (this.editMode == 'dialog' && this.editComponent) {
         this.$dialog
           .show({
@@ -909,17 +921,17 @@ export default {
                 this.$toast.error().showSimple('خطایی رخ داده است')
               })
           })
-        return
       }
+    },
+    _edit(item) {
+      let url = this.$route.path + '/' + item.id
       if (this.editUrl) {
-        let url = this.editUrl.replace(/:[a-zA-Z_]+/g, p => {
+        url = this.editUrl.replace(/:[a-zA-Z_]+/g, p => {
           let param = p.replace(':', '')
           return item[param]
         })
-        this.$router.push(url)
-        return
       }
-      this.$router.push(this.$route.path + '/' + item.id)
+      return url
     },
     _add() {
       if (this.editMode == 'dialog' && this.editComponent) {
