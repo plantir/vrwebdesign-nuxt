@@ -356,6 +356,7 @@
                   single-line
                   hide-details
                   outline
+                  @input="changeFilter"
                   v-model="data_filters[item.model]"
                   :items="item.items"
                   :prepend-inner-icon="item.icon"
@@ -370,6 +371,7 @@
                   hide-details
                   single-line
                   outline
+                  @input="changeFilter"
                   v-model="data_filters[item.model]"
                   :prepend-inner-icon="item.icon"
                   :valueFormat="item.vlueFormate"
@@ -383,6 +385,7 @@
                   hide-details
                   single-line
                   outline
+                  @input="changeFilter"
                   v-model="data_filters[item.model]"
                   :prepend-inner-icon="item.icon"
                   :name="item.model"
@@ -504,7 +507,7 @@
                     </v-list>
                   </v-menu>
                 </div>
-                <tamplate v-if="!hideActionEdit">
+                <template v-if="!hideActionEdit">
                   <v-btn
                     v-if="editMode == 'dialog'"
                     icon
@@ -518,7 +521,7 @@
                   <v-btn v-else icon depressed flat :ripple="false" :href="_edit(props.item)">
                     <v-icon>la-edit</v-icon>
                   </v-btn>
-                </tamplate>
+                </template>
                 <span v-if="filter.some(item => item.includes('is_deleted'))">
                   <v-btn v-if="!hideActionRecycle" icon depressed flat :ripple="false">
                     <v-icon @click="_recycle(props.item)">la-recycle</v-icon>
@@ -598,7 +601,11 @@ export default {
       default: () => []
     },
     defaultFilters: {
-      default: () => []
+      default: () => {
+        return {
+          trackingNumber: 22
+        }
+      }
     },
     defaultSort: {},
     headers: {
@@ -697,19 +704,7 @@ export default {
     },
     data_filters: {
       handler() {
-        this.filter = []
-        for (const filter_name in this.data_filters) {
-          if (this.data_filters[filter_name]) {
-            let oprand = 'like'
-            let name = filter_name
-            let value = this.data_filters[filter_name]
-            if (filter_name.includes(':')) {
-              name = filter_name.split(':')[0]
-              oprand = filter_name.split(':')[1]
-            }
-            this.filter.push(`${name}:${value}:${oprand}`)
-          }
-        }
+        this._buildFilters()
         if (this.watchFilters) {
           this._query()
         }
@@ -816,6 +811,25 @@ export default {
             this.data_filters[model] = b
             continue
           }
+        }
+      }
+    },
+    changeFilter(val, model) {
+      this._buildFilters()
+      this._query()
+    },
+    _buildFilters() {
+      this.filter = []
+      for (const filter_name in this.data_filters) {
+        if (this.data_filters[filter_name]) {
+          let oprand = 'like'
+          let name = filter_name
+          let value = this.data_filters[filter_name]
+          if (filter_name.includes(':')) {
+            name = filter_name.split(':')[0]
+            oprand = filter_name.split(':')[1]
+          }
+          this.filter.push(`${name}:${value}:${oprand}`)
         }
       }
     },
