@@ -35,6 +35,8 @@
   background: #737373;
   position: absolute;
   transform: rotate(45deg) translate(-2px, -2px);
+  top: 50%;
+  left: 10%;
 }
 .toolbar {
   display: flex;
