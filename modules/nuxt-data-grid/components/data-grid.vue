@@ -592,98 +592,96 @@ export default {
       required: true,
       default: () => {
         return {}
-      }
+      },
     },
     hideToolbar: {
-      default: false
+      default: false,
     },
     filters: {
-      default: () => []
+      default: () => [],
     },
     defaultFilters: {
       default: () => {
-        return {
-          trackingNumber: 22
-        }
-      }
+        return {}
+      },
     },
     defaultSort: {},
     headers: {
       required: true,
-      default: () => []
+      default: () => [],
     },
     selectAll: {
-      default: false
+      default: false,
     },
     value: {
-      default: () => []
+      default: () => [],
     },
     withAdd: {
-      default: true
+      default: true,
     },
     editMode: {
-      default: 'state'
+      default: 'state',
     },
     service: {},
     editComponent: {
-      default: null
+      default: null,
     },
     editUrl: {
-      default: null
+      default: null,
     },
     createUrl: {
-      default: null
+      default: null,
     },
     withoutAction: {
-      default: false
+      default: false,
     },
     withDateFilter: {
-      default: true
+      default: true,
     },
     pageSize: {
-      default: 10
+      default: 10,
     },
     serverPagination: {
-      default: true
+      default: true,
     },
     watchFilters: {
       type: Boolean,
-      default: true
+      default: true,
     },
     items: {
-      default: () => []
+      default: () => [],
     },
     withSearch: {
-      default: false
+      default: false,
     },
     withRecycle: {
-      default: false
+      default: false,
     },
     hideActionEdit: {},
     hideActionDelete: {},
     hideActionRecycle: {},
     actions: {},
     queryService: {
-      type: Function
+      type: Function,
     },
     deleteService: {
-      type: Function
+      type: Function,
     },
     recycleService: {
-      type: Function
+      type: Function,
     },
     syncUrl: {
-      default: false
+      default: false,
     },
     dataGrid: {
       default: () => {
         return {}
-      }
+      },
     },
     defaultSort: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   watch: {
     pagination: {
@@ -694,13 +692,13 @@ export default {
         }
         this._query()
       },
-      deep: true
+      deep: true,
     },
     items: {
       handler() {
         this.rows = [...this.items]
       },
-      deep: true
+      deep: true,
     },
     data_filters: {
       handler() {
@@ -709,20 +707,20 @@ export default {
           this._query()
         }
       },
-      deep: true
+      deep: true,
     },
     value: {
       handler() {
         this.selected = this.value
       },
-      deep: true
+      deep: true,
     },
     selected: {
       handler() {
         this.$emit('input', this.selected)
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   data() {
     let filter = []
@@ -730,8 +728,9 @@ export default {
       for (const filter_name in this.defaultFilters) {
         if (this.defaultFilters[filter_name]) {
           filter.push(
-            `${filter_name}:${this.defaultFilters[filter_name]}:${this
-              .defaultFilters.op || '='}`
+            `${filter_name}:${this.defaultFilters[filter_name]}:${
+              this.defaultFilters.op || '='
+            }`
           )
         }
       }
@@ -745,7 +744,7 @@ export default {
         page: 1,
         rowsPerPage: this.pageSize,
         descending: false,
-        sortBy: this.defaultSort
+        sortBy: this.defaultSort,
       },
       data_filters: { ...this.defaultFilters },
       total_items: 0,
@@ -754,7 +753,7 @@ export default {
       rows: [...this.items],
       selected: [...this.value],
       filter: filter,
-      search: null
+      search: null,
     }
   },
   mounted() {
@@ -802,12 +801,12 @@ export default {
         for (const item of parsed_filters) {
           let [a, b, c] = item.split(':')
           let model = `${a}:${c}`
-          if (this.filters.find(item => item.model == model)) {
+          if (this.filters.find((item) => item.model == model)) {
             this.data_filters[model] = b
             continue
           }
           model = `${a}`
-          if (this.filters.find(item => item.model == model)) {
+          if (this.filters.find((item) => item.model == model)) {
             this.data_filters[model] = b
             continue
           }
@@ -843,7 +842,7 @@ export default {
         this.loading = true
         let params = {
           page: this.pagination.page,
-          perPage: this.pagination.rowsPerPage
+          perPage: this.pagination.rowsPerPage,
         }
         if (this.sort) {
           params.sort = this.sort
@@ -858,7 +857,7 @@ export default {
           ? this.queryService(params)
           : this.service.$query(params)
         service
-          .then(res => {
+          .then((res) => {
             this.rows = res.data
             this.loading = false
             this.total_items = res.total
@@ -873,9 +872,9 @@ export default {
       this.$dialog
         .confirm({
           title: 'حذف آیتم',
-          message: 'آیا از حذف این آیتم اطمینان دارد؟'
+          message: 'آیا از حذف این آیتم اطمینان دارد؟',
         })
-        .then(confirm => {
+        .then((confirm) => {
           if (!confirm) {
             return
           }
@@ -887,7 +886,7 @@ export default {
               this.$toast.success().showSimple('آیتم با موفقت حذف شد')
               this._query()
             })
-            .catch(err => {
+            .catch((err) => {
               this.$toast.error().showSimple('خطایی رخ داده است')
             })
         })
@@ -896,9 +895,9 @@ export default {
       this.$dialog
         .confirm({
           title: 'بازیابی آیتم',
-          message: 'آیا از بازیابی این آیتم اطمینان دارد؟'
+          message: 'آیا از بازیابی این آیتم اطمینان دارد؟',
         })
-        .then(confirm => {
+        .then((confirm) => {
           if (!confirm) {
             return
           }
@@ -910,7 +909,7 @@ export default {
               this.$toast.success().showSimple('آیتم با موفقت بازیابی شد')
               this._query()
             })
-            .catch(err => {
+            .catch((err) => {
               this.$toast.error().showSimple('خطایی رخ داده است')
             })
         })
@@ -920,18 +919,18 @@ export default {
         this.$dialog
           .show({
             component: this.editComponent,
-            scope: { item: { ...item } }
+            scope: { item: { ...item } },
           })
-          .then(newItem => {
+          .then((newItem) => {
             if (!newItem) {
               return
             }
             this.service
               .update(item.id, newItem)
-              .then(res => {
+              .then((res) => {
                 this.$toast.success().showSimple('با موفقیت به روز رسانی شد')
               })
-              .catch(err => {
+              .catch((err) => {
                 this.$toast.error().showSimple('خطایی رخ داده است')
               })
           })
@@ -940,7 +939,7 @@ export default {
     _edit(item) {
       let url = this.$route.path + '/' + item.id
       if (this.editUrl) {
-        url = this.editUrl.replace(/:[a-zA-Z_]+/g, p => {
+        url = this.editUrl.replace(/:[a-zA-Z_]+/g, (p) => {
           let param = p.replace(':', '')
           return item[param]
         })
@@ -952,25 +951,25 @@ export default {
         this.$dialog
           .show({
             component: this.editComponent,
-            scope: { item: {} }
+            scope: { item: {} },
           })
-          .then(newItem => {
+          .then((newItem) => {
             if (!newItem) {
               return
             }
             this.service
               .save(newItem)
-              .then(res => {
+              .then((res) => {
                 this.$toast.success().showSimple('با موفقیت ایجاد شد')
               })
-              .catch(err => {
+              .catch((err) => {
                 this.$toast.error().showSimple('خطایی رخ داده است')
               })
           })
         return
       }
       if (this.createUrl) {
-        let url = this.createUrl.replace(/:[a-z]+/g, p => {
+        let url = this.createUrl.replace(/:[a-z]+/g, (p) => {
           let param = p.replace(':', '')
           return item[param]
         })
@@ -983,7 +982,7 @@ export default {
       this._query()
     },
     recycle() {
-      let is_deleted_index = this.filter.findIndex(item =>
+      let is_deleted_index = this.filter.findIndex((item) =>
         item.includes('is_deleted')
       )
       if (is_deleted_index !== -1) {
@@ -997,25 +996,25 @@ export default {
       this.data_filters = { ...this.defaultFilters }
       this.sort = null
       this.pagination.sortBy = null
-    }
+    },
   },
 
   computed: {
     custom_headers() {
-      let headers = this.headers.map(item => {
+      let headers = this.headers.map((item) => {
         if (item.sortable == null) {
           item.sortable = true
         }
         return item
       })
-      let action_exist = headers.some(item => item.name == 'action')
+      let action_exist = headers.some((item) => item.name == 'action')
       if (!action_exist && !this.withoutAction) {
         headers.push({
           text: '',
           name: 'action',
           align: 'center',
           sortable: false,
-          width: '10%'
+          width: '10%',
         })
       }
       return headers
@@ -1026,7 +1025,7 @@ export default {
     end_item() {
       let end_item = this.pagination.page * this.pagination.rowsPerPage
       return end_item > this.total_items ? this.total_items : end_item
-    }
-  }
+    },
+  },
 }
 </script>
