@@ -7,15 +7,9 @@
 <template>
   <div class="alert-dialog" v-if="dialog">
     <div class="dialog-header">
-      <div
-        v-if="dialog.type == 'warning'"
-        class="dialog-icon warning-icon"
-      ></div>
+      <div v-if="dialog.type == 'warning'" class="dialog-icon warning-icon"></div>
       <div v-if="dialog.type == 'info'" class="dialog-icon info-icon"></div>
-      <div
-        v-if="dialog.type == 'question'"
-        class="dialog-icon question-icon"
-      ></div>
+      <div v-if="dialog.type == 'question'" class="dialog-icon question-icon"></div>
       <div v-if="dialog.type == 'error'" class="dialog-icon error-icon">
         <v-icon>la-close</v-icon>
       </div>
@@ -23,9 +17,7 @@
         <v-icon>la-check</v-icon>
       </div>
       <h2 v-if="dialog.title" class="dialog-title">{{ dialog.title }}</h2>
-      <v-icon @click="$emit('close', 'close dialog')" class="dialog-close"
-        >la-close</v-icon
-      >
+      <v-icon @click="$emit('close', 'close dialog')" class="dialog-close">la-times</v-icon>
     </div>
     <div class="dialog-content">
       <div class="form-section">
@@ -42,17 +34,18 @@
       </div>
     </div>
     <div class="dialog-actions">
-      <v-btn color="info" tile class="mx-1" @click="$emit('hide', prompt)">{{
+      <v-btn color="info" tile class="mx-1" @click="$emit('hide', prompt)">
+        {{
         dialog.ok_txt
-      }}</v-btn>
+        }}
+      </v-btn>
       <v-btn
         color="grey darken-1"
         dark
         tile
         class="mx-1"
         @click="$emit('close', 'close dialog')"
-        >{{ dialog.cancel_txt }}</v-btn
-      >
+      >{{ dialog.cancel_txt }}</v-btn>
     </div>
     <div class="dialog-footer"></div>
   </div>
@@ -63,8 +56,8 @@ export default {
   props: ['dialog'],
   data() {
     return {
-      prompt: this.dialog.prompt
+      prompt: this.dialog.prompt,
     }
-  }
+  },
 }
 </script>

@@ -18,7 +18,7 @@
         <v-icon>la-check</v-icon>
       </div>
       <h2 v-if="dialog.title" class="dialog-title">{{dialog.title}}</h2>
-      <v-icon @click="$emit('close','close dialog')" class="dialog-close">la-close</v-icon>
+      <v-icon @click="$emit('close','close dialog')" class="dialog-close">la-times</v-icon>
     </div>
     <div class="dialog-content">
       <div v-if="dialog.message" class="dialog-message">{{dialog.message}}</div>
@@ -36,6 +36,6 @@ export default {
   props: ['dialog'],
   data() {
     return {}
-  }
+  },
 }
 </script>
