@@ -162,7 +162,7 @@
 }
 .v-data-table thead th {
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.925rem;
   color: #6c7293 !important;
   &.sortable {
     padding: 0 16px;
@@ -238,7 +238,7 @@
   }
   .v-icon {
     color: #93a2dd !important;
-    font-size: 1.475rem;
+    font-size: 1.475rem !important;
   }
   .v-btn {
   }
@@ -391,6 +391,7 @@
     <div>
       <slot name="action-header"></slot>
     </div>
+    {{pagination.sortBy}}
     <div :class="custom_class_grid_wrapper">
       <v-data-table
         :headers="custom_headers"
@@ -455,11 +456,23 @@
                       </v-list>
                     </v-menu>
                   </div>
-                  <v-btn v-if="!hideActionEdit" icon depressed text :ripple="false">
-                    <v-icon @click="_edit(props.item)">la-edit</v-icon>
+                  <v-btn
+                    v-if="!hideActionEdit"
+                    @click="_edit(props.item)"
+                    icon
+                    depressed
+                    :ripple="false"
+                  >
+                    <v-icon>la-edit</v-icon>
                   </v-btn>
-                  <v-btn v-if="!hideActionDelete" icon depressed text :ripple="false">
-                    <v-icon @click="_delete(props.item)">la-trash</v-icon>
+                  <v-btn
+                    v-if="!hideActionDelete"
+                    @click="_delete(props.item)"
+                    icon
+                    depressed
+                    :ripple="false"
+                  >
+                    <v-icon>la-trash</v-icon>
                   </v-btn>
                 </slot>
               </div>
@@ -534,6 +547,10 @@
   </div>
 </template>
 <script>
+import { isArray } from 'util'
+
+import { Pagination } from 'swiper/js/swiper.esm'
+
 export default {
   props: {
     title: {
@@ -629,8 +646,14 @@ export default {
   watch: {
     pagination: {
       handler() {
-        this.sort = this.pagination.sortBy
-        if (this.pagination.descending) {
+        let is_desending
+        this.sort = this.pagination.sortBy[0]
+        if (typeof this.pagination.descending == 'boolean') {
+          is_desending = this.pagination.descending
+        } else if (Array.isArray(this.pagination.descending)) {
+          is_desending = this.pagination.descending[0]
+        }
+        if (this.sort && is_desending) {
           this.sort = '-' + this.sort
         }
         this._query()
@@ -797,6 +820,7 @@ export default {
         page: this.pagination.page,
         perPage: this.pagination.rowsPerPage,
       }
+      debugger
       if (this.sort) {
         params.sort = this.sort
       }
