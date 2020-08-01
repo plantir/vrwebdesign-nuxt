@@ -1,23 +1,44 @@
 <style lang="scss" scoped>
+::v-deep {
+  .v-snack__content {
+    font-size: 0.975rem;
+  }
+}
 </style>
 
 <template>
   <section>
     <v-snackbar
+      absolute
       v-model="toast.show"
+      :timeout="toast.timeout"
       :color="toast.color"
       :bottom="toast.bottom"
       :left="toast.left"
-      :multi-line="toast.multiLine"
       :right="toast.right"
-      :timeout="toast.timeout"
       :top="toast.top"
       :vertical="toast.vertical"
-      @change="change"
+      :multi-line="toast.multiLine"
       :class="toast.customClass||''"
+      :shaped="toast.shaped"
+      :outlined="toast.outlined"
+      :text="toast.text"
+      :rounded="toast.rounded"
     >
       <div v-html="toast.message"></div>
-      <v-icon @click="close" :color="toast.customClass || '#fff'">la-times</v-icon>
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          :color="iconColor"
+          icon
+          text
+          depressed
+          :ripple="false"
+          v-bind="attrs"
+          @click="toast.show = false"
+        >
+          <v-icon>la-times</v-icon>
+        </v-btn>
+      </template>
     </v-snackbar>
   </section>
 </template>
@@ -26,18 +47,18 @@
 export default {
   data() {
     return {
-      toast: {}
+      toast: {},
     }
   },
   watch: {
     toast: {
-      handler: function(value) {
+      handler: function (value) {
         if (!value.show) {
           this.toast.resolve()
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     commit(toast) {
@@ -47,7 +68,14 @@ export default {
     close() {
       this.toast.show = false
       this.toast.resolve()
-    }
-  }
+    },
+  },
+  computed: {
+    iconColor() {
+      if (this.toast.customClass) return this.toast.customClass
+      if (this.toast.outlined) return this.toast.color
+      return '#fff'
+    },
+  },
 }
 </script>

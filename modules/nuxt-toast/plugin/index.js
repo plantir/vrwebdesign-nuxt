@@ -59,17 +59,30 @@ class Toast {
   }
   warning() {
     this.toast.color = 'warning'
-
     return this
   }
   info() {
     this.toast.color = 'info'
-
     return this
   }
   error() {
     this.toast.color = 'error'
-
+    return this
+  }
+  shaped() {
+    this.toast.shaped = true
+    return this
+  }
+  text() {
+    this.toast.text = true
+    return this
+  }
+  outlined() {
+    this.toast.outlined = true
+    return this
+  }
+  rounded() {
+    this.toast.rounded = 'pill'
     return this
   }
   showSimple(message) {
