@@ -51,13 +51,10 @@
 }
 
 .data-table-search {
-  height: 0;
-  overflow: hidden;
   transition: 0.2s;
-  display: flex;
-  flex-wrap: wrap;
+  margin: 16px 0;
   > div {
-    padding: 25px;
+    padding: 0 25px;
   }
   .v-input {
     font-size: 13px;
@@ -283,9 +280,22 @@
         </div>
         <div class="toolbar">
           <slot name="toollbar_right"></slot>
+          <v-tooltip bottom v-if="withDateFilter">
+            <template v-slot:activator="{ on }">
+              <v-btn
+                :class="{ slash: !showDateFilter }"
+                @click="showDateFilter = !showDateFilter"
+                v-on="on"
+                icon
+              >
+                <v-icon>la-calendar</v-icon>
+              </v-btn>
+            </template>
+            <span>فیلتر زمان</span>
+          </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn @click="resetFilter" v-on="on" text icon>
+              <v-btn @click="resetFilter" v-on="on" icon>
                 <v-icon>la-recycle</v-icon>
               </v-btn>
             </template>
@@ -293,15 +303,20 @@
           </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn @click="showFilter = !showFilter" v-on="on" text icon>
-                <v-icon :class="{ slash: !showFilter }">la-filter</v-icon>
+              <v-btn
+                :class="{ slash: !showFilter }"
+                @click="showFilter = !showFilter"
+                v-on="on"
+                icon
+              >
+                <v-icon>la-filter</v-icon>
               </v-btn>
             </template>
             <span>مخفی کردن فیلتر ها</span>
           </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn @click="refresh" v-on="on" text icon>
+              <v-btn @click="refresh" v-on="on" icon>
                 <v-icon>la-sync</v-icon>
               </v-btn>
             </template>
@@ -309,7 +324,7 @@
           </v-tooltip>
           <v-tooltip bottom v-if="withRecycle">
             <template v-slot:activator="{ on }">
-              <v-btn @click="recycle" v-on="on" text icon>
+              <v-btn @click="recycle" v-on="on" icon>
                 <v-icon
                   :color="
                     filter.some(item => item.includes('is_deleted'))
@@ -331,67 +346,108 @@
         </div>
       </slot>
     </div>
-    <div
-      ref="filters"
-      class="data-table-search"
-      :style="[showFilter ? { height: filterHeight } : {}]"
-    >
-      <slot name="filters">
-        <v-layout row wrap>
-          <v-flex xs3 v-if="withSearch">
-            <v-text-field
-              hide-details
-              single-line
-              outlined
-              v-model="search"
-              append-icon="search"
-              label="Search"
-            ></v-text-field>
-          </v-flex>
-          <v-flex :class="`xs${item.size || 3}`" pa-2 v-for="(item, index) in filters" :key="index">
-            <template v-if="item.type == 'select'">
-              <v-select
-                hide-details
-                outlined
-                v-model="data_filters[item.model]"
-                :items="item.items"
-                :prepend-inner-icon="item.icon"
-                :name="item.model"
-                :label="item.label"
-                :multiple="item.multiple"
-                :chips="item.chips"
-              ></v-select>
-            </template>
-            <template v-else-if="item.type == 'date'">
+    <div class="data-table-search">
+      <!-- <transition
+        name="fade"
+        enter-active-class="fade-enter-active"
+        leave-active-class="fade-leave-active"
+      ></transition>-->
+      <v-expand-transition>
+        <v-layout v-if="showDateFilter" row wrap>
+          <slot name="dateFilters">
+            <v-flex xs3 pa-2>
               <vr-date-picker
                 hide-details
+                single-line
                 outlined
-                v-model="data_filters[item.model]"
-                :format="item.format || 'jYYYY-jMM-jDD'"
-                :valueFormat="item.valueFormat || 'YYYY-MM-DD'"
-                :prepend-inner-icon="item.icon"
-                :name="item.model"
-                :label="item.label"
+                clearable
+                v-model="data_filters['created_at:>']"
+                valueFormat="YYYY-MM-DD"
+                label="تاریخ شروع"
               ></vr-date-picker>
-            </template>
-            <template v-else>
-              <v-text-field
+            </v-flex>
+            <v-flex xs3 pa-2>
+              <vr-date-picker
                 hide-details
+                single-line
                 outlined
-                v-model="data_filters[item.model]"
-                :append-icon="item.icon || 'la-search'"
-                :name="item.model"
-                :label="item.label"
-              ></v-text-field>
-            </template>
-          </v-flex>
+                clearable
+                v-model="data_filters['created_at:<']"
+                :min="data_filters['created_at:>']||null"
+                valueFormat="YYYY-MM-DD"
+                label="تاریخ پایان"
+              ></vr-date-picker>
+            </v-flex>
+          </slot>
         </v-layout>
-      </slot>
+      </v-expand-transition>
+      <v-expand-transition>
+        <div v-show="showFilter">
+          <slot name="filters">
+            <v-layout row wrap>
+              <v-flex xs3 v-if="withSearch">
+                <v-text-field
+                  hide-details
+                  single-line
+                  outlined
+                  v-model="search"
+                  append-icon="search"
+                  label="Search"
+                ></v-text-field>
+              </v-flex>
+              <v-flex
+                :class="`xs${item.size || 3}`"
+                pa-2
+                v-for="(item, index) in filters"
+                :key="index"
+              >
+                <template v-if="item.type == 'select'">
+                  <v-select
+                    hide-details
+                    outlined
+                    :clearable="item.clearable == false?false:true"
+                    v-model="data_filters[item.model]"
+                    :items="item.items"
+                    :prepend-inner-icon="item.icon"
+                    :name="item.model"
+                    :label="item.label"
+                    :multiple="item.multiple"
+                    :chips="item.chips"
+                  ></v-select>
+                </template>
+                <template v-else-if="item.type == 'date'">
+                  <vr-date-picker
+                    hide-details
+                    outlined
+                    :clearable="item.clearable == false?false:true"
+                    v-model="data_filters[item.model]"
+                    :format="item.format || 'jYYYY-jMM-jDD'"
+                    :valueFormat="item.valueFormat || 'YYYY-MM-DD'"
+                    :prepend-inner-icon="item.icon"
+                    :name="item.model"
+                    :label="item.label"
+                  ></vr-date-picker>
+                </template>
+                <template v-else>
+                  <v-text-field
+                    hide-details
+                    outlined
+                    :clearable="item.clearable == false?false:true"
+                    v-model="data_filters[item.model]"
+                    :append-icon="item.icon || 'la-search'"
+                    :name="item.model"
+                    :label="item.label"
+                  ></v-text-field>
+                </template>
+              </v-flex>
+            </v-layout>
+          </slot>
+        </div>
+      </v-expand-transition>
     </div>
     <div>
       <slot name="action-header"></slot>
     </div>
-    {{pagination.sortBy}}
     <div :class="custom_class_grid_wrapper">
       <v-data-table
         :headers="custom_headers"
@@ -598,6 +654,9 @@ export default {
     withoutAction: {
       default: false,
     },
+    withDateFilter: {
+      default: true,
+    },
     withContextMenu: {
       default: false,
     },
@@ -682,14 +741,7 @@ export default {
     },
     data_filters: {
       handler() {
-        this.filter = []
-        for (const filter_name in this.data_filters) {
-          if (this.data_filters[filter_name]) {
-            this.filter.push(
-              `${filter_name}:${this.data_filters[filter_name]}:like`
-            )
-          }
-        }
+        this._buildFilters()
         if (this.watchFilters) {
           this._query()
         }
@@ -740,6 +792,7 @@ export default {
       contextMenu_y: 0,
       contextMenuItem: null,
       showFilter: true,
+      showDateFilter: false,
       filterHeight: 0,
       sort: null,
       pagination: {
@@ -759,7 +812,8 @@ export default {
     }
   },
   mounted() {
-    this.initFilters()
+    // this.initFilters()
+    this._initialParams()
     this._query()
     this.dataGrid.refresh = () => {
       this.refresh()
@@ -788,21 +842,21 @@ export default {
     call_action(action) {
       action.cb(this.contextMenuItem)
     },
-    initFilters: function () {
-      if (this.filters && this.filters.length > 0) {
-        this.$refs['filters'].style.height = 'auto'
-        this.$refs['filters'].style.position = 'absolute'
-        this.$refs['filters'].style.visibility = 'hidden'
-        this.$refs['filters'].style.display = 'block'
-        const height = getComputedStyle(this.$refs['filters']).height
+    // initFilters: function() {
+    //   if (this.filters && this.filters.length > 0) {
+    //     this.$refs['filters'].style.height = 'auto'
+    //     this.$refs['filters'].style.position = 'absolute'
+    //     this.$refs['filters'].style.visibility = 'hidden'
+    //     this.$refs['filters'].style.display = 'block'
+    //     const height = getComputedStyle(this.$refs['filters']).height
 
-        this.filterHeight = height
-        this.$refs['filters'].style.position = null
-        this.$refs['filters'].style.visibility = null
-        this.$refs['filters'].style.display = null
-        this.$refs['filters'].style.height = 0
-      }
-    },
+    //     this.filterHeight = height
+    //     this.$refs['filters'].style.position = null
+    //     this.$refs['filters'].style.visibility = null
+    //     this.$refs['filters'].style.display = null
+    //     this.$refs['filters'].style.height = 0
+    //   }
+    // },
     toggleAll() {
       if (this.selected.length) this.selected = []
       else this.selected = this.rows.slice()
@@ -813,6 +867,62 @@ export default {
       } else {
         this.pagination.sortBy = column
         this.pagination.descending = false
+      }
+    },
+    _initialParams() {
+      if (!this.syncUrl) {
+        return
+      }
+      let params = this.$route.query
+      if (params.page) {
+        this.pagination.page = +params.page
+      }
+      if (params.perPage) {
+        this.pagination.rowsPerPage = +params.perPage
+      }
+      if (params.sort) {
+        if (params.sort.includes('-')) {
+          this.pagination.descending = true
+          this.sort = this.pagination.sortBy = params.sort.replace('-', '')
+        } else {
+          this.sort = this.pagination.sortBy = params.sort
+        }
+      }
+      if (params.filters) {
+        let parsed_filters = JSON.parse(params.filters)
+        this.data_filters = {}
+        for (const item of parsed_filters) {
+          let [a, b, c] = item.split(':')
+          let model = `${a}:${c}`
+          if (this.filters.find((item) => item.model == model)) {
+            this.data_filters[model] = b
+            continue
+          }
+          model = `${a}`
+          if (this.filters.find((item) => item.model == model)) {
+            this.data_filters[model] = b
+            continue
+          }
+        }
+      }
+    },
+    changeFilter(val, model) {
+      this._buildFilters()
+      this._query()
+    },
+    _buildFilters() {
+      this.filter = []
+      for (const filter_name in this.data_filters) {
+        if (this.data_filters[filter_name]) {
+          let oprand = 'like'
+          let name = filter_name
+          let value = this.data_filters[filter_name]
+          if (filter_name.includes(':')) {
+            name = filter_name.split(':')[0]
+            oprand = filter_name.split(':')[1]
+          }
+          this.filter.push(`${name}:${value}:${oprand}`)
+        }
       }
     },
     _query() {
