@@ -1,6 +1,6 @@
 import ToastComponent from './components/toast.vue'
 const CONFIG = {
-  timeout: 4000
+  timeout: 4000,
 }
 class Toast {
   constructor(Vue, globalOptions = {}) {
@@ -18,7 +18,7 @@ class Toast {
     this.$root = (() => {
       let ToastConstructor = this.Vue.extend(ToastComponent)
       let node = document.createElement('div')
-      document.querySelector('body').appendChild(node)
+      document.querySelector('#app').appendChild(node)
       let Vm = new ToastConstructor()
       return Vm.$mount(node)
     })()
@@ -69,6 +69,22 @@ class Toast {
     this.toast.color = 'error'
     return this
   }
+  shaped() {
+    this.toast.shaped = true
+    return this
+  }
+  text() {
+    this.toast.text = true
+    return this
+  }
+  outlined() {
+    this.toast.outlined = true
+    return this
+  }
+  rounded() {
+    this.toast.rounded = 'pill'
+    return this
+  }
   showSimple(message) {
     this.toast.message = message
     return this.show(this.toast)
@@ -86,10 +102,13 @@ class Toast {
       this.toast.resolve = resolve
       this.toast.reject = reject
       this.$root.commit(this.toast)
+    }).then((data) => {
+      this.close()
+      return data
     })
   }
 
-  close(reason) {
+  close() {
     if (this.mounted === true) {
       this.$root.close()
       let elem = this.$root.$el
@@ -111,8 +130,8 @@ class ToastPlugin {
       $toast: {
         get() {
           return Vue.toast
-        }
-      }
+        },
+      },
     })
   }
 }
