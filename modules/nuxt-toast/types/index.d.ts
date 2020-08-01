@@ -10,11 +10,6 @@ interface ToastParams {
   color?: string
   timeout?: number
   message?: string
-  customClass?: string
-  bottom?: boolean
-  shaped?: boolean
-  text?: boolean
-  outlined?: boolean
 }
 interface NuxtToastInstance {
   success(): NuxtToastInstance
@@ -25,10 +20,6 @@ interface NuxtToastInstance {
   right(): NuxtToastInstance
   left(): NuxtToastInstance
   bottom(): NuxtToastInstance
-  shaped(): NuxtToastInstance
-  text(): NuxtToastInstance
-  outlined(): NuxtToastInstance
-  rounded(): NuxtToastInstance
   color(color: string): NuxtToastInstance
   message(message: string): NuxtToastInstance
   timeout(timeout: number): NuxtToastInstance
