@@ -28,7 +28,7 @@
             v-validate="'required'"
             :error-messages="errors.collect('prompt')"
             name="prompt"
-            outline
+            outlined
             single-line
           ></v-textField>
         </div>
@@ -57,8 +57,8 @@ export default {
   props: ['dialog'],
   data() {
     return {
-      prompt: dialog.prompt
+      prompt: dialog.prompt,
     }
-  }
+  },
 }
 </script>

@@ -88,7 +88,7 @@
         :value="true"
         transition="scale-transition"
         dismissible
-        outline
+        outlined
       >{{ err.msg }}</v-alert>
     </div>
     <div class="form-section" v-for="(row, sectionIndex) in formData" :key="sectionIndex">
@@ -173,40 +173,40 @@ export default {
     form: {
       default: () => {
         return {}
-      }
+      },
     },
     value: {
-      require: true
+      require: true,
     },
     minimal: {
-      default: false
+      default: false,
     },
     formData: {
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      item: this.value
+      item: this.value,
     }
   },
 
   watch: {
     value: {
-      handler: function(value, oldValue) {
+      handler: function (value, oldValue) {
         if (JSON.stringify(value) == JSON.stringify(oldValue)) {
           return
         }
         this.item = { ...value }
       },
-      deep: true
+      deep: true,
     },
     item: {
-      handler: function() {
+      handler: function () {
         this.$emit('input', this.item)
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   created() {
     this.form.moveToFirstError = this.moveToFirstError
@@ -218,7 +218,7 @@ export default {
     moveToFirstError() {
       if (this.errors.items[0].id) {
         const field = this.$validator.fields.find({
-          id: this.errors.items[0].id
+          id: this.errors.items[0].id,
         })
         if (field) {
           this.$scrollTo(field.el, 1000, { offset: -150 })
@@ -230,7 +230,7 @@ export default {
     validate() {
       return new Promise((resolve, reject) => {
         // inja bayad ye gohi bokhoram
-        this.$validator.validateAll().then(async valid => {
+        this.$validator.validateAll().then(async (valid) => {
           if (this.$validator.errors.items.length) {
             this.$validator.errors.items[0].regenerate()
             this.form.moveToFirstError()
@@ -254,7 +254,7 @@ export default {
       if (field.onChange) {
         field.onChange(this.item[field.model])
       }
-    }
-  }
+    },
+  },
 }
 </script>
