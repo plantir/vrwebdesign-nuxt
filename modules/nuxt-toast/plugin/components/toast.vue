@@ -1,4 +1,10 @@
 <style lang="scss" scoped>
+section {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99;
+}
 ::v-deep {
   .v-snack__content {
     font-size: 0.975rem;
