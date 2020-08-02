@@ -144,10 +144,6 @@
 .v-pagination {
   white-space: nowrap;
   width: auto !important;
-
-  button {
-    border-radius: 50%;
-  }
 }
 .v-pagination__navigation .v-icon {
   font-size: 1.675rem;
@@ -567,13 +563,7 @@
       class="footer-wrapper"
       :class="custom_class_footer_wrapper || ''"
     >
-      <v-pagination
-        v-model="pagination.page"
-        :length="lastPage"
-        :total-visible="7"
-        color="info"
-        :class="custom_class_pagination || ''"
-      ></v-pagination>
+      <v-pagination v-model="pagination.page" :length="lastPage" v-bind="pagination_options"></v-pagination>
       <div v-if="!hide_page_size" class="page-size-wrapper">
         <div class="item-size">
           نمایش {{ start_item | persianDigit }} تا
@@ -698,7 +688,12 @@ export default {
       default: false,
     },
     custom_class_pagination: {},
-    hide_page_size: {},
+    hide_page_size: {
+      default: false,
+    },
+    paginationOption: {
+      default: () => ({}),
+    },
     custom_class_footer_wrapper: {},
     custom_class_grid_wrapper: {},
   },
@@ -706,7 +701,7 @@ export default {
     pagination: {
       handler() {
         let is_desending
-        this.sort = this.pagination.sortBy[0]
+        this.sort = this.pagination.sortBy && this.pagination.sortBy[0]
         if (typeof this.pagination.descending == 'boolean') {
           is_desending = this.pagination.descending
         } else if (Array.isArray(this.pagination.descending)) {
@@ -813,6 +808,16 @@ export default {
   },
   mounted() {
     // this.initFilters()
+    this.pagination_options = Object.assign(
+      {
+        'total-visible': '7',
+        color: 'info',
+        'prev-icon': 'chevron_right',
+        'next-icon': 'chevron_left',
+        circle: true,
+      },
+      this.paginationOption
+    )
     this._initialParams()
     this._query()
     this.dataGrid.refresh = () => {
@@ -930,7 +935,6 @@ export default {
         page: this.pagination.page,
         perPage: this.pagination.rowsPerPage,
       }
-      debugger
       if (this.sort) {
         params.sort = this.sort
       }
