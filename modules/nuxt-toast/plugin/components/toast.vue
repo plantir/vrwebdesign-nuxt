@@ -1,8 +1,14 @@
 <style lang="scss" scoped>
+section {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  pointer-events: none;
+}
 ::v-deep {
-  .v-snack__wrapper {
-    z-index: 99;
-  }
   .v-snack__content {
     font-size: 0.975rem;
   }
