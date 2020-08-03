@@ -11,7 +11,6 @@ interface ToastParams {
   timeout?: number
   message?: string
   customClass?: string
-  bottom?: boolean
   shaped?: boolean
   text?: boolean
   outlined?: boolean
