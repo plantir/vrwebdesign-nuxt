@@ -451,8 +451,7 @@
         hide-default-footer
         :disable-pagination="disable_pagination"
         :items="rows"
-        :show-select="selectAll"
-        @page-count="lastPage = $event"
+        :show-select="selectAll"        
         :loading="loading"
         :items-per-page="pagination.rowsPerPage"
         :page.sync="pagination.page"
@@ -711,6 +710,7 @@ export default {
           this.sort = '-' + this.sort
         }
         this._query()
+        this.$emit('current-change', this.pagination.page)
       },
       deep: true,
     },
