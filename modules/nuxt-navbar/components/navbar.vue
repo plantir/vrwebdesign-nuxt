@@ -61,10 +61,19 @@
       <div class="head-toolbar">
         <ul class="nav-tab">
           <li class="nav-item" v-for="(item,index) in items" :key="index">
-            <nuxt-link :exact="item.exact" class="nav-link" :to="item.base + item.to">
+            <nuxt-link
+              v-if="item.to"
+              :exact="item.exact"
+              class="nav-link"
+              :to="item.base + item.to"
+            >
               <v-icon>{{item.icon}}</v-icon>
               <span>{{ item.title }}</span>
             </nuxt-link>
+            <a class="nav-link" v-else @click="item.onClick">
+              <v-icon>{{item.icon}}</v-icon>
+              <span>{{ item.title }}</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -75,8 +84,8 @@
 export default {
   props: {
     items: {
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 }
 </script>
