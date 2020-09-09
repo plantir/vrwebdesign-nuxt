@@ -32,7 +32,7 @@
       // width: 150px;
       // flex: 0 0 150px;
       position: relative;
-      i {
+      .v-icon {
         position: absolute;
         left: 8px;
         top: 8px;
@@ -118,29 +118,29 @@ export default Vue.extend({
   props: {
     value: {},
     multiple: {
-      default: false
+      default: false,
     },
     upload_url: {
       default: () => ({
-        url: process.env.UPLOAD_URL || '/api/upload'
-      })
+        url: process.env.UPLOAD_URL || '/api/upload',
+      }),
     },
     is_object: {
-      default: false
+      default: false,
     },
     image_src: {
-      default: 'src'
+      default: 'src',
     },
     set_default: {
-      default: false
+      default: false,
     },
     label: {
-      default: 'عکس خود را بکشید و رها کنید'
+      default: 'عکس خود را بکشید و رها کنید',
     },
     errorMessage: {},
     imageCropAspectRatio: {
-      default: '1:1'
-    }
+      default: '1:1',
+    },
   },
 
   methods: {
@@ -173,15 +173,15 @@ export default Vue.extend({
       // this.$refs.pond.removeFile(index)
     },
     removeFile(err, file) {
-      let index = this.images.findIndex(item => item == file.serverId)
+      let index = this.images.findIndex((item) => item == file.serverId)
       this.remove_image(index)
     },
     set_default_image(image) {
-      this.images.map(item => {
+      this.images.map((item) => {
         item.is_default = false
       })
       image.is_default = true
-    }
+    },
   },
   computed: {
     images: {
@@ -194,8 +194,8 @@ export default Vue.extend({
       },
       set(value) {
         return value
-      }
-    }
-  }
+      },
+    },
+  },
 })
 </script>
