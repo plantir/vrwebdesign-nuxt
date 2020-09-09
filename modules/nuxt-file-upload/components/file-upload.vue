@@ -32,7 +32,7 @@
       // width: 150px;
       // flex: 0 0 150px;
       position: relative;
-      i {
+      .v-icon {
         position: absolute;
         left: 8px;
         top: 8px;
