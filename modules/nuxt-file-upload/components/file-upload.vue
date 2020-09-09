@@ -92,7 +92,7 @@
     <div class="images">
       <div v-for="(image, index) in images" :key="index">
         <div class="image-wrapper">
-          <v-icon @click="remove_image(index)" color="#fff">la-close</v-icon>
+          <v-icon @click="remove_image(index)" color="#fff">la-times</v-icon>
           <v-icon v-if="set_default && image.is_default" color="#fff">la-check-circle</v-icon>
           <template v-if="!error">
             <img v-if="is_object" :src="image[image_src]" alt />
@@ -123,31 +123,31 @@ export default Vue.extend({
   props: {
     value: {},
     multiple: {
-      default: false
+      default: false,
     },
     placeholder: {
-      default: 'عکس خود را بکشید و رها کنید'
+      default: 'عکس خود را بکشید و رها کنید',
     },
     upload_url: {
-      default: process.env.UPLOAD_URL || '/api/upload'
+      default: process.env.UPLOAD_URL || '/api/upload',
     },
     is_object: {
-      default: false
+      default: false,
     },
     image_src: {
-      default: 'src'
+      default: 'src',
     },
     set_default: {
-      default: false
+      default: false,
     },
     errorMessage: {},
     imageCropAspectRatio: {
-      default: '1:1'
-    }
+      default: '1:1',
+    },
   },
   data() {
     return {
-      error: false
+      error: false,
     }
   },
   methods: {
@@ -180,11 +180,11 @@ export default Vue.extend({
       pond.removeFile(index)
     },
     set_default_image(image) {
-      this.images.map(item => {
+      this.images.map((item) => {
         item.is_default = false
       })
       image.is_default = true
-    }
+    },
   },
   computed: {
     images: {
@@ -197,8 +197,8 @@ export default Vue.extend({
       },
       set(value) {
         return value
-      }
-    }
-  }
+      },
+    },
+  },
 })
 </script>

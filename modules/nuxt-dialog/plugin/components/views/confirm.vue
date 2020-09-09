@@ -12,7 +12,7 @@
       <div v-if="dialog.type == 'info'" class="dialog-icon info-icon"></div>
       <div v-if="dialog.type == 'question'" class="dialog-icon question-icon"></div>
       <div v-if="dialog.type == 'error'" class="dialog-icon error-icon">
-        <v-icon>la-close</v-icon>
+        <v-icon>la-times</v-icon>
       </div>
       <div v-if="dialog.type == 'success'" class="dialog-icon success-icon">
         <v-icon>la-check</v-icon>
