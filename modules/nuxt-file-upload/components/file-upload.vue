@@ -37,6 +37,7 @@
         left: 8px;
         top: 8px;
         background: rgba(0, 0, 0, 0.4);
+        z-index: 99;
         &.la-check-circle {
           bottom: 25px;
           top: auto;
@@ -91,12 +92,20 @@
     ></file-pond>
     <div class="images">
       <div v-for="(image, index) in images" :key="index">
-        <div class="image-wrapper">
+        <div v-if="image" class="image-wrapper">
           <v-icon @click="remove_image(index)" color="#fff">la-times</v-icon>
           <v-icon v-if="set_default && image.is_default" color="#fff">la-check-circle</v-icon>
           <template v-if="!error">
-            <img v-if="is_object" :src="image[image_src]" alt />
-            <img v-else :src="image" @error="error = true" />
+            <div v-if="fileType == 'image'">
+              <img v-if="is_object" :src="image[image_src]" alt />
+              <img v-else :src="image" @error="error = true" />
+            </div>
+            <div v-else-if="fileType == 'video'">
+              <video width="300" controls>
+                <source v-if="is_object" :src="image[image_src]" />
+                <source v-else :src="image" @error="error = true" />
+              </video>
+            </div>
           </template>
           <template v-else>
             <div>{{image}}</div>
@@ -139,6 +148,9 @@ export default Vue.extend({
     },
     set_default: {
       default: false,
+    },
+    fileType: {
+      default: 'image',
     },
     errorMessage: {},
     imageCropAspectRatio: {
