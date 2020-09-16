@@ -10,5 +10,6 @@ export default (ctx, inject) => {
     }
     return enums[key][value]
   })
+  ctx.$enum = enums
   inject('enum', enums)
 }
