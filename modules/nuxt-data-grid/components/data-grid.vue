@@ -518,7 +518,7 @@
                   >
                     <v-icon>la-edit</v-icon>
                   </v-btn>
-                  <v-btn v-else icon depressed flat :ripple="false" :href="_edit(props.item)">
+                  <v-btn v-else icon depressed flat :ripple="false" :to="_edit(props.item)">
                     <v-icon>la-edit</v-icon>
                   </v-btn>
                 </template>
