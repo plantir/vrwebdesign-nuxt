@@ -98,7 +98,7 @@
   margin: 1.25rem auto 0;
 }
 .dialog-close {
-  position: absolute;
+  position: absolute !important;
   top: 8px;
   left: 8px;
 
@@ -127,11 +127,11 @@
 import dialogWindow from './dialog-window.vue'
 export default {
   components: {
-    dialogWindow
+    dialogWindow,
   },
   data() {
     return {
-      dialogs: []
+      dialogs: [],
     }
   },
   created() {
@@ -146,7 +146,7 @@ export default {
     },
     hide({ dialog, data }) {
       dialog.show = false
-      let dialogIndex = this.dialogs.findIndex(item => item.id == dialog.id)
+      let dialogIndex = this.dialogs.findIndex((item) => item.id == dialog.id)
       if (dialogIndex !== -1) {
         this.$delete(this.dialogs, dialogIndex)
       }
@@ -154,12 +154,12 @@ export default {
     },
     close({ dialog, data }) {
       dialog.show = false
-      let dialogIndex = this.dialogs.findIndex(item => item.id == dialog.id)
+      let dialogIndex = this.dialogs.findIndex((item) => item.id == dialog.id)
       if (dialogIndex !== -1) {
         this.$delete(this.dialogs, dialogIndex)
       }
       dialog.resolve(false)
-    }
-  }
+    },
+  },
 }
 </script>
