@@ -35,7 +35,7 @@ section {
       :rounded="toast.rounded"
     >
       <div v-html="toast.message"></div>
-      <template v-slot:action="{ attrs }">
+      <!-- <template v-slot:action="{ attrs }"> -->
         <v-btn
           :color="iconColor"
           icon
@@ -47,7 +47,7 @@ section {
         >
           <v-icon>la-times</v-icon>
         </v-btn>
-      </template>
+      <!-- </template> -->
     </v-snackbar>
   </section>
 </template>
