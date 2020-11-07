@@ -42,7 +42,7 @@ section {
           text
           depressed
           :ripple="false"
-          v-bind="attrs"
+          v-bind="$attrs"
           @click="toast.show = false"
         >
           <v-icon>la-times</v-icon>
