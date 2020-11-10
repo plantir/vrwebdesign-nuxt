@@ -14,11 +14,15 @@ import FilePondPluginImageResize from 'filepond-plugin-image-resize'
 import FilePondPluginImageCrop from 'filepond-plugin-image-crop'
 
 import FileUploader from 'vrwebdesign-nuxt/modules/nuxt-file-upload/components/file-upload.vue'
+
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+
 const FilePond = vueFilepond(
   // FilePondPluginImagePreview,
   FilePondPluginImageEdit,
   FilePondPluginImageResize,
-  FilePondPluginImageCrop
+  FilePondPluginImageCrop,
+  FilePondPluginFileValidateType
 )
 Vue.component('FilePond', FilePond)
 
