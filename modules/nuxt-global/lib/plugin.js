@@ -40,6 +40,7 @@ Vue.filter('persianDate', (value, format, locale) => {
   } catch (error) {}
   return time
 })
+
 Vue.filter('day', (value) => {
   let day
   switch (value) {
@@ -67,6 +68,7 @@ Vue.filter('day', (value) => {
   }
   return day
 })
+
 Vue.filter('characterDigit', (value) => {
   if (!value) {
     return
@@ -209,3 +211,14 @@ Vue.filter('characterDigit', (value) => {
   }
   return funcout.join(spliter)
 })
+
+Vue.directive("fix-digit", {
+  bind: function(el, binding, vnode) {
+    el.addEventListener("input", function(val) {
+      let digit = val.target.value.replace(/[۰-۹]/g, w => {
+        return ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"].indexOf(w);
+      });
+      vnode.child.$emit("input", digit);
+    });
+  }
+});
