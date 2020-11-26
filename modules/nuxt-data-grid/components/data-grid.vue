@@ -840,7 +840,8 @@ export default {
           let [a, b, c] = item.split(':')
           let model = `${a}:${c}`
           if (a == 'created_at') {
-            this.data_filters['created_at'] = b
+            this.data_filters['created_at:' + c] = b
+            this.showDateFilter = true
             continue
           }
           if (this.filters.find((item) => item.model == model)) {
