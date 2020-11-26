@@ -241,7 +241,12 @@
           <slot name="toollbar_right"></slot>
           <v-tooltip bottom v-if="withDateFilter">
             <template v-slot:activator="{ on }">
-              <v-btn @click="showDateFilter = !showDateFilter" v-on="on" flat icon>
+              <v-btn
+                @click="showDateFilter = !showDateFilter"
+                v-on="on"
+                flat
+                icon
+              >
                 <v-icon :class="{ slash: !showDateFilter }">la-calendar</v-icon>
               </v-btn>
             </template>
@@ -276,18 +281,26 @@
               <v-btn @click="recycle" v-on="on" flat icon>
                 <v-icon
                   :color="
-                    filter.some(item => item.includes('is_deleted'))
+                    filter.some((item) => item.includes('is_deleted'))
                       ? 'green'
                       : 'black'
                   "
-                >restore_from_trash</v-icon>
+                  >restore_from_trash</v-icon
+                >
               </v-btn>
             </template>
             <span>بازیابی رکوردها</span>
           </v-tooltip>
 
           <slot name="header_add">
-            <v-btn v-if="withAdd" @click="_add" class="add-new" color="primary" round outline>
+            <v-btn
+              v-if="withAdd"
+              @click="_add"
+              class="add-new"
+              color="primary"
+              round
+              outline
+            >
               <v-icon>add</v-icon>
               <span>ایجاد جدید</span>
             </v-btn>
@@ -320,7 +333,7 @@
                 single-line
                 outline
                 v-model="data_filters['created_at:<']"
-                :min="data_filters['created_at:>']||null"
+                :min="data_filters['created_at:>'] || null"
                 valueFormat="YYYY-MM-DD"
                 label="تاریخ پایان"
               ></vr-date-picker>
@@ -411,7 +424,11 @@
       :select-all="selectAll"
       :search="search"
     >
-      <v-progress-linear v-slot:progress color="primary" indeterminate></v-progress-linear>
+      <v-progress-linear
+        v-slot:progress
+        color="primary"
+        indeterminate
+      ></v-progress-linear>
       <template v-slot:headers="props">
         <tr>
           <th width="5%" v-if="selectAll">
@@ -436,7 +453,7 @@
                   ? 'text-xs-right'
                   : header.align == 'left'
                   ? 'text-xs-left'
-                  : 'text-xs-center'
+                  : 'text-xs-center',
               ]"
               @click="changeSort(header.value)"
             >
@@ -454,16 +471,22 @@
                   ? 'text-xs-right'
                   : header.align == 'left'
                   ? 'text-xs-left'
-                  : 'text-xs-center'
+                  : 'text-xs-center',
               ]"
-            >{{ header.text }}</th>
+            >
+              {{ header.text }}
+            </th>
           </template>
         </tr>
       </template>
       <template v-slot:items="props">
         <tr :active="props.selected" @click="props.selected = !props.selected">
           <td v-if="selectAll">
-            <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
+            <v-checkbox
+              :input-value="props.selected"
+              primary
+              hide-details
+            ></v-checkbox>
           </td>
           <slot name="items" :props="props" :item="props.item"></slot>
 
@@ -499,9 +522,7 @@
                       >
                         <v-icon class="pl-2">{{ action.icon }}</v-icon>
                         <v-list-tile-title>
-                          {{
-                          action.title
-                          }}
+                          {{ action.title }}
                         </v-list-tile-title>
                       </v-list-tile>
                     </v-list>
@@ -518,17 +539,36 @@
                   >
                     <v-icon>la-edit</v-icon>
                   </v-btn>
-                  <v-btn v-else icon depressed flat :ripple="false" :to="_edit(props.item)">
+                  <v-btn
+                    v-else
+                    icon
+                    depressed
+                    flat
+                    :ripple="false"
+                    :to="_edit(props.item)"
+                  >
                     <v-icon>la-edit</v-icon>
                   </v-btn>
                 </template>
-                <span v-if="filter.some(item => item.includes('is_deleted'))">
-                  <v-btn v-if="!hideActionRecycle" icon depressed flat :ripple="false">
+                <span v-if="filter.some((item) => item.includes('is_deleted'))">
+                  <v-btn
+                    v-if="!hideActionRecycle"
+                    icon
+                    depressed
+                    flat
+                    :ripple="false"
+                  >
                     <v-icon @click="_recycle(props.item)">la-recycle</v-icon>
                   </v-btn>
                 </span>
                 <span v-else>
-                  <v-btn v-if="!hideActionDelete" icon depressed flat :ripple="false">
+                  <v-btn
+                    v-if="!hideActionDelete"
+                    icon
+                    depressed
+                    flat
+                    :ripple="false"
+                  >
                     <v-icon @click="_delete(props.item)">la-trash</v-icon>
                   </v-btn>
                 </span>
@@ -539,11 +579,9 @@
         </tr>
       </template>
       <template v-slot:no-results>
-        <v-alert
-          :value="true"
-          color="error"
-          icon="warning"
-        >Your search for "{{ search }}" found no results.</v-alert>
+        <v-alert :value="true" color="error" icon="warning"
+          >Your search for "{{ search }}" found no results.</v-alert
+        >
       </template>
       <template v-slot:no-data>
         <div class="text-xs-center">متاسفم, چیزی برای نمایش وجود ندارد :(</div>
@@ -801,6 +839,10 @@ export default {
         for (const item of parsed_filters) {
           let [a, b, c] = item.split(':')
           let model = `${a}:${c}`
+          if (a == 'created_at') {
+            this.data_filters['created_at'] = b
+            continue
+          }
           if (this.filters.find((item) => item.model == model)) {
             this.data_filters[model] = b
             continue
