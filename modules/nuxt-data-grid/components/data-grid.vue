@@ -765,12 +765,10 @@ export default {
     let filter = []
     if (this.defaultFilters) {
       for (const filter_name in this.defaultFilters) {
-        if (this.defaultFilters[filter_name]) {
-          filter.push(
-            `${filter_name}:${this.defaultFilters[filter_name]}:${
-              this.defaultFilters.op || '='
-            }`
-          )
+        let value = this.defaultFilters[filter_name]
+        if (value) {
+          let [name, op = '='] = filter_name.split(':')
+          filter.push(`${name}:${value}:${op}`)
         }
       }
     }
