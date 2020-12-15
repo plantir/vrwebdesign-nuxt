@@ -88,13 +88,16 @@
       :allow-multiple="multiple"
       :labelIdle="placeholder"
       :imageCropAspectRatio="imageCropAspectRatio"
+      v-bind="$attrs"
       @processfile="handleFilePondInit"
     ></file-pond>
     <div class="images">
       <div v-for="(image, index) in images" :key="index">
         <div v-if="image" class="image-wrapper">
           <v-icon @click="remove_image(index)" color="#fff">la-times</v-icon>
-          <v-icon v-if="set_default && image.is_default" color="#fff">la-check-circle</v-icon>
+          <v-icon v-if="set_default && image.is_default" color="#fff"
+            >la-check-circle</v-icon
+          >
           <template v-if="!error">
             <div v-if="fileType == 'image'">
               <img v-if="is_object" :src="image[image_src]" alt />
@@ -108,7 +111,7 @@
             </div>
           </template>
           <template v-else>
-            <div>{{image}}</div>
+            <div>{{ image }}</div>
           </template>
         </div>
         <div v-if="set_default" class="button-wrapper">
@@ -118,7 +121,8 @@
             color="primary"
             outline
             block
-          >انتخاب به عنوان عکس اصلی</v-btn>
+            >انتخاب به عنوان عکس اصلی</v-btn
+          >
         </div>
       </div>
     </div>

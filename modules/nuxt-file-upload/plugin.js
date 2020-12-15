@@ -13,17 +13,27 @@ import FilePondPluginImageResize from 'filepond-plugin-image-resize'
 
 import FilePondPluginImageCrop from 'filepond-plugin-image-crop'
 
-import FileUploader from 'vrwebdesign-nuxt/modules/nuxt-file-upload/components/file-upload.vue'
 
+//file validation size and type
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
+//file download plugin
+import FilePondPluginGetFile from 'filepond-plugin-get-file';
+import 'filepond-plugin-get-file/dist/filepond-plugin-get-file.min.css';
+
+
+import FileUploader from 'vrwebdesign-nuxt/modules/nuxt-file-upload/components/file-upload.vue'
+
 const FilePond = vueFilepond(
-  // FilePondPluginImagePreview,
-  FilePondPluginImageEdit,
   FilePondPluginImageResize,
   FilePondPluginImageCrop,
-  FilePondPluginFileValidateType
+  FilePondPluginGetFile,
+  FilePondPluginImageEdit,
+  FilePondPluginFileValidateSize,
+  FilePondPluginFileValidateType,
 )
+
 Vue.component('FilePond', FilePond)
 
 Vue.component('vr-file-upload', FileUploader)
