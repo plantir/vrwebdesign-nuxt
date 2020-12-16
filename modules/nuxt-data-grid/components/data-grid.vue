@@ -234,7 +234,7 @@
       <slot name="header">
         <div class="head-label">
           <v-icon v-if="title.icon">{{ title.icon }}</v-icon>
-          <svg-icon v-if="title.svg" :name="title.svg"></svg-icon>
+          <svg-icon class="v-icon" v-if="title.svg" :name="title.svg"></svg-icon>
           <h3 class="head-title">{{ title.text }}</h3>
         </div>
 
