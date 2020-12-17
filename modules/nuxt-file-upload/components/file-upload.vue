@@ -106,6 +106,12 @@
                 <source v-else :src="image" @error="error = true" />
               </video>
             </div>
+            <div v-else-if="fileType == 'audio'">
+              <audio width="300" controls>
+                <source v-if="is_object" :src="image[image_src]" />
+                <source v-else :src="image" @error="error = true" />
+              </audio>
+            </div>
           </template>
           <template v-else>
             <div>{{image}}</div>
