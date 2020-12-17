@@ -1,6 +1,6 @@
 {
   "name": "vrwebdesign-nuxt",
-  "version": "1.10.38",
+  "version": "1.10.39",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,11 +17,11 @@
     "filepond": "^4.7.4",
     "filepond-plugin-file-validate-size": "^2.2.2",
     "filepond-plugin-file-validate-type": "^1.2.5",
+    "filepond-plugin-get-file": "^1.0.6",
     "filepond-plugin-image-crop": "^2.0.3",
     "filepond-plugin-image-edit": "^1.5.0",
     "filepond-plugin-image-preview": "^4.5.0",
     "filepond-plugin-image-resize": "^2.0.4",
-    "filepond-plugin-get-file": "^1.0.6",
     "highcharts": "^7.2.1",
     "material-icons": "^0.3.1",
     "moment-jalaali": "^0.9.1",
