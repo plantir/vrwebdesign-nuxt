@@ -18,6 +18,17 @@
   position: relative;
   display: block;
   overflow: auto;
+  &.dialog--fullscreen{
+    border-radius: 0;
+    margin: 0;
+    height: 100%;
+    max-width: 100%;
+    width: 100%;
+    position: fixed;
+    overflow-y: auto;
+    top: 0;
+    left: 0;
+  }
 }
 .dialog-header {
   display: flex;
@@ -136,6 +147,7 @@ export default {
   },
   created() {
     this.$root._dynamicContainer = this
+    document.querySelector('html')?.classList.add('overflow-y-hidden')
   },
   methods: {
     commit(data) {
@@ -151,6 +163,7 @@ export default {
         this.$delete(this.dialogs, dialogIndex)
       }
       dialog.resolve(data)
+      document.querySelector('html')?.classList.remove('overflow-y-hidden')
     },
     close({ dialog, data }) {
       dialog.show = false
@@ -159,6 +172,7 @@ export default {
         this.$delete(this.dialogs, dialogIndex)
       }
       dialog.resolve(false)
+      document.querySelector('html')?.classList.remove('overflow-y-hidden')
     },
   },
 }

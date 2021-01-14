@@ -10,6 +10,7 @@ interface DialogParams {
   cancel_txt?: string
   scope?: any
   props?: any
+  fullscreen?: boolean
   dialog_wrapper_custom_class?: string
   persistent?: boolean
 }

@@ -2,6 +2,7 @@
 .dialog-container .animated {
   animation-duration: 0.4s;
 }
+
 </style>
 
 
@@ -21,7 +22,7 @@
       @after-leave="animationEnded('content')"
       appear
     >
-      <div v-if="show" :class="'dialog-wrapper '+dialog.dialog_wrapper_custom_class||''">
+      <div v-if="show" :class="classList">
         <component
           v-bind="dialog.props"
           :scope="dialog.scope"
@@ -89,6 +90,16 @@ export default {
       return ANIMATION_TYPES.hasOwnProperty(a)
         ? ANIMATION_TYPES[a]
         : ANIMATION_TYPES.ZOOM
+    },
+    classList(){
+      let classList = 'dialog-wrapper'
+      if(this.dialog.dialog_wrapper_custom_class){
+        classList += ' ' + this.dialog.dialog_wrapper_custom_class
+      }
+      if(this.dialog.fullscreen){
+        classList += ' dialog--fullscreen'
+      }
+      return classList
     }
   }
 }
