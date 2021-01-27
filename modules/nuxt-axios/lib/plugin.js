@@ -212,15 +212,16 @@ export default (ctx, inject) => {
   <% if (options.retry) { %> axiosRetry(axios, <%= serialize(options.retry) %>) <% } %>
 
     // Inject axios to the context as $axios
+    let services = <%= serialize(options.services) %>
+    for(const service of services) {
+      const serviceModule = require(`~/services/${service}`)
+      const instance = new serviceModule.default(axios,ctx)
+      services[service] = instance;
+    }
+    
+    
+    inject('service', services)
+    inject('axios', axios)
     ctx.$axios = axios
-  let services = <%= serialize(options.services) %>
-  for(const service of services) {
-    const serviceModule = require(`~/services/${service}`)
-    const instance = new serviceModule.default(ctx.$axios)
-    services[service] = instance;
-  }
-
-  
-  inject('service', services)
-  inject('axios', axios)
+    ctx.$service = services
 }
