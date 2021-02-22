@@ -500,6 +500,7 @@
                 :_edit="_edit"
                 :_delete="_delete"
                 :item="props.item"
+                :recycle_mode="filter.some((item) => item.includes('is_deleted'))"
               >
                 <div v-if="actions" class="more-action">
                   <v-menu
