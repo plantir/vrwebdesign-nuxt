@@ -388,7 +388,7 @@
                   @input="changeFilter"
                   v-model="data_filters[item.model]"
                   :prepend-inner-icon="item.icon"
-                  :valueFormat="item.vlueFormate"
+                  :valueFormat="item.valueFormat"
                   :format="item.format"
                   :name="item.model"
                   :label="item.label"
