@@ -569,7 +569,7 @@
         min-width="180"
         :nudge-right="20"
         nudge-bottom="20"
-        v-if="actions.length"
+        v-if="actions && actions.length"
         v-model="showContextMenu"
         :position-x="contextMenu_x"
         :position-y="contextMenu_y"
