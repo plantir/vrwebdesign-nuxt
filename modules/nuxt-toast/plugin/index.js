@@ -1,6 +1,6 @@
 import ToastComponent from './components/toast.vue'
 const CONFIG = {
-  timeout: 4000,
+  timeout: process.env.TOAST_TIMEOUT || 4000,
 }
 class Toast {
   constructor(Vue, globalOptions = {}) {
