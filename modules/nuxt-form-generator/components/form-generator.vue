@@ -4,7 +4,7 @@
     position: -webkit-sticky !important;
     position: sticky !important;
     top: 64px !important;
-    z-index: 9;
+    z-index: 5;
   }
   .header {
     height: 80px;
