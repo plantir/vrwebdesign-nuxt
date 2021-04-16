@@ -91,47 +91,49 @@
       v-bind="$attrs"
       @processfile="handleFilePondInit"
     ></file-pond>
-    <div class="images">
-      <div v-for="(image, index) in images" :key="index">
-        <div v-if="image" class="image-wrapper">
-          <v-icon @click="remove_image(index)" color="#fff">la-times</v-icon>
-          <v-icon v-if="set_default && image.is_default" color="#fff"
-            >la-check-circle</v-icon
-          >
-          <template v-if="!error">
-            <div v-if="fileType == 'image'">
-              <img v-if="is_object" :src="image[image_src]" alt />
-              <img v-else :src="image" @error="error = true" />
-            </div>
-            <div v-else-if="fileType == 'video'">
-              <video width="300" controls>
-                <source v-if="is_object" :src="image[image_src]" />
-                <source v-else :src="image" @error="error = true" />
-              </video>
-            </div>
-            <div v-else-if="fileType == 'audio'">
-              <audio width="300" controls>
-                <source v-if="is_object" :src="image[image_src]" />
-                <source v-else :src="image" @error="error = true" />
-              </audio>
-            </div>
-          </template>
-          <template v-else>
-            <div>{{ image }}</div>
-          </template>
-        </div>
-        <div v-if="set_default" class="button-wrapper">
-          <v-btn
-            class="set-default"
-            @click="set_default_image(image)"
-            color="primary"
-            outline
-            block
-            >انتخاب به عنوان عکس اصلی</v-btn
-          >
+    <slot name="images" :images="images" :remove_image="remove_image">
+      <div class="images">
+        <div v-for="(image, index) in images" :key="index">
+          <div v-if="image" class="image-wrapper">
+            <v-icon @click="remove_image(index)" color="#fff">la-times</v-icon>
+            <v-icon v-if="set_default && image.is_default" color="#fff"
+              >la-check-circle</v-icon
+            >
+            <template v-if="!error">
+              <div v-if="fileType == 'image'">
+                <img v-if="is_object" :src="image[image_src]" alt />
+                <img v-else :src="image" @error="error = true" />
+              </div>
+              <div v-else-if="fileType == 'video'">
+                <video width="300" controls>
+                  <source v-if="is_object" :src="image[image_src]" />
+                  <source v-else :src="image" @error="error = true" />
+                </video>
+              </div>
+              <div v-else-if="fileType == 'audio'">
+                <audio width="300" controls>
+                  <source v-if="is_object" :src="image[image_src]" />
+                  <source v-else :src="image" @error="error = true" />
+                </audio>
+              </div>
+            </template>
+            <template v-else>
+              <div>{{ image }}</div>
+            </template>
+          </div>
+          <div v-if="set_default" class="button-wrapper">
+            <v-btn
+              class="set-default"
+              @click="set_default_image(image)"
+              color="primary"
+              outline
+              block
+              >انتخاب به عنوان عکس اصلی</v-btn
+            >
+          </div>
         </div>
       </div>
-    </div>
+    </slot>
     <div class="error--text">{{ errorMessage[0] }}</div>
   </section>
 </template>
