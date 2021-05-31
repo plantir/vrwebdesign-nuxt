@@ -562,7 +562,7 @@
         </template>
       </v-data-table>
 
-      <v-menu
+      <!-- <v-menu
         class="data-grid-action"
         bottom
         right
@@ -582,6 +582,35 @@
           >
             <v-icon class="pl-2">{{ action.icon }}</v-icon>
             <v-list-item-title>{{ action.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu> -->
+      <v-menu
+        class="data-grid-action"
+        bottom
+        right
+        min-width="180"
+        :nudge-right="20"
+        nudge-bottom="20"
+        v-if="withContextMenu"
+        v-model="showContextMenu"
+        :position-x="contextMenu_x"
+        :position-y="contextMenu_y"
+      >
+        <v-list class="more-action-list" v-if="showContextMenu">
+          <v-list-item
+            @click="call_action(action)"
+            v-for="(action, index) in itemActions(contextMenuItem)"
+            :key="index"
+          >
+            <v-icon class="pl-2">{{ action.icon }}</v-icon>
+            <v-list-item-title>{{ action.title }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            class="more-action-list"
+            v-if="!itemActions(contextMenuItem).length"
+          >
+            <v-list-item-title> آیتمی جهت انتخاب وجود ندارد </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -857,6 +886,9 @@ export default {
     }
   },
   methods: {
+    itemActions(item) {
+      return item.actions || this.actions
+    },
     row_clicked(props) {
       props.selected = !props.selected
       this.$emit('row_clicked', props.item)
