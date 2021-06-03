@@ -1107,14 +1107,16 @@ export default {
             scope: { item: {} },
           })
           .then((newItem) => {
-            this.service
-              .save(newItem)
-              .then((res) => {
-                this.$toast.success().showSimple('با موفقیت ایجاد شد')
-              })
-              .catch((err) => {
-                this.$toast.error().showSimple('خطایی رخ داده است')
-              })
+            if (newItem) {
+              this.service
+                .save(newItem)
+                .then((res) => {
+                  this.$toast.success().showSimple('با موفقیت ایجاد شد')
+                })
+                .catch((err) => {
+                  this.$toast.error().showSimple('خطایی رخ داده است')
+                })
+            }
           })
         return
       }
