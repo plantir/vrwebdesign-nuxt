@@ -1112,6 +1112,7 @@ export default {
                 .save(newItem)
                 .then((res) => {
                   this.$toast.success().showSimple('با موفقیت ایجاد شد')
+                  this._query()
                 })
                 .catch((err) => {
                   this.$toast.error().showSimple('خطایی رخ داده است')
