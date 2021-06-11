@@ -901,11 +901,13 @@ export default {
         this.contextMenu_x = e.clientX
         this.contextMenu_y = e.clientY
         this.contextMenuItem = props.item
-        this.$nextTick(() => {
-          this.contextMenuRowIndex = props.index
-          this.showContextMenu = true
-        })
-        this.$emit('contextmenu', { $event: e, props: props })
+        if (this.contextMenuItem.actions || this.actions.length) {
+          this.$nextTick(() => {
+            this.contextMenuRowIndex = props.index
+            this.showContextMenu = true
+          })
+          this.$emit('contextmenu', { $event: e, props: props })
+        }
       }
     },
     call_action(action) {
