@@ -80,7 +80,7 @@
           <h3>{{ options.title }}</h3>
           <h5 v-if="options.subtitle">{{options.subtitle}}</h5>
         </div>
-        <div class="toolbar">
+        <div v-if="showFilters" class="toolbar">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn @click="showDateFilter = !showDateFilter" v-on="on" flat icon>
@@ -99,7 +99,7 @@
           </v-tooltip>
         </div>
       </div>
-      <div class="filter_section">
+      <div v-if="showFilters" class="filter_section">
         <transition
           name="fade"
           enter-active-class="fade-enter-active"
@@ -167,6 +167,9 @@ export default {
     xAxis: {},
     yAxis: {},
     service: {},
+    showFilters:{
+      default:true
+    },
     dateFilter: {},
     options: {
       default: () => {
