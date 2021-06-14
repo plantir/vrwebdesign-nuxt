@@ -78,12 +78,17 @@
       <div class="header">
         <div class="header-label">
           <h3>{{ options.title }}</h3>
-          <h5 v-if="options.subtitle">{{options.subtitle}}</h5>
+          <h5 v-if="options.subtitle">{{ options.subtitle }}</h5>
         </div>
         <div v-if="showFilters" class="toolbar">
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-btn @click="showDateFilter = !showDateFilter" v-on="on" flat icon>
+              <v-btn
+                @click="showDateFilter = !showDateFilter"
+                v-on="on"
+                flat
+                icon
+              >
                 <v-icon>date_range</v-icon>
               </v-btn>
             </template>
@@ -126,7 +131,7 @@
                 clearable
                 type="date"
                 @change="changeChart"
-                :min="date.start_date||null"
+                :min="date.start_date || null"
                 label="تاریخ پایان فیلتر را وارد نمایید"
                 format="jYYYY/jMM/jDD"
                 valueFormat="YYYY-MM-DD"
@@ -142,22 +147,24 @@
 <script>
 const YAXIS_OBJ = {
   title: {
-    text: 'عنوان نمودار Y'
+    text: 'عنوان نمودار Y',
   },
   labels: {
-    formatter: function() {
+    formatter: function () {
       return this.value
-    }
-  }
+    },
+  },
 }
 const XAXIS_OBJ = {
   labels: {
-    formatter: function() {
+    formatter: function () {
       return this.value
-    }
-  }
+    },
+  },
 }
 import Highcharts from 'highcharts'
+import More from 'highcharts/highcharts-more'
+More(Highcharts)
 export default {
   props: {
     type: {},
@@ -167,15 +174,18 @@ export default {
     xAxis: {},
     yAxis: {},
     service: {},
-    showFilters:{
-      default:true
+    showFilters: {
+      default: true,
     },
     dateFilter: {},
     options: {
       default: () => {
         return {}
-      }
-    }
+      },
+    },
+    fullOption: {
+      default: false,
+    },
   },
   data() {
     return {
@@ -183,8 +193,8 @@ export default {
       showDateFilter: false,
       date: {
         start_date: null,
-        end_date: null
-      }
+        end_date: null,
+      },
     }
   },
   async mounted() {
@@ -200,6 +210,9 @@ export default {
     init() {
       clearTimeout(this.timeout)
       this.timeout = setTimeout(async () => {
+        if (this.fullOption) {
+          return Highcharts.chart(this.$refs.chart, this.fullOption)
+        }
         let options
         if (this.service) {
           options = await this.service(this.options)
@@ -213,13 +226,13 @@ export default {
           this.$refs.chart,
           {
             chart: {
-              type: options.type
+              type: options.type,
             },
             title: {
-              text: ''
+              text: '',
             },
             subtitle: {
-              text: ''
+              text: '',
             },
             xAxis: options.xAxis,
             yAxis: options.yAxis,
@@ -227,7 +240,7 @@ export default {
             tooltip: {
               crosshairs: true,
               useHTML: true,
-              shared: true
+              shared: true,
             },
 
             plotOptions: {
@@ -235,8 +248,8 @@ export default {
                 marker: {
                   radius: 4,
                   lineColor: '#666666',
-                  lineWidth: 1
-                }
+                  lineWidth: 1,
+                },
               },
               area: {
                 marker: {
@@ -245,10 +258,10 @@ export default {
                   radius: 2,
                   states: {
                     hover: {
-                      enabled: true
-                    }
-                  }
-                }
+                      enabled: true,
+                    },
+                  },
+                },
               },
               pie: {
                 allowPointSelect: true,
@@ -257,13 +270,13 @@ export default {
                   useHTML: true,
                   enabled: true,
                   format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                  connectorColor: 'silver'
-                }
+                  connectorColor: 'silver',
+                },
               },
               column: {
-                borderRadius: 5
-              }
-            }
+                borderRadius: 5,
+              },
+            },
           },
           200
         )
@@ -271,7 +284,7 @@ export default {
     },
     async changeChart() {
       this.options.filters = this.options.filters.filter(
-        item => !item.includes('created_at')
+        (item) => !item.includes('created_at')
       )
       if (this.date.start_date) {
         this.options.filters.push(`created_at:${this.date.start_date}:>`)
@@ -284,7 +297,7 @@ export default {
       this.init()
       // this.date.haveDateFilter = true
       // await this.dateFilter(this.date)
-    }
-  }
+    },
+  },
 }
 </script>
