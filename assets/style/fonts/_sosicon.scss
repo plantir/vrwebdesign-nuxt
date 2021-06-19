@@ -11,6 +11,7 @@ $socicon-font-path: '~vrwebdesign-nuxt/assets/fonts/Socicon';
     url('#{$socicon-font-path}/Socicon.svg#Socicon') format('svg');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 [class^='socicon-'],
 [class*=' socicon-'] {

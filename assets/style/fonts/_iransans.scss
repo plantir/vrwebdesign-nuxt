@@ -2,6 +2,7 @@ $iransans_font_src: '~vrwebdesign-nuxt/assets/fonts/IRANSans';
 
 @font-face {
   font-family: IRANSans;
+  font-display: swap;
   font-style: normal;
   font-weight: 700;
   src: url($iransans_font_src+'/eot/IRANSansWeb_Bold.eot');
@@ -16,6 +17,7 @@ $iransans_font_src: '~vrwebdesign-nuxt/assets/fonts/IRANSans';
 }
 @font-face {
   font-family: IRANSans;
+  font-display: swap;
   font-style: normal;
   font-weight: 600;
   src: url($iransans_font_src+'/eot/IRANSansWeb_Medium.eot');
@@ -30,6 +32,7 @@ $iransans_font_src: '~vrwebdesign-nuxt/assets/fonts/IRANSans';
 }
 @font-face {
   font-family: IRANSans;
+  font-display: swap;
   font-style: normal;
   font-weight: 500;
   src: url($iransans_font_src+'/eot/IRANSansWeb.eot');
@@ -45,6 +48,7 @@ $iransans_font_src: '~vrwebdesign-nuxt/assets/fonts/IRANSans';
 
 @font-face {
   font-family: IRANSans;
+  font-display: swap;
   font-style: normal;
   font-weight: 400;
   src: url($iransans_font_src+'/eot/IRANSansWeb_Light.eot');
@@ -60,6 +64,7 @@ $iransans_font_src: '~vrwebdesign-nuxt/assets/fonts/IRANSans';
 
 @font-face {
   font-family: IRANSans;
+  font-display: swap;
   font-style: normal;
   font-weight: 300;
   src: url($iransans_font_src+'/eot/IRANSansWeb_UltraLight.eot');
