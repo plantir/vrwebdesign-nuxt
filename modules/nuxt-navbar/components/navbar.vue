@@ -15,6 +15,7 @@
     flex-wrap: wrap;
     margin: 0;
     list-style-type: none;
+    padding: 0;
     .nav-item {
       margin-left: 50px;
     }
@@ -52,9 +53,13 @@
     <div class="header">
       <div class="head-toolbar">
         <ul class="nav-tab">
-          <li class="nav-item" v-for="(item,index) in items" :key="index">
-            <nuxt-link :exact="item.exact" class="nav-link" :to="item.base + item.to">
-              <v-icon>{{item.icon}}</v-icon>
+          <li class="nav-item" v-for="(item, index) in items" :key="index">
+            <nuxt-link
+              :exact="item.exact"
+              class="nav-link"
+              :to="item.base + item.to"
+            >
+              <v-icon>{{ item.icon }}</v-icon>
               <span>{{ item.title }}</span>
             </nuxt-link>
           </li>
@@ -67,8 +72,8 @@
 export default {
   props: {
     items: {
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 }
 </script>
