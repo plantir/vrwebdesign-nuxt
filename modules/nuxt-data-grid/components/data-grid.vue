@@ -234,7 +234,11 @@
       <slot name="header">
         <div class="head-label">
           <v-icon v-if="title.icon">{{ title.icon }}</v-icon>
-          <svg-icon class="v-icon" v-if="title.svg" :name="title.svg"></svg-icon>
+          <svg-icon
+            class="v-icon"
+            v-if="title.svg"
+            :name="title.svg"
+          ></svg-icon>
           <h3 class="head-title">{{ title.text }}</h3>
         </div>
 
@@ -500,7 +504,9 @@
                 :_edit="_edit"
                 :_delete="_delete"
                 :item="props.item"
-                :recycle_mode="filter.some((item) => item.includes('is_deleted'))"
+                :recycle_mode="
+                  filter.some((item) => item.includes('is_deleted'))
+                "
               >
                 <div v-if="actions" class="more-action">
                   <v-menu
@@ -626,6 +632,8 @@
   </div>
 </template>
 <script>
+import { ceil } from '@amcharts/amcharts4/.internal/core/utils/Math'
+
 export default {
   props: {
     title: {
@@ -737,6 +745,10 @@ export default {
     items: {
       handler() {
         this.rows = [...this.items]
+        this.lastPage = Math.ceil(
+          this.items.length / this.pagination.rowsPerPage
+        )
+        this.total_items = this.items.length
       },
       deep: true,
     },
@@ -878,6 +890,10 @@ export default {
     _query() {
       if (!this.serverPagination) {
         this.loading = false
+        this.lastPage = Math.ceil(
+          this.items.length / this.pagination.rowsPerPage
+        )
+        this.total_items = this.items.length
         return
       }
       clearTimeout(this.timeout)
