@@ -187,10 +187,14 @@ Vue.filter('characterDigit', (value) => {
 Vue.directive('fix-digit', {
   bind: function (el, binding, vnode) {
     el.addEventListener('input', function (val) {
-      let digit = val.target.value.replace(/[۰-۹]/g, (w) => {
+      val.target.value = val.target.value.replace(/[۰-۹]/g, (w) => {
         return ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'].indexOf(w)
       })
-      vnode.child.$emit('input', digit)
+      if (vnode.child) {
+        vnode.child.$emit('input', val.target.value)
+      } else {
+        vnode.context.$emit('input', val.target.value)
+      }
     })
   },
 })
