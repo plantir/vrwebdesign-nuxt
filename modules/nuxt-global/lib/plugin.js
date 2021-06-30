@@ -190,6 +190,9 @@ Vue.directive('fix-digit', {
       val.target.value = val.target.value.replace(/[۰-۹]/g, (w) => {
         return ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'].indexOf(w)
       })
+      val.target.value = val.target.value.replace(/[٠-٩]/g, (w) => {
+        return ['٠','١','٢','٣','۴','۵','۶','٧','٨','٩'].indexOf(w)
+      })
       if (vnode.child) {
         vnode.child.$emit('input', val.target.value)
       } else {
