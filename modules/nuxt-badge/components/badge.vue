@@ -11,6 +11,12 @@ span.vr-badge {
   justify-content: center;
   align-items: center;
   white-space: nowrap;
+  &.badge-outline {
+    background: transparent !important;
+    letter-spacing: 0.8px;
+    color: #fd397a;
+    border: 1.5px solid;
+  }
   &.badge-dot {
     background: transparent !important;
     font-weight: 700;
@@ -52,8 +58,8 @@ export default {
   props: {
     type: {},
     color: {
-      type: String
-    }
+      type: String,
+    },
   },
   mounted() {
     this.setBackgroundColor()
@@ -64,13 +70,13 @@ export default {
       if (this.color && !this.color.startsWith('#')) {
         classList += this.color
       }
-      if (this.type == 'dot') {
+      if (this.type) {
         if (classList == '') {
-          classList += ' badge-dot'
+          classList += ` badge-${this.type}`
         } else {
           classList = classList
             .split(' ')
-            .map(item => {
+            .map((item) => {
               if (item.includes('darken') || item.includes('lighten')) {
                 item = item.replace(/(darken|lighten)/, 'text--$1')
               } else {
@@ -79,7 +85,7 @@ export default {
               return item
             })
             .join(' ')
-          classList += ' badge-dot'
+          classList += ` badge-${this.type}`
         }
       }
       return classList
@@ -90,7 +96,7 @@ export default {
         classList += this.color
       }
       return classList
-    }
+    },
   },
   methods: {
     setBackgroundColor() {
@@ -100,8 +106,12 @@ export default {
           this.$refs.badge.style.color = this.color
           this.$refs.dot.style.backgroundColor = this.color
         }
+        if (this.type == 'outline') {
+          this.$refs.badge.style.color = this.color
+          this.$refs.badge.style.borderColor = this.color
+        }
       }
-    }
+    },
   },
   watch: {
     color: {
@@ -112,8 +122,8 @@ export default {
         this.color = value
         this.setBackgroundColor()
       },
-      deep: true
-    }
-  }
+      deep: true,
+    },
+  },
 }
 </script>
