@@ -493,6 +493,7 @@
 
             <td v-if="!withoutAction" class="text-xs-center">
               <div class="action">
+                <slot name="actions_left" :item="props.item"></slot>
                 <slot
                   name="actions"
                   :_edit="_edit"
@@ -546,6 +547,7 @@
                     <v-icon>la-trash</v-icon>
                   </v-btn>
                 </slot>
+                <slot name="actions_right" :item="props.item"></slot>
               </div>
             </td>
           </tr>
