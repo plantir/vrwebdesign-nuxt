@@ -16,7 +16,7 @@
           close
           :selected="data.selected"
           class="chip--select-multi"
-          @input="remove(data.item)"
+          @click:close="remove(data.item)"
           >{{ data.item.text }}</v-chip
         >
         <span v-else>{{ data.item.text }}</span>
@@ -49,7 +49,7 @@ export default Vue.extend({
     return {
       loading: false,
       search: null,
-      items: this.field.async ? [] : this.field.items
+      items: this.field.async ? [] : this.field.items,
     }
   },
   watch: {
@@ -58,7 +58,7 @@ export default Vue.extend({
       if (this.field.async) {
         this.get_lists(val)
       }
-    }
+    },
   },
   mounted() {
     if (this.field.async) {
@@ -68,15 +68,15 @@ export default Vue.extend({
 
   methods: {
     get_lists(val) {
-      this.field.queryService(val).then(items => {
+      this.field.queryService(val).then((items) => {
         this.items = items
         this.loading = false
       })
     },
     remove(item) {
-      const index = this.model.findIndex(model => item.value == model.value)
+      const index = this.model.findIndex((model) => item.value == model || item.value ==  model.value)
       if (index >= 0) this.model.splice(index, 1)
-    }
-  }
+    },
+  },
 })
 </script>
