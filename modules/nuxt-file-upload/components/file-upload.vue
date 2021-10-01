@@ -74,6 +74,9 @@
       }
     }
   }
+  .filepond--credits{
+    display: none;
+  }
 }
 </style>
 
@@ -93,9 +96,35 @@
       <div v-for="(image, index) in images" :key="index">
         <div class="image-wrapper">
           <v-icon @click="remove_image(index)" color="#fff">la-times</v-icon>
-          <v-icon v-if="set_default && image.is_default" color="#fff">la-check-circle</v-icon>
-          <img v-if="is_object" :src="image[image_src]" alt />
-          <img v-else :src="image" alt />
+          <v-icon v-if="set_default && image.is_default" color="#fff"
+            >la-check-circle</v-icon
+          >
+          <template v-if="!error">
+            <div v-if="fileType == 'image'">
+              <img v-if="is_object" :src="image[image_src]" alt />
+              <img v-else :src="image" @error="error = true" />
+            </div>
+            <div v-else-if="fileType == 'video'">
+              <video width="300" controls>
+                <source v-if="is_object" :src="image[image_src]" />
+                <source v-else :src="image" @error="error = true" />
+              </video>
+            </div>
+            <div v-else-if="fileType == 'audio'">
+              <audio width="300" controls>
+                <source v-if="is_object" :src="image[image_src]" />
+                <source v-else :src="image" @error="error = true" />
+              </audio>
+            </div>
+            <div v-else>
+              <a :href="image" target="_blank">
+                {{ image }}
+              </a>
+            </div>
+          </template>
+          <template v-else>
+            <div>{{ image }}</div>
+          </template>
         </div>
         <div v-if="set_default" class="button-wrapper">
           <v-btn
@@ -104,7 +133,8 @@
             color="primary"
             outlined
             block
-          >انتخاب به عنوان عکس اصلی</v-btn>
+            >انتخاب به عنوان عکس اصلی</v-btn
+          >
         </div>
       </div>
     </div>
@@ -134,6 +164,9 @@ export default Vue.extend({
     set_default: {
       default: false,
     },
+    fileType: {
+      default: 'image',
+    },
     label: {
       default: 'عکس خود را بکشید و رها کنید',
     },
@@ -142,7 +175,11 @@ export default Vue.extend({
       default: '1:1',
     },
   },
-
+  data() {
+    return {
+      error: false,
+    }
+  },
   methods: {
     handleFilePondInit(err, file) {
       if (this.multiple) {
