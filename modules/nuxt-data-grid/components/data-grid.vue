@@ -424,7 +424,7 @@
       hide-actions
       :items="rows"
       :pagination.sync="pagination"
-      :total-items="total_items"
+      :total-items="serverPagination?total_items:0"
       :loading="loading"
       :select-all="selectAll"
       :search="search"
@@ -632,8 +632,6 @@
   </div>
 </template>
 <script>
-import { ceil } from '@amcharts/amcharts4/.internal/core/utils/Math'
-
 export default {
   props: {
     title: {
@@ -745,10 +743,6 @@ export default {
     items: {
       handler() {
         this.rows = [...this.items]
-        this.lastPage = Math.ceil(
-          this.items.length / this.pagination.rowsPerPage
-        )
-        this.total_items = this.items.length
       },
       deep: true,
     },
@@ -889,6 +883,7 @@ export default {
     },
     _query() {
       if (!this.serverPagination) {
+        // deb
         this.loading = false
         this.lastPage = Math.ceil(
           this.items.length / this.pagination.rowsPerPage
