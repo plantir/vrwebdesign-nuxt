@@ -77,11 +77,13 @@ export default Vue.extend({
       return val[key]
     },
     remove(item) {
+      debugger
+      let valueKey = this.$attrs.itemValue || 'value'
       const index = this.model.findIndex((model) => {
         if (this.field.returnObject) {
-          return item.value == model.value
+          return item[valueKey] == model[valueKey]
         } else {
-          return item.value == model
+          return item[valueKey] == model
         }
       })
       if (index >= 0) this.model.splice(index, 1)
