@@ -77,7 +77,6 @@ export default Vue.extend({
       return val[key]
     },
     remove(item) {
-      debugger
       let valueKey = this.$attrs.itemValue || 'value'
       const index = this.model.findIndex((model) => {
         if (this.field.returnObject) {
