@@ -16,12 +16,13 @@
           :selected="data.selected"
           class="chip--select-multi"
           @input="remove(data.item)"
-        >{{ data.item.text }}</v-chip>
-        <span v-else>{{ data.item.text }}</span>
+          >{{ text(data.item) }}</v-chip
+        >
+        <span v-else>{{ text(data.item) }}</span>
       </template>
       <template v-slot:item="data">
         <v-list-tile-content>
-          <v-list-tile-title v-html="data.item.text"></v-list-tile-title>
+          <v-list-tile-title v-html="text(data.item)"></v-list-tile-title>
         </v-list-tile-content>
       </template>
       <template v-slot:no-data>
@@ -29,7 +30,8 @@
           <v-list-tile-content>
             <v-list-tile-title>
               نتیحه ای برای "
-              <strong>{{ search }}</strong>" یافت نشد
+              <strong>{{ search }}</strong
+              >" یافت نشد
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
@@ -46,7 +48,7 @@ export default Vue.extend({
     return {
       loading: false,
       search: null,
-      items: this.field.async ? [] : this.field.items
+      items: this.field.async ? [] : this.field.items,
     }
   },
   watch: {
@@ -55,7 +57,7 @@ export default Vue.extend({
       if (this.field.async) {
         this.get_lists(val)
       }
-    }
+    },
   },
   mounted() {
     if (this.field.async) {
@@ -65,13 +67,17 @@ export default Vue.extend({
 
   methods: {
     get_lists(val) {
-      this.field.queryService(val).then(items => {
+      this.field.queryService(val).then((items) => {
         this.items = items
         this.loading = false
       })
     },
+    text(val) {
+      let key = this.$attrs.itemText || 'text'
+      return val[key]
+    },
     remove(item) {
-      const index = this.model.findIndex(model => {
+      const index = this.model.findIndex((model) => {
         if (this.field.returnObject) {
           return item.value == model.value
         } else {
@@ -79,7 +85,7 @@ export default Vue.extend({
         }
       })
       if (index >= 0) this.model.splice(index, 1)
-    }
-  }
+    },
+  },
 })
 </script>
