@@ -197,11 +197,11 @@ export default Vue.extend({
         action: 'save & exit',
         title: 'ذخیره و خارج شدن'
       },
-      {
-        icon: 'la-sync',
-        action: 'save & create',
-        title: 'ذخیره و ساخت جدید'
-      },
+      // {
+      //   icon: 'la-sync',
+      //   action: 'save & create',
+      //   title: 'ذخیره و ساخت جدید'
+      // },
       { icon: 'la-arrow-left', action: 'back', title: 'بازگشت' }
     ]
     if (this.$route.params.id !== 'create') {
