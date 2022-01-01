@@ -82,8 +82,13 @@
         </div>
         <div class="head-toolbar">
           <div class="btn-group" v-if="withSave">
-            <v-menu offset-y attach bottom left min-width="180">
-              <v-btn class="btn-dropdown" depressed color="info" slot="activator">
+            <v-menu offset-y attach bottom :left="$vuetify.rtl" :right="!$vuetify.rtl" min-width="180">
+              <v-btn
+                class="btn-dropdown"
+                depressed
+                color="info"
+                slot="activator"
+              >
                 <v-icon>la-angle-down</v-icon>
               </v-btn>
               <v-list>
@@ -92,16 +97,19 @@
                   @click="action(item.action)"
                   :key="index"
                 >
-                  <v-icon class="pl-2">{{ item.icon }}</v-icon>
+                  <v-icon :class="$vuetify.rtl ?'pl-2':'pr-2'">{{ item.icon }}</v-icon>
                   <v-list-tile-title>{{ item.title }}</v-list-tile-title>
                 </v-list-tile>
               </v-list>
             </v-menu>
-            <v-btn @click="save" class="action-btn" depressed color="info">ذخیره</v-btn>
+            <v-btn @click="save" class="action-btn" depressed color="info">
+              {{ $vuetify.rtl ? 'ذخیره' : 'save' }}
+            </v-btn>
           </div>
           <v-btn flat color="accent" @click="goBack" v-if="withBack">
-            <span>بازگشت</span>
-            <v-icon class="pr-2">la-arrow-left</v-icon>
+            <v-icon v-if="!$vuetify.rtl" class="pr-2">la-arrow-left</v-icon>
+            <span>{{ $vuetify.rtl ? 'بازگشت' : 'Back' }}</span>
+            <v-icon v-if="$vuetify.rtl" class="pr-2">la-arrow-left</v-icon>
           </v-btn>
         </div>
       </div>
@@ -139,76 +147,84 @@ export default Vue.extend({
   components: { vFormGenerator },
   props: {
     title: {
-      type: String
+      type: String,
     },
     service: {
       required: true,
-      type: Object as () => NuxtAxiosResource
+      type: Object as () => NuxtAxiosResource,
     },
     item: {
       require: true,
       default: {},
-      type: Object
+      type: Object,
     },
     formData: {
-      required: true
+      required: true,
     },
     form: {
       default: () => {
         return {}
-      }
+      },
     },
     minimal: {
       type: Boolean,
-      default: false
+      default: false,
     },
     loading: {},
     customSave: {
-      type: Function
+      type: Function,
     },
     customExit: {
-      type: Function
+      type: Function,
     },
     customDelete: {
-      type: Function
+      type: Function,
     },
     beforeSave: {
-      type: Function
+      type: Function,
     },
     beforeExit: {
-      type: Function
+      type: Function,
     },
     beforeDelete: {
-      type: Function
+      type: Function,
     },
     editUrl: {},
     withSave: {
-      default: true
+      default: true,
     },
     withBack: {
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     let action_list = [
-      { icon: 'la-save', action: 'save', title: 'ذخیره' },
+      {
+        icon: 'la-save',
+        action: 'save',
+        title: this.$vuetify.rtl ? 'ذخیره' : 'Save',
+      },
       {
         icon: 'la-power-off',
         action: 'save & exit',
-        title: 'ذخیره و خارج شدن'
+        title: this.$vuetify.rtl ? 'ذخیره و خارج شدن' : 'Save & Exit',
       },
       // {
       //   icon: 'la-sync',
       //   action: 'save & create',
       //   title: 'ذخیره و ساخت جدید'
       // },
-      { icon: 'la-arrow-left', action: 'back', title: 'بازگشت' }
+      {
+        icon: 'la-arrow-left',
+        action: 'back',
+        title: this.$vuetify.rtl ? 'بازگشت' : 'Back',
+      },
     ]
     if (this.$route.params.id !== 'create') {
       action_list.splice(3, 0, {
         icon: 'la-trash',
         action: 'delete',
-        title: 'حذف'
+        title: 'حذف',
       })
     }
     return {
@@ -217,7 +233,7 @@ export default Vue.extend({
 
       offset: { top: 64 },
       loader: <NuxtLoaderElement>(<unknown>null),
-      action_list: action_list
+      action_list: action_list,
     }
   },
   mounted() {
@@ -227,22 +243,22 @@ export default Vue.extend({
   },
   watch: {
     item: {
-      handler: function(value, oldValue) {
+      handler: function (value, oldValue) {
         if (JSON.stringify(value) == JSON.stringify(oldValue)) {
           return
         }
 
         this.initItem = { ...value }
       },
-      deep: true
+      deep: true,
     },
-    loading: function(value) {
+    loading: function (value) {
       if (value) {
         this.loader = this.$loader.show(this.$refs.loaderWrapper)
       } else if (this.loader) {
         this.loader.hide()
       }
-    }
+    },
   },
   methods: {
     async goBack() {
@@ -257,19 +273,19 @@ export default Vue.extend({
     },
     async save({
       renew_after = false,
-      exit_after = false
+      exit_after = false,
     }: ISaveFunction = {}) {
       if (this.beforeSave) {
         this.initItem = await this.beforeSave(this.initItem)
       }
       this.form
         .validate()
-        .then(valid => {
+        .then((valid) => {
           if (valid) {
             if (this.customSave) {
               return this.customSave(this.initItem, {
                 renew_after,
-                exit_after
+                exit_after,
               })
             }
             this.loader = this.$loader.show(this.$refs.loaderWrapper)
@@ -303,7 +319,7 @@ export default Vue.extend({
                     } else if (status == 201) {
                       let route = this.$route.path.replace('create', data.id)
                       if (this.editUrl) {
-                        route = this.editUrl.replace(/:[a-z]+/g, p => {
+                        route = this.editUrl.replace(/:[a-z]+/g, (p) => {
                           let param = p.replace(':', '')
                           return data[param]
                         })
@@ -317,24 +333,21 @@ export default Vue.extend({
                     }
                   })
               })
-              .catch(err => {
+              .catch((err) => {
                 let msg
                 try {
                   msg = err.response.data.message || err.response.data
                 } catch (error) {
                   msg = 'خطایی رخ داده است'
                 }
-                this.$toast
-                  .error()
-                  .timeout(5000)
-                  .showSimple(msg)
+                this.$toast.error().timeout(5000).showSimple(msg)
               })
               .then(() => {
                 this.loader.hide()
               })
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err)
         })
     },
@@ -348,7 +361,7 @@ export default Vue.extend({
       this.$dialog.confirm().then(() => {
         this.service
           .delete(this.initItem.id)
-          .then(res => {
+          .then((res) => {
             this.$toast
               .success()
               .timeout(1000)
@@ -357,7 +370,7 @@ export default Vue.extend({
                 this.goBack()
               })
           })
-          .catch(err => {
+          .catch((err) => {
             this.$toast.error().showSimple('خطایی رخ داده است')
           })
       })
@@ -382,14 +395,14 @@ export default Vue.extend({
         default:
           break
       }
-    }
+    },
   },
   computed: {
     custom_title(): any {
       if (!this.title) {
         return null
       }
-      let title = this.title.replace(/{{[a-z\.0-9_]+}}/g, p => {
+      let title = this.title.replace(/{{[a-z\.0-9_]+}}/g, (p) => {
         let param = p.replace(/{|}/g, '')
         let array_param = param.split('.')
         let title = this.initItem
@@ -399,7 +412,7 @@ export default Vue.extend({
         return title
       })
       return title
-    }
-  }
+    },
+  },
 })
 </script>

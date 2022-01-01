@@ -159,8 +159,12 @@
   display: flex;
   align-items: center;
   div.item-size {
-    margin-left: 30px;
+    margin-right: 30px;
     color: #646c9a;
+    &.rtl {
+      margin-left: 30px;
+      margin-right: 0;
+    }
   }
 }
 .page-size {
@@ -255,7 +259,8 @@
                 <v-icon :class="{ slash: !showDateFilter }">la-calendar</v-icon>
               </v-btn>
             </template>
-            <span>فیلتر زمان</span>
+            <span v-if="$vuetify.rtl">فیلتر زمان</span>
+            <span v-else>Date Filter</span>
           </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -263,7 +268,8 @@
                 <v-icon>la-recycle</v-icon>
               </v-btn>
             </template>
-            <span>حذف فیلتر ها</span>
+            <span v-if="$vuetify.rtl">حذف فیلتر ها</span>
+            <span v-else>Remove Filters</span>
           </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -271,7 +277,8 @@
                 <v-icon :class="{ slash: !showFilter }">la-filter</v-icon>
               </v-btn>
             </template>
-            <span>مخفی کردن فیلتر ها</span>
+            <span v-if="$vuetify.rtl">مخفی کردن فیلتر ها</span>
+            <span v-else>Hide Filters</span>
           </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -279,7 +286,8 @@
                 <v-icon>la-sync</v-icon>
               </v-btn>
             </template>
-            <span>تازه کردن اطلاعات</span>
+            <span v-if="$vuetify.rtl">تازه کردن اطلاعات</span>
+            <span v-else>Refresh</span>
           </v-tooltip>
           <v-tooltip bottom v-if="withRecycle">
             <template v-slot:activator="{ on }">
@@ -294,7 +302,8 @@
                 >
               </v-btn>
             </template>
-            <span>بازیابی رکوردها</span>
+            <span v-if="$vuetify.rtl">بازیابی رکوردها</span>
+            <span v-else>Recycle Bin</span>
           </v-tooltip>
 
           <slot name="header_add">
@@ -306,8 +315,14 @@
               round
               outline
             >
-              <v-icon>add</v-icon>
-              <span>ایجاد جدید</span>
+              <template v-if="$vuetify.rtl">
+                <v-icon>add</v-icon>
+                <span>ایجاد جدید</span>
+              </template>
+              <template v-else>
+                <v-icon>add</v-icon>
+                <span>Add New</span>
+              </template>
             </v-btn>
           </slot>
           <slot name="toollbar_left"></slot>
@@ -327,9 +342,11 @@
                 hide-details
                 single-line
                 outline
+                :locale="$vuetify.rtl ? 'fa' : 'en'"
+                :format="$vuetify.rtl ? 'jYYYY/jMM/jDD' : 'YYYY/MM/DD'"
                 v-model="data_filters['created_at:>']"
                 valueFormat="YYYY-MM-DD"
-                label="تاریخ شروع"
+                :label="$vuetify.rtl ? 'تاریخ شروع' : 'Start Date'"
               ></vr-date-picker>
             </v-flex>
             <v-flex xs3 pa-2>
@@ -337,10 +354,12 @@
                 hide-details
                 single-line
                 outline
+                :locale="$vuetify.rtl ? 'fa' : 'en'"
+                :format="$vuetify.rtl ? 'jYYYY/jMM/jDD' : 'YYYY/MM/DD'"
                 v-model="data_filters['created_at:<']"
                 :min="data_filters['created_at:>'] || null"
                 valueFormat="YYYY-MM-DD"
-                label="تاریخ پایان"
+                :label="$vuetify.rtl ? 'تاریخ پایان' : 'End Date'"
               ></vr-date-picker>
             </v-flex>
           </slot>
@@ -424,7 +443,7 @@
       hide-actions
       :items="rows"
       :pagination.sync="pagination"
-      :total-items="serverPagination?total_items:0"
+      :total-items="serverPagination ? total_items : 0"
       :loading="loading"
       :select-all="selectAll"
       :search="search"
@@ -592,7 +611,12 @@
         >
       </template>
       <template v-slot:no-data>
-        <div class="text-xs-center">متاسفم, چیزی برای نمایش وجود ندارد :(</div>
+        <div v-if="$vuetify.rtl" class="text-xs-center">
+          متاسفم, چیزی برای نمایش وجود ندارد :(
+        </div>
+        <div v-else class="text-xs-center">
+          Sorry, nothing to display here :(
+        </div>
       </template>
     </v-data-table>
     <div class="footer-wrapper">
@@ -604,9 +628,12 @@
         color="info"
       ></v-pagination>
       <div class="page-size-wrapper">
-        <div class="item-size">
+        <div v-if="$vuetify.rtl" class="item-size rtl">
           نمایش {{ start_item | persianDigit }} تا
           {{ end_item | persianDigit }} از {{ total_items | persianDigit }}
+        </div>
+        <div v-else class="item-size">
+          Show {{ start_item }} from {{ end_item }} to {{ total_items }}
         </div>
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
