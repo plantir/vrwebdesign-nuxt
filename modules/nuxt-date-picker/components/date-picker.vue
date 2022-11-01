@@ -29,6 +29,7 @@
       ref="dateInputControl"
       class="form-control is-editable"
       :append-icon="type == 'time' ? 'access_time' : 'date_range'"
+      @focus="show = true"
       @click:append="show = true"
     ></v-text-field>
 
@@ -57,20 +58,20 @@ export default Vue.extend({
   props: {
     value: {},
     type: {
-      default: 'date'
+      default: 'date',
     },
     format: {
-      default: 'jYYYY/jMM/jDD'
+      default: 'jYYYY/jMM/jDD',
     },
     valueFormat: {
-      default: 'YYYY-MM-DD HH:mm:ss'
+      default: 'YYYY-MM-DD HH:mm:ss',
     },
     editable: {
-      default: true
+      default: true,
     },
     autoSubmit: {
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
@@ -78,11 +79,11 @@ export default Vue.extend({
       persianDate: this.value
         ? moment(this.value, [this.valueFormat]).format(this.format)
         : '',
-      show: false
+      show: false,
     }
   },
   watch: {
-    value: function(val) {
+    value: function (val) {
       if (val) {
         try {
           this.persianDate = moment(val, [this.valueFormat]).format(this.format)
@@ -93,11 +94,11 @@ export default Vue.extend({
         this.georgianDate = null
       }
     },
-    georgianDate: function(val) {
+    georgianDate: function (val) {
       this.$emit('input', val)
       this.$emit('change', val)
     },
-    persianDate: function(val) {
+    persianDate: function (val) {
       if (!val) {
         this.$emit('input', val)
         this.$emit('change', val)
@@ -113,12 +114,12 @@ export default Vue.extend({
           this.georgianDate = gregorianDate
         }
       } catch (error) {}
-    }
+    },
   },
   computed: {
     id() {
       return `datepicker_${new Date().getMilliseconds()}`
-    }
+    },
   },
   mounted() {
     console.log(this)
@@ -127,7 +128,7 @@ export default Vue.extend({
     activate() {
       this.$refs.dateInputControl.focus()
       this.$refs.datePickerWrapper.tabIndex = -1
-    }
-  }
+    },
+  },
 })
 </script>
