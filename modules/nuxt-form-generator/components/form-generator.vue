@@ -82,7 +82,14 @@
         </div>
         <div class="head-toolbar">
           <div class="btn-group" v-if="withSave">
-            <v-menu offset-y attach bottom :left="$vuetify.rtl" :right="!$vuetify.rtl" min-width="180">
+            <v-menu
+              offset-y
+              attach
+              bottom
+              :left="$vuetify.rtl"
+              :right="!$vuetify.rtl"
+              min-width="180"
+            >
               <v-btn
                 class="btn-dropdown"
                 depressed
@@ -97,12 +104,20 @@
                   @click="action(item.action)"
                   :key="index"
                 >
-                  <v-icon :class="$vuetify.rtl ?'pl-2':'pr-2'">{{ item.icon }}</v-icon>
+                  <v-icon :class="$vuetify.rtl ? 'pl-2' : 'pr-2'">{{
+                    item.icon
+                  }}</v-icon>
                   <v-list-tile-title>{{ item.title }}</v-list-tile-title>
                 </v-list-tile>
               </v-list>
             </v-menu>
-            <v-btn @click="save" class="action-btn" depressed color="info">
+            <v-btn
+              :loading="loadingSync"
+              @click="save"
+              class="action-btn"
+              depressed
+              color="info"
+            >
               {{ $vuetify.rtl ? 'ذخیره' : 'save' }}
             </v-btn>
           </div>
@@ -230,7 +245,7 @@ export default Vue.extend({
     return {
       initItem: this.item,
       freezItem: JSON.parse(JSON.stringify(this.item)),
-
+      loadingSync: this.loading,
       offset: { top: 64 },
       loader: <NuxtLoaderElement>(<unknown>null),
       action_list: action_list,
@@ -253,6 +268,9 @@ export default Vue.extend({
       deep: true,
     },
     loading: function (value) {
+      this.loadingSync = value
+    },
+    loadingSync: function (value) {
       if (value) {
         this.loader = this.$loader.show(this.$refs.loaderWrapper)
       } else if (this.loader) {
@@ -288,7 +306,8 @@ export default Vue.extend({
                 exit_after,
               })
             }
-            this.loader = this.$loader.show(this.$refs.loaderWrapper)
+            // this.loader = this.$loader.show(this.$refs.loaderWrapper)
+            this.loadingSync = true
             let result: Promise<AxiosResponse<any>>
             if (this.initItem.id) {
               result = this.service.update(this.initItem.id, this.initItem)
@@ -343,7 +362,8 @@ export default Vue.extend({
                 this.$toast.error().timeout(5000).showSimple(msg)
               })
               .then(() => {
-                this.loader.hide()
+                this.loadingSync = false
+                // this.loader.hide()
               })
           }
         })
