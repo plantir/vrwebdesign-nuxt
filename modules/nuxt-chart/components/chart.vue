@@ -288,11 +288,11 @@ export default {
       )
       if (this.date.start_date) {
         this.options.filters.push(`created_at:${this.date.start_date}:>`)
-        this.options.start_at = this.date.start_date
+        this.options.start_date = this.date.start_date
       }
       if (this.date.end_date) {
         this.options.filters.push(`created_at:${this.date.end_date}:<`)
-        this.options.end_at = this.date.end_date
+        this.options.end_date = this.date.end_date
       }
       this.init()
       // this.date.haveDateFilter = true
