@@ -36,9 +36,14 @@ span.vr-badge {
 }
 </style>
 
-<template >
+<template>
   <span ref="badge" class="vr-badge" :class="classList">
-    <span ref="dot" class="dot" :class="dotClassList" v-if="type == 'dot'"></span>
+    <span
+      ref="dot"
+      class="dot"
+      :class="dotClassList"
+      v-if="type == 'dot'"
+    ></span>
     <slot></slot>
   </span>
 </template>
@@ -47,8 +52,8 @@ export default {
   props: {
     type: {},
     color: {
-      type: String
-    }
+      type: String,
+    },
   },
   mounted() {
     this.setBackgroundColor()
@@ -74,18 +79,25 @@ export default {
         classList += this.color
       }
       return classList
-    }
+    },
   },
   methods: {
     setBackgroundColor() {
       if (this.color && this.color.startsWith('#')) {
+        if (this.$refs.badge) {
+          this.$refs.badge.style.backgroundColor = this.color
+        }
         this.$refs.badge.style.backgroundColor = this.color
         if (this.type == 'dot') {
-          this.$refs.badge.style.color = this.color
-          this.$refs.dot.style.backgroundColor = this.color
+          if (this.$refs.badge) {
+            this.$refs.badge.style.color = this.color
+          }
+          if (this.$refs.dot) {
+            this.$refs.dot.style.backgroundColor = this.color
+          }
         }
       }
-    }
+    },
   },
   watch: {
     color: {
@@ -96,8 +108,8 @@ export default {
         this.color = value
         this.setBackgroundColor()
       },
-      deep: true
-    }
-  }
+      deep: true,
+    },
+  },
 }
 </script>
