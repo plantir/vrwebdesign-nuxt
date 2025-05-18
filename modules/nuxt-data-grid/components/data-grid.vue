@@ -868,13 +868,17 @@ export default {
       }
       if (params.filters) {
         let parsed_filters = JSON.parse(params.filters)
-        this.data_filters = {}
+        // this.data_filters = Object.assign({},this.data_filters)
         for (const item of parsed_filters) {
           let [a, b, c] = item.split(':')
           let model = `${a}:${c}`
           if (a == 'created_at') {
             this.data_filters['created_at:' + c] = b
             this.showDateFilter = true
+            continue
+          }
+          if (a == 'is_deleted') {
+            this.data_filters['is_deleted:='] = b
             continue
           }
           if (this.filters.find((item) => item.model == model)) {
@@ -888,6 +892,7 @@ export default {
           }
         }
       }
+      this._buildFilters()
     },
     changeFilter(val, model) {
       this._buildFilters()
@@ -1063,14 +1068,12 @@ export default {
       this._query()
     },
     recycle() {
-      let is_deleted_index = this.filter.findIndex((item) =>
-        item.includes('is_deleted')
-      )
-      if (is_deleted_index !== -1) {
-        this.filter.splice(is_deleted_index, 1)
+      if (this.data_filters['is_deleted:=']) {
+        delete this.data_filters['is_deleted:=']
       } else {
-        this.filter.push('is_deleted:1')
+        this.data_filters['is_deleted:='] = 1
       }
+      this._buildFilters()
       this._query()
     },
     resetFilter() {
