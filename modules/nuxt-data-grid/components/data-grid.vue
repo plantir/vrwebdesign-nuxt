@@ -403,6 +403,21 @@
                   :chips="item.chips"
                 ></v-select>
               </template>
+              <template v-else-if="item.type == 'autocomplete'">
+                <v-autocomplete
+                  single-line
+                  hide-details
+                  outline
+                  @input="changeFilter"
+                  v-model="data_filters[item.model]"
+                  :items="item.items"
+                  :prepend-inner-icon="item.icon"
+                  :name="item.model"
+                  :label="item.label"
+                  :multiple="item.multiple"
+                  :chips="item.chips"
+                ></v-autocomplete>
+              </template>
               <template v-else-if="item.type == 'date'">
                 <vr-date-picker
                   hide-details
